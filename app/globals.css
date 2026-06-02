@@ -7,12 +7,12 @@
 @theme {
   --font-poppins: "Poppins", sans-serif;
   --color-shop-light-pink: #fcf0e4;
-  --shop_dark_green: #063c28;
-  --shop-btn_dark_green: #063d29;
-  --shop_light_bg: #f6f6f6;
-  --shop_light_green: #3b9c3c;
-  --shop_organge: #fb6c08;
-  --darkColor: #151515;
+  --color-shop-dark-green: #063c28;
+  --color-shop-btn-dark-green: #063d29;
+  --color-shop-light-bg: #f6f6f6;
+  --color-shop-light-green: #3b9c3c;
+  --color-shop-orange: #fb6c08;
+  --color-dark-color: #151515;
   --lightColor: #52525b;
   --lightOrange: #fca99b;
   --lightGreen: #3b9c3c;
@@ -149,5 +149,8 @@
   }
   .hoverEffect {
     @apply transition-all duration-300 ease-in-out;
+  }
+  button {
+    @apply hover:cursor-pointer;
   }
 }

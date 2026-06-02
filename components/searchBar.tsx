@@ -1,11 +1,13 @@
 import React from 'react'
+import { Search } from "lucide-react"
+
 
 const SearchBar = () => {
   return (
     <>
       <div>
-        <search className='w-5 h-5 hover:text-shop_light_green' />
-        other
+        <Search className='w-5 h-5 hover:text-shop_light_green' />
+        
       </div>
     </>
   )
