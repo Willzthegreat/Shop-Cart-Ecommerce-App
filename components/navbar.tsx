@@ -7,8 +7,14 @@ import CartIcon from './cartIcon'
 import FavoriteButton from './favoriteButton'
 import SignIn from './signIn'
 import MobileMenu from './mobileMenu'
+import { currentUser } from '@clerk/nextjs/server'
+import { ClerkLoaded, UserButton } from '@clerk/nextjs'
+// import { ClerkLoaded, UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
 
-const Navbar = () => {
+const Navbar = async() => {
+
+  const user = await currentUser();
+  console.log(user, "user");
   return (
     <>
       <header className="bg-white py-5 border-b border-b-black/20">
@@ -25,7 +31,13 @@ const Navbar = () => {
             <SearchBar />
             <CartIcon />
             <FavoriteButton />
-            <SignIn />
+            <ClerkLoaded>
+              <useAuth>
+                <UserButton />
+              </useAuth>
+              {/* <SignIn /> */}
+              { !user && <SignIn />}
+            </ClerkLoaded>
           </div>
         </Container>
       </header>
