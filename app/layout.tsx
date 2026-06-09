@@ -29,9 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider 
-    // appearance={{ theme: shadcn }}
-    >
+   
       <html
         lang="en"
         className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
@@ -42,6 +40,5 @@ export default function RootLayout({
             <Footer />
         </body>
       </html>
-    </ClerkProvider>
   );
 }
