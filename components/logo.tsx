@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils/utils"
 
 const Logo = ({ className, spanDesign }: {className?: string, spanDesign?: string }) => {
     return (

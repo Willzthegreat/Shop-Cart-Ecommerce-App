@@ -1,15 +1,26 @@
-import Container from "@/components/container"
+import SignUpModal from "@/components/signUpModal";
+import { Link } from "lucide-react";
+
+export default function Home(){
 
 
-const Home=() => {
-  return (
-    <Container className="bg-shop-light-pink">
-      <h1>Welcome to the Modern E-commerce App</h1>
-      <p>Explore our wide range of products and enjoy seamless shopping experience.</p>
+return (
 
-      <button >Check Out</button>
-    </Container>
-  )
-}
+<div>
+  <section className="min-h-screen">
+  
+  <Link href="/modern-ecommerce-app/components/signUpModal.tsx"
+  // onClick={()=>setShowSignup(true)}
+  className="
+  text-red
+  w-29
+  px-5
+  py-3
+  rounded
+  ">
+  Create Account
+  </Link>
+</section>
 
-export default Home;
+</div>
+)}
