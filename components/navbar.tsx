@@ -88,7 +88,7 @@ const Navbar = async () => {
         <div className="w-auto md:w-2 flex items-center justify-end gap-4">
           <SearchBar />
           <CartIcon />
-          <FavoriteButton />
+          <FavoriteButton  />
           <SignUpButton />
         </div>
 
