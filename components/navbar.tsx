@@ -89,6 +89,8 @@ const Navbar = async () => {
           <SearchBar />
           <CartIcon />
           <FavoriteButton  />
+          {/* User profil Avatar Icon & Log out link */}
+          
           <SignUpButton />
         </div>
 

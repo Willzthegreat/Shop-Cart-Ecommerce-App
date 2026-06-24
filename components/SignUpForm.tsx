@@ -7,7 +7,12 @@ import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 
-export default function SignUpForm() {
+interface Props {
+  close: () => void;
+}
+
+
+export default function SignUpForm({close}: Props) {
 
   const router = useRouter();
   const [name, setName] = useState("");
@@ -37,8 +42,8 @@ export default function SignUpForm() {
       });
 
       console.log("SUCCESS:", response.data);
-
-      router.push("/dashboard");
+      close();
+      router.replace("/dashboard");
 
     } catch (error:any) {
 
@@ -108,9 +113,7 @@ export default function SignUpForm() {
             }
           </button>
         </div>
-        <button 
-          className="mt-4 bg-shop-dark-green text-white px-4 py-2 rounded"
-        >
+        <button type="submit" className="mt-4 bg-shop-dark-green text-white px-4 py-2 rounded">
           Sign Up
         </button>
       </form>
