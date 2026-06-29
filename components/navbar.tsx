@@ -59,9 +59,9 @@ import HeaderMenu from "./headerMenu";
 import SearchBar from "./searchBar";
 import CartIcon from "./cartIcon";
 import FavoriteButton from "./favoriteButton";
-import SignIn from "./SignInForm";
 import MobileMenu from "./mobileMenu";
 import SignUpButton from "./SignUpButton";
+import UserAvatar from "./userAvatar";
 
 
 const Navbar = async () => {
@@ -89,9 +89,17 @@ const Navbar = async () => {
           <SearchBar />
           <CartIcon />
           <FavoriteButton  />
-          {/* User profil Avatar Icon & Log out link */}
-          
-          <SignUpButton />
+          {/* User profile Avatar Icon & Log out link */}
+        {/* 
+          if(User){
+           Console.log( "Stay Logged in")
+          } else {
+            Console.log(" ")
+          } 
+        */}
+
+          <UserAvatar/>
+          {/* <SignUpButton /> */}
         </div>
 
       </Container>

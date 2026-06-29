@@ -6,7 +6,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --font-poppins: "Poppins", sans-serif;
+  --font-poppins: "Poppins", "sans-serif";
   --color-shop-light-pink: #fcf0e4;
   --color-shop-dark-green: #063c28;
   --color-shop-btn-dark-green: #063d29;
@@ -17,13 +17,7 @@
   --color-light-Color: #52525b;
   --lightOrange: #fca99b;
   --lightGreen: #3b9c3c;
-  /* --lightBlue: #7688db;
-  --darkBlue: #6c7fd8;
-  --darkText: #686e7d;
-  --lightBg: #f8f8fb;
-  --darkRed: #f02757;
-  --lightText: #ababab;
-  --productBg: #f1f3f8; */
+ 
 }
 
 @theme inline {
@@ -68,8 +62,9 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
 }
-
+ 
 :root {
+  --font-poppins: "poppins", "sans-serif";
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
@@ -155,3 +150,8 @@
     @apply hover:cursor-pointer;
   }
 }
+
+body {
+  font-family: var(--font-poppins);
+}
+

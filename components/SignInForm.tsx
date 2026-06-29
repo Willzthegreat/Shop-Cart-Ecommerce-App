@@ -294,6 +294,9 @@ export default function SignInForm({ close }: Props) {
         JSON.stringify(response.data.user)
       );
 
+      window.dispatchEvent(
+        new Event("userChanged")
+      );
 
       console.log("USER SAVED");
 

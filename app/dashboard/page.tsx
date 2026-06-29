@@ -1,13 +1,20 @@
-import React from 'react'
+import React from "react";
+import Image from "next/image";
+import HeroImage from "@/public/HeroSecImage.png";
+import Title from "@/components/ui/text";
+import HomeBanner from "@/components/homeBanner";
 
 const Page = () => {
   return (
     <>
-      <div>
-        <p>Welcome to the Dashboard.</p>
-      </div>
+      <section>
+        <div>
+          <HomeBanner />
+          <div></div>
+        </div>
+      </section>
     </>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;
