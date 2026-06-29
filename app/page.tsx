@@ -1,12 +1,56 @@
-import SignUpModal from "@/components/signUpModal";
-import { Link } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
+import { products } from "@/components/productArray";
+import Banner1 from "@/public/banner1..png"
+import { Title } from "@/components/ui/text";
+import ProductGrid from "@/components/productGrid";
+// import { products } from "@/components/productArray";
 
-export default function Home(){
 
 
-return (
 
-<div>
-  <p>Welcome to Home Page.</p>
-</div>
-)}
+export default function Home() {
+  const featuredProducts = products.slice(0, 5);
+
+  return (
+    <main className="px-6 md:px-8 lg:px-30">
+      {/* Hero Section */}
+
+      <section className="py-16 md:py-0 bg-shop-light-pink rounded-lg px-10 lg:px-24 flex items-center justify-between">
+        <div className="space-y-5">
+          <Title > Grab Upto 50% off on <br/>
+            Selected Headphone
+          </Title>
+          <Link href={"/shop"} className="bg-shop-dark-green/90 text-white/90 px-5 py-2 rounded-md text-sm font-semibold hover:text-white hover:bg-shop-dark-green hoverEffect">
+            Buy Now
+          </Link>
+        </div>
+        <div>
+          <Image src={Banner1} alt="banner 1" priority className="hidden  md:inline-flex w-70 " />
+        </div>
+      </section>
+
+      {/* Categories */}
+
+      <section className="mt-10">
+        <div className="flex gap-5">
+          {["Gadget", "Appliances", "Refrigerators", "Others"].map((item) => (
+            <button
+              key={item}
+              className="px-6 py-2 rounded-full border hover:bg-green-800 hover:text-white"
+            >
+              {item}
+            </button>
+          ))}
+        </div>
+      </section>
+
+      {/* Products */}
+
+      <section className="mt-10">
+        <ProductGrid products={products.slice(0, 5)} />
+      </section>
+    </main>
+  );
+}
+
