@@ -15,13 +15,13 @@ export default function ProductCard({
   image,
 }: ProductProps) {
   return (
-    <div className="border rounded-xl p-4 bg-white">
+    <div className="border rounded-xl p-4 bg-white group overflow-hidden">
       <Image
         src={image[0]}
         alt={name}
         width={250}
         height={250}
-        className="h-52 w-full object-contain"
+        className="h-52 w-full hover:cursor-pointer object-cover transition-transform duration-500 group-hover:scale-110"
       />
       <p className="text-sm text-gray-400 mt-3">{category}</p>
       <h2 className="font-semibold truncate">{name}</h2>
