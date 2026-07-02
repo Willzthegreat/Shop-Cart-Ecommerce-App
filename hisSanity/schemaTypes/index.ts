@@ -1,10 +1,3 @@
-// import { type SchemaTypeDefinition } from "Sanity";
-// import { categoryType } from "@/models/categoryType";
-
-
-// export const schema: { types: SchemaTypeDefinition[] } = {
-//     types: [categoryType],
-// }
 
 import  DatabaseConnection  from "@/lib/mongodb/mongodb";
 import Category from "@/models/categoryType";
@@ -17,3 +10,16 @@ export async function GET(){
 
  return Response.json(categories);
 }
+
+
+// import { type SchemaTypeDefinition } from "sanity";
+// import { categoryType } from "./categoryType";
+// import { productType } from "./productType";
+// import { blockContentType } from "./blockContentType";
+// import { OrderType } from "./orderType";
+// import { brandType } from "./brandType";
+
+// export const schema: {types: SchemaTypeDefinition[]} = {
+//     types: [categoryType, productType, blockContentType, OrderType, brandType, blogType, blogCategoryType, authorType, addressType],
+
+// }
