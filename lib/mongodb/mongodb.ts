@@ -14,25 +14,43 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import mongoose from "mongoose";
 
+const MONGO_URI = process.env.MONGO_URI || process.env.MONGODB_URL;
 
-const MONGO_URI = process.env.MONGO_URI as string;
+if (!MONGO_URI) {
+  throw new Error("Please define the MONGO_URI or MONGODB_URL environment variable.");
+}
 
+const mongoUri = MONGO_URI;
 
-const DatabaseConnection = async () => {
-
+const DatabaseConnection = async (): Promise<void> => {
   if (mongoose.connection.readyState >= 1) {
     return;
   }
+
   try {
-    await mongoose.connect(MONGO_URI);
+    await mongoose.connect(mongoUri);
     console.log("MongoDB Connected");
   } catch (error) {
     console.error("MongoDB connection failed:", error);
     process.exit(1);
   }
 };
-
 
 export default DatabaseConnection;

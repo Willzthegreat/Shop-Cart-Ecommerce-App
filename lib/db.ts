@@ -27,11 +27,13 @@
 
 import mongoose from "mongoose";
 
-const MONGO_URI = process.env.MONGO_URI;
+const MONGO_URI = process.env.MONGO_URI || process.env.MONGODB_URL;
 
 if (!MONGO_URI) {
-  throw new Error("Missing MONGO_URI");
+  throw new Error("Missing MONGO_URI or MONGODB_URL");
 }
+
+const mongoUri = MONGO_URI;
 
 export async function connectDB() {
   try {
@@ -39,7 +41,7 @@ export async function connectDB() {
       return;
     }
 
-    await mongoose.connect(MONGO_URI);
+    await mongoose.connect(mongoUri);
 
     console.log("MongoDB Connected");
   } catch (error) {

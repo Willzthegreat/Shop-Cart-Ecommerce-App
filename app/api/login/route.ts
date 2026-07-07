@@ -1,4 +1,4 @@
-import DatabaseConnection from "@/lib/mongodb/mongodb.js";
+import DatabaseConnection from "@/lib/mongodb/mongodb";
 import User from "@/models/userModel";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
