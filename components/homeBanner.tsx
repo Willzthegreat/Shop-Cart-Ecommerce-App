@@ -4,9 +4,11 @@ import Image from "next/image"
 import Banner1 from "@/public/banner1..png"
 import ProductGrid from "./productGrid";
 import { products } from "./productArray";
+import { productType } from "@/constants/data";
 
 
 const HomeBanner = () => {
+  
   return (
     <>
       <main className="px-6 md:px-8 lg:px-30">
@@ -27,21 +29,6 @@ const HomeBanner = () => {
       </section>
 
       {/* Categories */}
-
-      <section className="mt-10">
-        <div className="flex gap-5">
-          {["Gadget", "Appliances", "Refrigerators", "Others"].map((item) => (
-            <button
-              key={item}
-              className="px-6 py-2 rounded-full border hover:bg-green-800 hover:text-white"
-            >
-              {item}
-            </button>
-          ))}
-        </div>
-      </section>
-
-      {/* Products */}
 
       <section className="mt-10">
         <ProductGrid  products={products.slice(0, 5)} />

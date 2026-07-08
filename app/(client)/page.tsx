@@ -33,21 +33,6 @@ export default function Home() {
       {/* Categories */}
 
       <section className="mt-10">
-        <div className="flex gap-5">
-          {["Gadget", "Appliances", "Refrigerators", "Others"].map((item) => (
-            <button
-              key={item}
-              className="px-6 py-2 rounded-full border hover:bg-green-800 hover:text-white"
-            >
-              {item}
-            </button>
-          ))}
-        </div>
-      </section>
-
-      {/* Products */}
-
-      <section className="mt-10">
         <ProductGrid products={products.slice(0, 5)} />
       </section>
     </main>

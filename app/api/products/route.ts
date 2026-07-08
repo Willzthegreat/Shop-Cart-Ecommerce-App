@@ -9,7 +9,7 @@ function getBrandTitle(name: string) {
   return name.split(" ")[0] || "Unknown";
 }
 
-export async function POST() {
+export async function POST() { 
   await connectDB();
 
   const savedProducts = [] as Array<any>;
@@ -92,4 +92,46 @@ export async function POST() {
     message: "Products uploaded",
     data: savedProducts,
   });
+}
+
+export async function GET(req: Request) {
+  await connectDB();
+  try {
+    const url = new URL(req.url);
+    const tab = url.searchParams.get("tab") || url.searchParams.get("category") || "";
+
+    // mapping from UI tabs to actual category titles in seeded data
+    const tabMap: Record<string, string[]> = {
+      Gadget: ["Mobiles", "Smartphones", "Gadget Accessories"],
+      Appliances: ["Appliances", "Kitchen Appliances", "Washing Machines", "Air Conditioners"],
+      Refrigerators: ["Appliances"],
+      Others: [],
+    };
+
+    let filter: any = {};
+
+    if (tab) {
+      // try exact category match first (case-insensitive)
+      const categoryTitles = tabMap[tab] || [];
+      if (categoryTitles.length > 0) {
+        const categoriesFound = await Category.find({ title: { $in: categoryTitles } }).select("_id");
+        const ids = categoriesFound.map((c: any) => c._id);
+        if (ids.length > 0) filter.category = { $in: ids };
+      } else {
+        // fallback: look for category with matching title (case-insensitive)
+        const cat = await Category.findOne({ title: { $regex: new RegExp(`^${tab}$`, "i") } });
+        if (cat) filter.category = cat._id;
+      }
+    }
+
+    const productsData = await Product.find(filter)
+      .populate("category")
+      .populate("brand")
+      .lean();
+
+    return Response.json({ data: productsData });
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    return new Response(JSON.stringify({ message: "Error fetching products" }), { status: 500 });
+  }
 }
