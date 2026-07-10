@@ -22,7 +22,7 @@ export const categoriesData = [
   { title: "Smartphones", href: "smartphones" },
   { title: "Air Conditioners", href: "air-conditioners"},
   { title: "Washing Machines", href: "washing-machines"},
-  { title: "Kitchen Appliances", href: "kitchen-appliances"},
+  { title: "Kitchen Appliances", href: "kitchen-appliances"}, 
   { title: "Gadget Accessories", href: "gadget-accessories" },
 ];
 
@@ -30,6 +30,7 @@ export const productType = [
   { title: "Gadget", value: "gadget" },
   { title: "Appliances", value: "appliance" },
   { title: "Refrigerators", value: "refrigerator" },
+  // { title: "Mobiles", value: "mobiles" },
   // { title: "Smartphones", value: "smartPhone" },
   { title: "Others", value: "other" },
 ]

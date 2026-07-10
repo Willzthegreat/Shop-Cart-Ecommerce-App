@@ -2,7 +2,7 @@ import connectDB from "@/lib/mongodb/mongodb";
 import Product from "@/models/product";
 import Category from "@/models/categoryType";
 import Brand from "@/models/brandType";
-import { products } from "@/components/productArray";
+// Product seeding is no longer driven by this file; the frontend now fetches from the Express backend.
 import slugify from "slugify";
 
 function getBrandTitle(name: string) {

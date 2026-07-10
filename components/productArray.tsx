@@ -1,237 +1,769 @@
-// import Iphone17Pro1 from "@/public/products/iphone-17-pro1.jpg";
-// import Iphone17Pro2 from "@/public/products/iphone-17-pro2.jpg";
-// import Iphone17Pro3 from "@/public/products/iphone-17-pro3.jpg";
-// import Iphone17Pro4 from "@/public/products/iphone-17-pro4.jpg";
-// import Iphone17Pro5 from "@/public/products/iphone-17-pro5.jpg";
-// import SamsungGalaxy7_1 from "@/public/products/galaxy-z-fold7_1.jpg";
-// import SamsungGalaxy7_2 from "@/public/products/galaxy-z-fold7_2.jpg";
-// import SamsungGalaxy7_3 from "@/public/products/galaxy-z-fold7_3.jpg";
-// import SamsungGalaxy7_4 from "@/public/products/galaxy-z-fold7_4.jpg";
-// import pixelPro1 from "@/public/products/pixel-10-pro1.jpg";
-// import pixelPro2 from "@/public/products/pixel-10-pro2.jpg";
-// import pixelPro3 from "@/public/products/pixel-10-pro3.jpg";
-// import pixelPro4 from "@/public/products/pixel-10-pro4.jpg";
-// import oneplus13_1 from "@/public/products/oneplus-13_1.jpg";
-// import oneplus13_2 from "@/public/products/oneplus-13_2.jpg";
-// import oneplus13_3 from "@/public/products/oneplus-13_3.jpg";
-// import oneplus13_4 from "@/public/products/oneplus-13_4.jpg";
-// import xiaomi15Ultra1 from "@/public/products/xiaomi-15-ultra1.jpg";
-// import xiaomi15Ultra2 from "@/public/products/xiaomi-15-ultra2.jpg";
-// import xiaomi15Ultra3 from "@/public/products/xiaomi-15-ultra3.jpg";
-// import xiaomi15Ultra4 from "@/public/products/xiaomi-15-ultra4.jpg";
-// import LgSmartRefrigerator1 from "@/public/products/lg-smart-refrigerator1.jpg";
-// import LgSmartRefrigerator2 from "@/public/products/lg-smart-refrigerator2.jpg";
-// import LgSmartRefrigerator3 from "@/public/products/lg-smart-refrigerator3.jpg";
-// import LgSmartRefrigerator4 from "@/public/products/lg-smart-refrigerator4.jpg";
-// import SamsungFamilyHub1 from "@/public/products/samsung-family-hub1.jpg";
-// import SamsungFamilyHub2 from "@/public/products/samsung-family-hub2.jpg";
-// import SamsungFamilyHub3 from "@/public/products/samsung-family-hub3.jpg";
-// import SamsungFamilyHub4 from "@/public/products/samsung-family-hub4.jpg";
-// import dysonV15_1 from "@/public/products/dyson-v15_1.jpg";
-// import dysonV15_2 from "@/public/products/dyson-v15_2.jpg";
-// import dysonV15_3 from "@/public/products/dyson-v15_3.jpg";
-// import dysonV15_4 from "@/public/products/dyson-v15_4.jpg";
-// import S25Ultra1 from "@/public/products/s25-ultra1.jpg";
-// import S25Ultra2 from "@/public/products/s25-ultra2.jpg";
-// import S25Ultra3 from "@/public/products/s25-ultra3.jpg";
-// import S25Ultra4 from "@/public/products/s25-ultra4.jpg";
-// import Iphone16ProMax1 from "@/public/products/iphone-16-pro-max1.jpg";
-// import Iphone16ProMax2 from "@/public/products/iphone-16-pro-max2.jpg";
-// import Iphone16ProMax3 from "@/public/products/iphone-16-pro-max3.jpg";
-// import Iphone16ProMax4 from "@/public/products/iphone-16-pro-max4.jpg";
-// import LgInverterAc1 from "@/public/products/lg-inverter-ac1.jpg";
-// import LgInverterAc2 from "@/public/products/lg-inverter-ac2.jpg";
-// import LgInverterAc3 from "@/public/products/lg-inverter-ac3.jpg";
-// import LgInverterAc4 from "@/public/products/lg-inverter-ac4.jpg";
-// import SamsungWindfreeAc1 from "@/public/products/samsung-windfree-ac1.jpg";
-// import SamsungWindfreeAc2 from "@/public/products/samsung-windfree-ac2.jpg";
-// import SamsungWindfreeAc3 from "@/public/products/samsung-windfree-ac3.jpg";
-// import SamsungWindfreeAc4 from "@/public/products/samsung-windfree-ac4.jpg";
-// import LgWashingMachine1 from "@/public/products/lg-washing-machine1.jpg";
-// import LgWashingMachine2 from "@/public/products/lg-washing-machine2.jpg";
-// import LgWashingMachine3 from "@/public/products/lg-washing-machine3.jpg";
-// import LgWashingMachine4 from "@/public/products/lg-washing-machine4.jpg";
-// import SamsungWashingMachine1 from "@/public/products/samsung-washing-machine1.jpg";
-// import SamsungWashingMachine2 from "@/public/products/samsung-washing-machine2.jpg";
-// import SamsungWashingMachine3 from "@/public/products/samsung-washing-machine3.jpg";
-// import SamsungWashingMachine4 from "@/public/products/samsung-washing-machine4.jpg";
-// import NinjaAirFryer1 from "@/public/products/ninja-air-fryer1.jpg";
-// import NinjaAirFryer2 from "@/public/products/ninja-air-fryer2.jpg";
-// import NinjaAirFryer3 from "@/public/products/ninja-air-fryer3.jpg";
-// import NinjaAirFryer4 from "@/public/products/ninja-air-fryer4.jpg";
-// import KitchenaidMixer1 from "@/public/products/kitchenaid-mixer1.jpg";
-// import KitchenaidMixer2 from "@/public/products/kitchenaid-mixer2.jpg";
-// import KitchenaidMixer3 from "@/public/products/kitchenaid-mixer3.jpg";
-// import KitchenaidMixer4 from "@/public/products/kitchenaid-mixer4.jpg";
-// import PhilipsBlender1 from "@/public/products/philips-blender1.jpg";
-// import PhilipsBlender2 from "@/public/products/philips-blender2.jpg";
-// import PhilipsBlender3 from "@/public/products/philips-blender3.jpg";
-// import PhilipsBlender4 from "@/public/products/philips-blender4.jpg";
+// export const products = [
+//   {
+//     name: "Apple iPhone 17 Pro",
+//     description:
+//       "Premium smartphone with advanced camera system, powerful processor, and OLED display.",
+//     price: 1299,
+//     slug: "apple-iphone-17-pro",
+//     category: "Mobiles",
+//     image: [
+//       "/products/iphone-17-pro1.jpg",
+//       "/products/iphone-17-pro2.jpg",
+//       "/products/iphone-17-pro3.jpg",
+//       "/products/iphone-17-pro4.jpg",
+//       "/products/iphone-17-pro5.jpg",
+//     ],
+//   },
+//   {
+//     name: "Samsung Galaxy Z Fold7",
+//     description:
+//       "Foldable smartphone with flexible display, multitasking features, and flagship performance.",
+//     price: 1899,
+//     slug: "samsung-galaxy-z-fold7",
+//     category: "Mobiles",
+//     image: [
+//       "/products/galaxy-z-fold7_1.jpg",
+//       "/products/galaxy-z-fold7_2.jpg",
+//       "/products/galaxy-z-fold7_3.jpg",
+//       "/products/galaxy-z-fold7_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Google Pixel 10 Pro",
+//     description:
+//       "AI-powered smartphone with advanced photography and clean Android experience.",
+//     price: 999,
+//     slug: "google-pixel-10-pro",
+//     category: "Mobiles",
+//     image: [
+//       "/products/pixel-10-pro1.jpg",
+//       "/products/pixel-10-pro2.jpg",
+//       "/products/pixel-10-pro3.jpg",
+//       "/products/pixel-10-pro4.jpg",
+//     ],
+//   },
+//   {
+//     name: "OnePlus 13",
+//     description:
+//       "Fast-performance smartphone with smooth display and powerful charging technology.",
+//     price: 899,
+//     slug: "oneplus-13",
+//     category: "Mobiles",
+//     image: [
+//       "/products/oneplus-13_1.jpg",
+//       "/products/oneplus-13_2.jpg",
+//       "/products/oneplus-13_3.jpg",
+//       "/products/oneplus-13_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Xiaomi 15 Ultra",
+//     description:
+//       "Flagship smartphone with professional camera system and premium performance.",
+//     price: 1099,
+//     slug: "xiaomi-15-ultra",
+//     category: "Mobiles",
+//     image: [
+//       "/products/xiaomi-15-ultra1.jpg",
+//       "/products/xiaomi-15-ultra2.jpg",
+//       "/products/xiaomi-15-ultra3.jpg",
+//       "/products/xiaomi-15-ultra4.jpg",
+//     ],
+//   },
 
-export const products = [
-  {
-    name: "Apple iPhone 17 Pro",
-    description: "Premium smartphone with advanced camera system, powerful processor, and OLED display.",
-    price: 1299,
-    slug: "apple-iphone-17-pro",
-    category: "Mobiles",
-    image: ["/products/iphone-17-pro1.jpg", "/products/iphone-17-pro2.jpg", "/products/iphone-17-pro3.jpg", "/products/iphone-17-pro4.jpg", "/products/iphone-17-pro5.jpg"],
-    // image: [Iphone17Pro1, Iphone17Pro2, Iphone17Pro3, Iphone17Pro4, Iphone17Pro5],
-  },
-  {
-    name: "Samsung Galaxy Z Fold7",
-    description: "Foldable smartphone with flexible display, multitasking features, and flagship performance.",
-    price: 1899,
-    slug: "samsung-galaxy-z-fold7",
-    category: "Mobiles",
-    image: ["/products/galaxy-z-fold7_1.jpg", "/products/galaxy-z-fold7_2.jpg", "/products/galaxy-z-fold7_3.jpg", "/products/galaxy-z-fold7_4.jpg"],
-    // image: [SamsungGalaxy7_1, SamsungGalaxy7_2, SamsungGalaxy7_3, SamsungGalaxy7_4],
-  },
-  {
-    name: "Google Pixel 10 Pro",
-    description: "AI-powered smartphone with advanced photography and clean Android experience.",
-    price: 999,
-    slug: "google-pixel-10-pro",
-    category: "Mobiles",
-    image: [ "/products/pixel-10-pro1.jpg", "/products/pixel-10-pro2.jpg", "/products/pixel-10-pro3.jpg", "/products/pixel-10-pro4.jpg"],
-    // image: [pixelPro1, pixelPro2, pixelPro3, pixelPro4],
-  },
-  {
-    name: "OnePlus 13",
-    description: "Fast-performance smartphone with smooth display and powerful charging technology.",
-    price: 899,
-    slug: "oneplus-13",
-    category: "Mobiles",
-    image: ["/products/oneplus-13_1.jpg", "/products/oneplus-13_2.jpg", "/products/oneplus-13_3.jpg", "/products/oneplus-13_4.jpg"],
-    // image: [oneplus13_1, oneplus13_2, oneplus13_3, oneplus13_4],
-  },
-  {
-    name: "Xiaomi 15 Ultra",
-    description: "Flagship smartphone with professional camera system and premium performance.",
-    price: 1099,
-    slug: "xiaomi-15-ultra",
-    category: "Mobiles",
-    image: ["/products/xiaomi-15-ultra1.jpg", "/products/xiaomi-15-ultra2.jpg", "/products/xiaomi-15-ultra3.jpg", "/products/xiaomi-15-ultra4.jpg"],
-    // image: [xiaomi15Ultra1, xiaomi15Ultra2, xiaomi15Ultra3, xiaomi15Ultra4],
-  },
+//   {
+//     name: "LG Smart Refrigerator",
+//     description:
+//       "Smart refrigerator with energy saving technology and connected home features.",
+//     price: 2200,
+//     slug: "lg-smart-refrigerator",
+//     category: "Appliances",
+//     image: [
+//       "/products/lg-smart-refrigerator1.jpg",
+//       "/products/lg-smart-refrigerator2.jpg",
+//       "/products/lg-smart-refrigerator3.jpg",
+//       "/products/lg-smart-refrigerator4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Samsung Family Hub Refrigerator",
+//     description:
+//       "Smart fridge with touchscreen control, storage management, and smart connectivity.",
+//     price: 2800,
+//     slug: "samsung-family-hub-refrigerator",
+//     category: "Appliances",
+//     image: [
+//       "/products/samsung-family-hub1.jpg",
+//       "/products/samsung-family-hub2.jpg",
+//       "/products/samsung-family-hub3.jpg",
+//       "/products/samsung-family-hub4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Dyson V15 Detect Vacuum Cleaner",
+//     description:
+//       "Cordless vacuum cleaner with intelligent dust detection and powerful suction.",
+//     price: 749,
+//     slug: "dyson-v15-detect-vacuum",
+//     category: "Appliances",
+//     image: [
+//       "/products/dyson-v15_1.jpg",
+//       "/products/dyson-v15_2.jpg",
+//       "/products/dyson-v15_3.jpg",
+//       "/products/dyson-v15_4.jpg",
+//     ],
+//   },
+
+//   {
+//     name: "Samsung Galaxy S25 Ultra",
+//     description:
+//       "Flagship smartphone with AI features and professional camera technology.",
+//     price: 1299,
+//     slug: "samsung-galaxy-s25-ultra",
+//     category: "Smartphones",
+//     image: [
+//       "/products/s25-ultra1.jpg",
+//       "/products/s25-ultra2.jpg",
+//       "/products/s25-ultra3.jpg",
+//       "/products/s25-ultra4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Apple iPhone 16 Pro Max",
+//     description:
+//       "Premium Apple phone with titanium design and advanced camera system.",
+//     price: 1199,
+//     slug: "iphone-16-pro-max",
+//     category: "Smartphones",
+//     image: [
+//       "/products/iphone-16-pro-max1.jpg",
+//       "/products/iphone-16-pro-max2.jpg",
+//       "/products/iphone-16-pro-max3.jpg",
+//       "/products/iphone-16-pro-max4.jpg",
+//     ],
+//   },
+
+  // {
+  //   name: "LG Dual Inverter Air Conditioner",
+  //   description:
+  //     "Energy-efficient AC with quiet cooling and smart temperature control.",
+  //   price: 850,
+  //   slug: "lg-dual-inverter-air-conditioner",
+  //   category: "Air Conditioners",
+  //   image: [
+  //     "/products/lg-inverter-ac1.jpg",
+  //     "/products/lg-inverter-ac2.jpg",
+  //     "/products/lg-inverter-ac3.jpg",
+  //     "/products/lg-inverter-ac4.jpg",
+  //   ],
+  // },
+  // {
+  //   name: "Samsung WindFree Air Conditioner",
+  //   description:
+  //     "Smart cooling system with comfortable airflow and energy saving features.",
+  //   price: 1200,
+  //   slug: "samsung-windfree-air-conditioner",
+  //   category: "Air Conditioners",
+  //   image: [
+  //     "/products/samsung-windfree-ac1.jpg",
+  //     "/products/samsung-windfree-ac2.jpg",
+  //     "/products/samsung-windfree-ac3.jpg",
+  //     "/products/samsung-windfree-ac4.jpg",
+  //   ],
+  // },
+
+//   {
+//     name: "LG AI Direct Drive Washing Machine",
+//     description:
+//       "Smart washing machine with AI cycles and efficient cleaning technology.",
+//     price: 1100,
+//     slug: "lg-ai-direct-drive-washing-machine",
+//     category: "Washing Machines",
+//     image: [
+//       "/products/lg-washing-machine1.jpg",
+//       "/products/lg-washing-machine2.jpg",
+//       "/products/lg-washing-machine3.jpg",
+//       "/products/lg-washing-machine4.jpg",
+//     ],
+//   },
+  // {
+  //   name: "Samsung EcoBubble Washing Machine",
+  //   description:
+  //     "Automatic washing machine with bubble technology for deep cleaning.",
+  //   price: 999,
+  //   slug: "samsung-ecobubble-washing-machine",
+  //   category: "Washing Machines",
+  //   image: [
+  //     "/products/samsung-washing-machine1.jpg",
+  //     "/products/samsung-washing-machine2.jpg",
+  //     "/products/samsung-washing-machine3.jpg",
+  //     "/products/samsung-washing-machine4.jpg",
+  //   ],
+  // },
+
+//   {
+//     name: "Ninja Foodi Air Fryer",
+//     description:
+//       "Multi-purpose air fryer for frying, roasting, and cooking with less oil.",
+//     price: 199,
+//     slug: "ninja-foodi-air-fryer",
+//     category: "Kitchen Appliances",
+//     image: [
+//       "/products/samsung-washing-machine1.jpg",
+//       "/products/samsung-washing-machine2.jpg",
+//       "/products/samsung-washing-machine3.jpg",
+//       "/products/samsung-washing-machine4.jpg",
+//     ],
+//   },
+//   {
+//     name: "KitchenAid Stand Mixer",
+//     description: "Professional mixer for baking and food preparation.",
+//     price: 399,
+//     slug: "kitchenaid-stand-mixer",
+//     category: "Kitchen Appliances",
+//     image: [
+//       "/products/kitchenaid-mixer1.jpg",
+//       "/products/kitchenaid-mixer2.jpg",
+//       "/products/kitchenaid-mixer3.jpg",
+//       "/products/kitchenaid-mixer4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Philips Smart Blender",
+//     description:
+//       "Powerful smart blender for smoothies and kitchen preparation.",
+//     price: 179,
+//     slug: "philips-smart-blender",
+//     category: "Kitchen Appliances",
+//     image: [
+//       "/products/philips-blender1.jpg",
+//       "/products/philips-blender2.jpg",
+//       "/products/philips-blender3.jpg",
+//       "/products/philips-blender4.jpg",
+//     ],
+//   },
+
+// // New Product upload Update
 
 
-  {
-    name: "LG Smart Refrigerator",
-    description: "Smart refrigerator with energy saving technology and connected home features.",
-    price: 2200,
-    slug: "lg-smart-refrigerator",
-    category: "Appliances",
-    image: ["/products/lg-smart-refrigerator1.jpg", "/products/lg-smart-refrigerator2.jpg", "/products/lg-smart-refrigerator3.jpg", "/products/lg-smart-refrigerator4.jpg"],
-    // image: [LgSmartRefrigerator1, LgSmartRefrigerator2, LgSmartRefrigerator3, LgSmartRefrigerator4],
-  },
-  {
-    name: "Samsung Family Hub Refrigerator",
-    description: "Smart fridge with touchscreen control, storage management, and smart connectivity.",
-    price: 2800,
-    slug: "samsung-family-hub-refrigerator",
-    category: "Appliances",
-    image: ["/products/samsung-family-hub1.jpg", "/products/samsung-family-hub2.jpg", "/products/samsung-family-hub3.jpg", "/products/samsung-family-hub4.jpg"],
-    // image: [SamsungFamilyHub1, SamsungFamilyHub2, SamsungFamilyHub3, SamsungFamilyHub4],
-  },
-  {
-    name: "Dyson V15 Detect Vacuum Cleaner",
-    description: "Cordless vacuum cleaner with intelligent dust detection and powerful suction.",
-    price: 749,
-    slug: "dyson-v15-detect-vacuum",
-    category: "Appliances",
-    image: ["/products/dyson-v15_1.jpg", "/products/dyson-v15_2.jpg", "/products/dyson-v15_3.jpg", "/products/dyson-v15_4.jpg"],
-    // image: [dysonV15_1, dysonV15_2, dysonV15_3, dysonV15_4],
-  },
-
-
-  {
-    name: "Samsung Galaxy S25 Ultra",
-    description: "Flagship smartphone with AI features and professional camera technology.",
-    price: 1299,
-    slug: "samsung-galaxy-s25-ultra",
-    category: "Smartphones",
-    image: ["/products/s25-ultra1.jpg", "/products/s25-ultra2.jpg", "/products/s25-ultra3.jpg", "/products/s25-ultra4.jpg"],
-    // image: [S25Ultra1, S25Ultra2, S25Ultra3, S25Ultra4],
-  },
-  {
-    name: "Apple iPhone 16 Pro Max",
-    description: "Premium Apple phone with titanium design and advanced camera system.",
-    price: 1199,
-    slug: "iphone-16-pro-max",
-    category: "Smartphones",
-    image: ["/products/iphone-16-pro-max1.jpg", "/products/iphone-16-pro-max2.jpg", "/products/iphone-16-pro-max3.jpg", "/products/iphone-16-pro-max4.jpg"],
-    // image: [Iphone16ProMax1, Iphone16ProMax2, Iphone16ProMax3, Iphone16ProMax4],
-  },
-
-
-  {
-    name: "LG Dual Inverter Air Conditioner",
-    description: "Energy-efficient AC with quiet cooling and smart temperature control.",
-    price: 850,
-    slug: "lg-dual-inverter-air-conditioner",
-    category: "Air Conditioners",
-    image: ["/products/lg-inverter-ac1.jpg", "/products/lg-inverter-ac2.jpg", "/products/lg-inverter-ac3.jpg", "/products/lg-inverter-ac4.jpg"],
-    // image: [LgInverterAc1, LgInverterAc2, LgInverterAc3, LgInverterAc4],
-  },
-  {
-    name: "Samsung WindFree Air Conditioner",
-    description: "Smart cooling system with comfortable airflow and energy saving features.",
-    price: 1200,
-    slug: "samsung-windfree-air-conditioner",
-    category: "Air Conditioners",
-    image: ["/products/samsung-windfree-ac1.jpg", "/products/samsung-windfree-ac2.jpg", "/products/samsung-windfree-ac3.jpg", "/products/samsung-windfree-ac4.jpg"],
-    // image: [SamsungWindfreeAc1, SamsungWindfreeAc2, SamsungWindfreeAc3, SamsungWindfreeAc4],
-  },
-
-
-  {
-    name: "LG AI Direct Drive Washing Machine",
-    description: "Smart washing machine with AI cycles and efficient cleaning technology.",
-    price: 1100,
-    slug: "lg-ai-direct-drive-washing-machine",
-    category: "Washing Machines",
-    image: ["/products/lg-washing-machine1.jpg", "/products/lg-washing-machine2.jpg", "/products/lg-washing-machine3.jpg", "/products/lg-washing-machine4.jpg"],
-    // image: [LgWashingMachine1, LgWashingMachine2, LgWashingMachine3, LgWashingMachine4],
-  },
-  {
-    name: "Samsung EcoBubble Washing Machine",
-    description: "Automatic washing machine with bubble technology for deep cleaning.",
-    price: 999,
-    slug: "samsung-ecobubble-washing-machine",
-    category: "Washing Machines",
-    image: ["/products/samsung-washing-machine1.jpg", "/products/samsung-washing-machine2.jpg", "/products/samsung-washing-machine3.jpg", "/products/samsung-washing-machine4.jpg"],
-    // image: [SamsungWashingMachine1, SamsungWashingMachine2, SamsungWashingMachine3, SamsungWashingMachine4],
-  },
-
-
-  {
-    name: "Ninja Foodi Air Fryer",
-    description: "Multi-purpose air fryer for frying, roasting, and cooking with less oil.",
-    price: 199,
-    slug: "ninja-foodi-air-fryer",
-    category: "Kitchen Appliances",
-    image: ["/products/samsung-washing-machine1.jpg", "/products/samsung-washing-machine2.jpg", "/products/samsung-washing-machine3.jpg", "/products/samsung-washing-machine4.jpg"],
-    // image: [NinjaAirFryer1, NinjaAirFryer2, NinjaAirFryer3, NinjaAirFryer4],
-  },
-  {
-    name: "KitchenAid Stand Mixer",
-    description: "Professional mixer for baking and food preparation.",
-    price: 399,
-    slug: "kitchenaid-stand-mixer",
-    category: "Kitchen Appliances",
-    image: ["/products/kitchenaid-mixer1.jpg", "/products/kitchenaid-mixer2.jpg", "/products/kitchenaid-mixer3.jpg", "/products/kitchenaid-mixer4.jpg"],
-    // image: [KitchenaidMixer1, KitchenaidMixer2, KitchenaidMixer3, KitchenaidMixer4],
-  },
-
-
-  {
-    name: "Philips Smart Blender",
-    description: "Powerful smart blender for smoothies and kitchen preparation.",
-    price: 179,
-    slug: "philips-smart-blender",
-    category: "Kitchen Appliances",
-    image: ["/products/philips-blender1.jpg",  "/products/philips-blender2.jpg", "/products/philips-blender3.jpg", "/products/philips-blender4.jpg"],
-    // image: [PhilipsBlender1, PhilipsBlender2, PhilipsBlender3, PhilipsBlender4],
-  }
-];
+//   {
+//     name: "Ninja Air Fryer Max",
+//     description: "Premium kitchen appliances product.",
+//     price: 399,
+//     slug: "ninja-air-fryer-max",
+//     category: "Kitchen Appliances",
+//     image: [
+//       "/products/ninja-air-fryer-max_1.jpg",
+//       "/products/ninja-air-fryer-max_2.jpg",
+//       "/products/ninja-air-fryer-max_3.jpg",
+//       "/products/ninja-air-fryer-max_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Instant Pot Duo",
+//     description: "Premium kitchen appliances product.",
+//     price: 100,
+//     slug: "instant-pot-duo",
+//     category: "Kitchen Appliances",
+//     image: [
+//       "/products/instant-pot-duo_1.jpg",
+//       "/products/instant-pot-duo_2.jpg",
+//       "/products/instant-pot-duo_3.jpg",
+//       "/products/instant-pot-duo_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Philips Blender 5000",
+//     description: "Premium kitchen appliances product.",
+//     price: 409,
+//     slug: "philips-blender-5000",
+//     category: "Kitchen Appliances",
+//     image: [
+//       "/products/philips-blender-5000_1.jpg",
+//       "/products/philips-blender-5000_2.jpg",
+//       "/products/philips-blender-5000_3.jpg",
+//       "/products/philips-blender-5000_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Kenwood Stand Mixer",
+//     description: "Premium kitchen appliances product.",
+//     price: 209,
+//     slug: "kenwood-stand-mixer",
+//     category: "Kitchen Appliances",
+//     image: [
+//       "/products/kenwood-stand-mixer_1.jpg",
+//       "/products/kenwood-stand-mixer_2.jpg",
+//       "/products/kenwood-stand-mixer_3.jpg",
+//       "/products/kenwood-stand-mixer_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Panasonic Rice Cooker",
+//     description: "Premium kitchen appliances product.",
+//     price: 120,
+//     slug: "panasonic-rice-cooker",
+//     category: "Kitchen Appliances",
+//     image: [
+//       "/products/panasonic-rice-cooker_1.jpg",
+//       "/products/panasonic-rice-cooker_2.jpg",
+//       "/products/panasonic-rice-cooker_3.jpg",
+//       "/products/panasonic-rice-cooker_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Breville Toaster",
+//     description: "Premium kitchen appliances product.",
+//     price: 60,
+//     slug: "breville-toaster",
+//     category: "Kitchen Appliances",
+//     image: [
+//       "/products/breville-toaster_1.jpg",
+//       "/products/breville-toaster_2.jpg",
+//       "/products/breville-toaster_3.jpg",
+//       "/products/breville-toaster_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Black+Decker Microwave",
+//     description: "Premium kitchen appliances product.",
+//     price: 700,
+//     slug: "black+decker-microwave",
+//     category: "Kitchen Appliances",
+//     image: [
+//       "/products/black+decker-microwave_1.jpg",
+//       "/products/black+decker-microwave_2.jpg",
+//       "/products/black+decker-microwave_3.jpg",
+//       "/products/black+decker-microwave_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Russell Hobbs Kettle",
+//     description: "Premium kitchen appliances product.",
+//     price: 300,
+//     slug: "russell-hobbs-kettle",
+//     category: "Kitchen Appliances",
+//     image: [
+//       "/products/russell-hobbs-kettle_1.jpg",
+//       "/products/russell-hobbs-kettle_2.jpg",
+//       "/products/russell-hobbs-kettle_3.jpg",
+//       "/products/russell-hobbs-kettle_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Bosch Food Processor",
+//     description: "Premium kitchen appliances product.",
+//     price: 109,
+//     slug: "bosch-food-processor",
+//     category: "Kitchen Appliances",
+//     image: [
+//       "/products/bosch-food-processor_1.jpg",
+//       "/products/bosch-food-processor_2.jpg",
+//       "/products/bosch-food-processor_3.jpg",
+//       "/products/bosch-food-processor_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Tefal Electric Grill",
+//     description: "Premium kitchen appliances product.",
+//     price: 108,
+//     slug: "tefal-electric-grill",
+//     category: "Kitchen Appliances",
+//     image: [
+//       "/products/tefal-electric-grill_1.jpg",
+//       "/products/tefal-electric-grill_2.jpg",
+//       "/products/tefal-electric-grill_3.jpg",
+//       "/products/tefal-electric-grill_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Morphy Richards Slow Cooker",
+//     description: "Premium kitchen appliances product.",
+//     price: 1009,
+//     slug: "morphy-richards-slow-cooker",
+//     category: "Kitchen Appliances",
+//     image: [
+//       "/products/morphy-richards-slow-cooker_1.jpg",
+//       "/products/morphy-richards-slow-cooker_2.jpg",
+//       "/products/morphy-richards-slow-cooker_3.jpg",
+//       "/products/morphy-richards-slow-cooker_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "KitchenAid Hand Mixer",
+//     description: "Premium kitchen appliances product.",
+//     price: 904,
+//     slug: "kitchenaid-hand-mixer",
+//     category: "Kitchen Appliances",
+//     image: [
+//       "/products/kitchenaid-hand-mixer_1.jpg",
+//       "/products/kitchenaid-hand-mixer_2.jpg",
+//       "/products/kitchenaid-hand-mixer_3.jpg",
+//       "/products/kitchenaid-hand-mixer_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Smeg Espresso Machine",
+//     description: "Premium kitchen appliances product.",
+//     price: 990,
+//     slug: "smeg-espresso-machine",
+//     category: "Kitchen Appliances",
+//     image: [
+//       "/products/smeg-espresso-machine_1.jpg",
+//       "/products/smeg-espresso-machine_2.jpg",
+//       "/products/smeg-espresso-machine_3.jpg",
+//       "/products/smeg-espresso-machine_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Hamilton Beach Juicer",
+//     description: "Premium kitchen appliances product.",
+//     price: 609,
+//     slug: "hamilton-beach-juicer",
+//     category: "Kitchen Appliances",
+//     image: [
+//       "/products/hamilton-beach-juicer_1.jpg",
+//       "/products/hamilton-beach-juicer_2.jpg",
+//       "/products/hamilton-beach-juicer_3.jpg",
+//       "/products/hamilton-beach-juicer_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "LG Steam Oven",
+//     description: "Premium kitchen appliances product.",
+//     price: 621,
+//     slug: "lg-steam-oven",
+//     category: "Kitchen Appliances",
+//     image: [
+//       "/products/lg-steam-oven_1.jpg",
+//       "/products/lg-steam-oven_2.jpg",
+//       "/products/lg-steam-oven_3.jpg",
+//       "/products/lg-steam-oven_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Sharp Convection Oven",
+//     description: "Premium kitchen appliances product.",
+//     price: 200,
+//     slug: "sharp-convection-oven",
+//     category: "Kitchen Appliances",
+//     image: [
+//       "/products/sharp-convection-oven_1.jpg",
+//       "/products/sharp-convection-oven_2.jpg",
+//       "/products/sharp-convection-oven_3.jpg",
+//       "/products/sharp-convection-oven_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Hisense Dishwasher",
+//     description: "Premium kitchen appliances product.",
+//     price: 399,
+//     slug: "hisense-dishwasher",
+//     category: "Kitchen Appliances",
+//     image: [
+//       "/products/hisense-dishwasher_1.jpg",
+//       "/products/hisense-dishwasher_2.jpg",
+//       "/products/hisense-dishwasher_3.jpg",
+//       "/products/hisense-dishwasher_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Midea Induction Cooker",
+//     description: "Premium kitchen appliances product.",
+//     price: 509,
+//     slug: "midea-induction-cooker",
+//     category: "Kitchen Appliances",
+//     image: [
+//       "/products/midea-induction-cooker_1.jpg",
+//       "/products/midea-induction-cooker_2.jpg",
+//       "/products/midea-induction-cooker_3.jpg",
+//       "/products/midea-induction-cooker_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Binatone Pressure Cooker",
+//     description: "Premium kitchen appliances product.",
+//     price: 4980,
+//     slug: "binatone-pressure-cooker",
+//     category: "Kitchen Appliances",
+//     image: [
+//       "/products/binatone-pressure-cooker_1.jpg",
+//       "/products/binatone-pressure-cooker_2.jpg",
+//       "/products/binatone-pressure-cooker_3.jpg",
+//       "/products/binatone-pressure-cooker_4.jpg",
+//     ],
+//   },
+  // {
+  //   name: "Scanfrost Chest Freezer",
+  //   description: "Premium kitchen appliances product.",
+  //   price: 1009,
+  //   slug: "scanfrost-chest-freezer",
+  //   category: "Kitchen Appliances",
+  //   image: [
+  //     "/products/scanfrost-chest-freezer_1.jpg",
+  //     "/products/scanfrost-chest-freezer_2.jpg",
+  //     "/products/scanfrost-chest-freezer_3.jpg",
+  //     "/products/scanfrost-chest-freezer_4.jpg",
+  //   ],
+  // },
+//   {
+//     name: "Samsung QN90D",
+//     description: "Premium television product.",
+//     price: 3099,
+//     slug: "samsung-qn90d",
+//     category: "Television",
+//     image: [
+//       "/products/samsung-qn90d_1.jpg",
+//       "/products/samsung-qn90d_2.jpg",
+//       "/products/samsung-qn90d_3.jpg",
+//       "/products/samsung-qn90d_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "LG C4 OLED",
+//     description: "Premium television product.",
+//     price: 199,
+//     slug: "lg-c4-oled",
+//     category: "Television",
+//     image: [
+//       "/products/lg-c4-oled_1.jpg",
+//       "/products/lg-c4-oled_2.jpg",
+//       "/products/lg-c4-oled_3.jpg",
+//       "/products/lg-c4-oled_4.jpg",
+//     ],
+//   },
+  // {
+  //   name: "Sony Bravia 8",
+  //   description: "Premium television product.",
+  //   price: 298,
+  //   slug: "sony-bravia-8",
+  //   category: "Television",
+  //   image: [
+  //     "/products/sony-bravia-8_1.jpg",
+  //     "/products/sony-bravia-8_2.jpg",
+  //     "/products/sony-bravia-8_3.jpg",
+  //     "/products/sony-bravia-8_4.jpg",
+  //   ],
+  // },
+//   {
+//     name: "Hisense U8N",
+//     description: "Premium television product.",
+//     price: 399,
+//     slug: "hisense-u8n",
+//     category: "Television",
+//     image: [
+//       "/products/hisense-u8n_1.jpg",
+//       "/products/hisense-u8n_2.jpg",
+//       "/products/hisense-u8n_3.jpg",
+//       "/products/hisense-u8n_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "TCL QM8",
+//     description: "Premium television product.",
+//     price: 809,
+//     slug: "tcl-qm8",
+//     category: "Television",
+//     image: [
+//       "/products/tcl-qm8_1.jpg",
+//       "/products/tcl-qm8_2.jpg",
+//       "/products/tcl-qm8_3.jpg",
+//       "/products/tcl-qm8_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Panasonic W95A",
+//     description: "Premium television product.",
+//     price: 700,
+//     slug: "panasonic-w95a",
+//     category: "Television",
+//     image: [
+//       "/products/panasonic-w95a_1.jpg",
+//       "/products/panasonic-w95a_2.jpg",
+//       "/products/panasonic-w95a_3.jpg",
+//       "/products/panasonic-w95a_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Philips Ambilight",
+//     description: "Premium television product.",
+//     price: 800,
+//     slug: "philips-ambilight",
+//     category: "Television",
+//     image: [
+//       "/products/philips-ambilight_1.jpg",
+//       "/products/philips-ambilight_2.jpg",
+//       "/products/philips-ambilight_3.jpg",
+//       "/products/philips-ambilight_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Sharp Aquos",
+//     description: "Premium television product.",
+//     price: 200,
+//     slug: "sharp-aquos",
+//     category: "Television",
+//     image: [
+//       "/products/sharp-aquos_1.jpg",
+//       "/products/sharp-aquos_2.jpg",
+//       "/products/sharp-aquos_3.jpg",
+//       "/products/sharp-aquos_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Toshiba M550",
+//     description: "Premium television product.",
+//     price: 180,
+//     slug: "toshiba-m550",
+//     category: "Television",
+//     image: [
+//       "/products/toshiba-m550_1.jpg",
+//       "/products/toshiba-m550_2.jpg",
+//       "/products/toshiba-m550_3.jpg",
+//       "/products/toshiba-m550_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Skyworth UHD",
+//     description: "Premium television product.",
+//     price: 90,
+//     slug: "skyworth-uhd",
+//     category: "Television",
+//     image: [
+//       "/products/skyworth-uhd_1.jpg",
+//       "/products/skyworth-uhd_2.jpg",
+//       "/products/skyworth-uhd_3.jpg",
+//       "/products/skyworth-uhd_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Xiaomi TV A Pro",
+//     description: "Premium television product.",
+//     price: 4098,
+//     slug: "xiaomi-tv-a-pro",
+//     category: "Television",
+//     image: [
+//       "/products/xiaomi-tv-a-pro_1.jpg",
+//       "/products/xiaomi-tv-a-pro_2.jpg",
+//       "/products/xiaomi-tv-a-pro_3.jpg",
+//       "/products/xiaomi-tv-a-pro_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "FFalcon 43",
+//     description: "Premium television product.",
+//     price: 900,
+//     slug: "ffalcon-43",
+//     category: "Television",
+//     image: [
+//       "/products/ffalcon-43_1.jpg",
+//       "/products/ffalcon-43_2.jpg",
+//       "/products/ffalcon-43_3.jpg",
+//       "/products/ffalcon-43_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Insignia F30",
+//     description: "Premium television product.",
+//     price: 988,
+//     slug: "insignia-f30",
+//     category: "Television",
+//     image: [
+//       "/products/insignia-f30_1.jpg",
+//       "/products/insignia-f30_2.jpg",
+//       "/products/insignia-f30_3.jpg",
+//       "/products/insignia-f30_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Roku Select",
+//     description: "Premium television product.",
+//     price: 920,
+//     slug: "roku-select",
+//     category: "Television",
+//     image: [
+//       "/products/roku-select_1.jpg",
+//       "/products/roku-select_2.jpg",
+//       "/products/roku-select_3.jpg",
+//       "/products/roku-select_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Amazon Fire TV Omni",
+//     description: "Premium television product.",
+//     price: 130,
+//     slug: "amazon-fire-tv-omni",
+//     category: "Television",
+//     image: [
+//       "/products/amazon-fire-tv-omni_1.jpg",
+//       "/products/amazon-fire-tv-omni_2.jpg",
+//       "/products/amazon-fire-tv-omni_3.jpg",
+//       "/products/amazon-fire-tv-omni_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Vu Masterpiece",
+//     description: "Premium television product.",
+//     price: 390,
+//     slug: "vu-masterpiece",
+//     category: "Television",
+//     image: [
+//       "/products/vu-masterpiece_1.jpg",
+//       "/products/vu-masterpiece_2.jpg",
+//       "/products/vu-masterpiece_3.jpg",
+//       "/products/vu-masterpiece_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Haier S80",
+//     description: "Premium television product.",
+//     price: 1900,
+//     slug: "haier-s80",
+//     category: "Television",
+//     image: [
+//       "/products/haier-s80_1.jpg",
+//       "/products/haier-s80_2.jpg",
+//       "/products/haier-s80_3.jpg",
+//       "/products/haier-s80_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Changhong QLED",
+//     description: "Premium television product.",
+//     price: 300,
+//     slug: "changhong-qled",
+//     category: "Television",
+//     image: [
+//       "/products/changhong-qled_1.jpg",
+//       "/products/changhong-qled_2.jpg",
+//       "/products/changhong-qled_3.jpg",
+//       "/products/changhong-qled_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "Konka Smart TV",
+//     description: "Premium television product.",
+//     price: 1000,
+//     slug: "konka-smart-tv",
+//     category: "Television",
+//     image: [
+//       "/products/konka-smart-tv_1.jpg",
+//       "/products/konka-smart-tv_2.jpg",
+//       "/products/konka-smart-tv_3.jpg",
+//       "/products/konka-smart-tv_4.jpg",
+//     ],
+//   },
+//   {
+//     name: "JVC Android TV",
+//     description: "Premium television product.",
+//     price: 270,
+//     slug: "jvc-android-tv",
+//     category: "Television",
+//     image: [
+//       "/products/jvc-android-tv_1.jpg",
+//       "/products/jvc-android-tv_2.jpg",
+//       "/products/jvc-android-tv_3.jpg",
+//       "/products/jvc-android-tv_4.jpg",
+//     ],
+//   },
+// ];

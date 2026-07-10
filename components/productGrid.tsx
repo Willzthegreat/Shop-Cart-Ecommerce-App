@@ -1,108 +1,26 @@
-// import ProductCard from "./ProductCard";
-
-// interface Props {
-//   products: any[];
-// }
-
-// export default function ProductGrid({ products }: Props) {
-//   return (
-//     <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-5 ">
-//       {products.map((product) => (
-//         <ProductCard
-//           key={product.slug}
-//           name={product.name}
-//           description={product.description}
-//           price={product.price}
-//           category={product.category}
-//           image={product.image}
-//         />
-//       ))}
-//     </div>
-//   );
-// }
-
-
-
-
-
-
-
-
-// "use client";
-
-
-// import  { useEffect, useState } from "react";
-// import HomeTabBar from "./homeTabBar";
-// import { productType } from "@/constants/data";
-// import { client } from "@/lib/clients";
-
-
-
-
-// const ProductGrid = () => {
-//   const [ products, setProducts] = useState([]);
-//   const [ loading, setLoading] = useState(false);
-//   const [ selectedTab, setSelectedTab] = useState(productType[0]?.title || "");
-
-// const query = `*[_type == "product" && category == $category]{
-//   name,
-//   description,
-//   price,
-//   category,
-//   image,
-//   slug
-// }`; 
-
-
-// const params = {variant: selectedTab.toLowerCase()};
-
-// useEffect(() => {
-//   const fetchData= async () => {
-//     setLoading(true);
-//     try {
-//       // const data = await fetch(`/api/products?query=${encodeURIComponent(query)}&params=${encodeURIComponent(JSON.stringify(params))}`);
-//       const response = await client.fetch(query, params);
-//       setProducts(response); 
-//     } catch (error) {
-//       console.error("Product fetching Error:",error);
-//     } finally {
-//       setLoading(false);
-//     }
-//   }
-// }, [selectedTab])
-
-//   return (
-//     <>
-//     <div>
-//       <HomeTabBar selectedTab={selectedTab} onTabSelect={setSelectedTab} />
-//     </div>
-//     </>
-//   );
-// };
-
-// export default ProductGrid
-
-
-
-
-
-
-
-
-
 "use client";
 
 import { useEffect, useState } from "react";
 import HomeTabBar from "./homeTabBar";
 import Image from "next/image";
 import { productType } from "@/constants/data";
+import { Loader2 } from "lucide-react";
+import NoProductAvailable from "./noProductAvailable";
+import { AnimatePresence, motion } from "motion/react";
+
+
+
 
 interface Product {
   _id: string;
   name: string;
   description?: string;
   price?: number;
-  category?: any;
+  category?:
+    | string
+    | {
+        title?: string;
+      };
   images?: string[];
 }
 
@@ -119,11 +37,19 @@ const ProductGrid = () => {
       setLoading(true);
 
       try {
-        const res = await fetch(`/api/products?tab=${encodeURIComponent(selectedTab)}`);
-        if (!res.ok) throw new Error("Failed to fetch products");
+        const apiUrl = "http://localhost:5000/api/products?tab=" + encodeURIComponent(selectedTab);
+        console.log("Fetching products from:", apiUrl);
+        const res = await fetch(apiUrl);
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch products");
+        }
+
+        console.log(res);
+
         const json = await res.json();
+        console.log("JSON Response:", json);
         setProducts(json.data || []);
-        console.log(res)
       } catch (error) {
         console.error("Product fetching error:", error);
       } finally {
@@ -142,26 +68,54 @@ const ProductGrid = () => {
       />
 
       {loading ? (
-        <p className="mt-8 text-center">Loading...</p>
-      ) : (
-        <div className="my-10 grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-5">
-          {products.map((product) => (
-            <div key={product._id} className="border rounded-xl p-2 bg-white">
-              <div className="relative h-54 w-full overflow-hidden rounded-lg">
-                <Image
-                  src={product.images?.[0] || "/placeholder.jpg"}
-                  alt={product.name}
-                  fill
-                  // className="rounded-lg object-cover"
-                  className="h-64 w-full object-cover transition-transform duration-300 hover:scale-110"
-                />
-              </div>
-              <p className="text-sm text-gray-400 mt-3">{product.category?.title || product.category}</p>
-              <h2 className="font-semibold truncate">{product.name}</h2>
-              <p className="font-bold mt-2">${product.price ?? "-"}</p>
-            </div>
-          ))}
+        <div className="flex flex-col items-center justify-center py-10 min-h-80 bg-gray-100 w-full my-10">
+          <div className="flex items-center space-x-2 text-green-600">
+            <Loader2 className="w-5 h-5 animate-spin" />
+            <span>Products are loading...</span>
+          </div>
         </div>
+      ) : products?.length ? (
+        <div className="my-10 grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-5">
+          <AnimatePresence mode="popLayout">
+            {products.map((product) => (
+              <motion.div
+                key={product?._id}
+                layout
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.2 }}
+                className="border rounded-xl p-2 bg-white shadow-sm hover:shadow-md transition-shadow"
+              >
+                <div className="relative h-56 w-full overflow-hidden rounded-lg bg-gray-100">
+                  <Image
+                    src={product.images?.[0] || "/banner1.png"}
+                    alt={product.name}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 20vw"
+                    className="object-cover transition-transform duration-300 hover:scale-110"
+                  />
+                </div>
+
+                <p className="mt-3 text-sm text-gray-400">
+                  {typeof product.category === "object"
+                    ? product.category?.title
+                    : product.category}
+                </p>
+
+                <h2 className="font-semibold truncate">
+                  {product.name}
+                </h2>
+
+                <p className="mt-2 font-bold">
+                  ${product.price ?? "-"}
+                </p>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>
+      ) : (
+        <NoProductAvailable selectedTab={selectedTab} />
       )}
     </>
   );

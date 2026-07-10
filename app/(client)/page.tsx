@@ -1,16 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
-import { products } from "@/components/productArray";
-import Banner1 from "@/public/banner1..png"
+import Banner1 from "@/public/banner1..png";
 import { Title } from "@/components/ui/text";
 import ProductGrid from "@/components/productGrid";
-// import { products } from "@/components/productArray";
-
-
-
 
 export default function Home() {
-  const featuredProducts = products.slice(0, 5);
 
   return (
     <main className="px-6 md:px-8 lg:px-30">
@@ -33,7 +27,7 @@ export default function Home() {
       {/* Categories */}
 
       <section className="mt-10">
-        <ProductGrid products={products.slice(0, 5)} />
+        <ProductGrid />
       </section>
     </main>
   );
