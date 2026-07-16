@@ -1,34 +1,3 @@
-// import mongoose from "mongoose";
-
-// const DatabaseConnection = async () => {
-//   try {
-//     await mongoose.connect(process.env.MONGO_URI);
-
-//     console.log("MongoDB Connected");
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-// export default DatabaseConnection;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import mongoose from "mongoose";
 
 const MONGO_URI = process.env.MONGO_URI || process.env.MONGODB_URL;
@@ -38,6 +7,9 @@ if (!MONGO_URI) {
 }
 
 const mongoUri = MONGO_URI;
+const globalForMongoose = globalThis as typeof globalThis & {
+  mongooseConnection?: Promise<typeof mongoose> | null;
+};
 
 const DatabaseConnection = async (): Promise<void> => {
   if (mongoose.connection.readyState >= 1) {
@@ -45,11 +17,26 @@ const DatabaseConnection = async (): Promise<void> => {
   }
 
   try {
-    await mongoose.connect(mongoUri);
-    console.log("MongoDB Connected");
+    if (!globalForMongoose.mongooseConnection) {
+      globalForMongoose.mongooseConnection = mongoose.connect(mongoUri, {
+        serverSelectionTimeoutMS: 10000,
+        connectTimeoutMS: 10000,
+      });
+    }
+
+    await globalForMongoose.mongooseConnection;
+
+    if (process.env.NODE_ENV === "development") {
+      const safeUri = new URL(mongoUri);
+      console.log(
+        `MongoDB connected: host=${safeUri.hostname} db=${safeUri.pathname.replace("/", "") || "(default)"}`
+      );
+    }
   } catch (error) {
-    console.error("MongoDB connection failed:", error);
-    process.exit(1);
+    const message = error instanceof Error ? error.message : String(error);
+    console.error("MongoDB connection failed:", message);
+    globalForMongoose.mongooseConnection = null;
+    throw error;
   }
 };
 

@@ -38,7 +38,7 @@ const ProductGrid = () => {
 
       try {
        
-        const apiUrl = "http://localhost:5000/api/products?tab=" + encodeURIComponent(selectedTab);
+        const apiUrl = "/api/products?tab=" + encodeURIComponent(selectedTab);
         console.log("Fetching products from:", apiUrl);
         const res = await fetch(apiUrl);
 
