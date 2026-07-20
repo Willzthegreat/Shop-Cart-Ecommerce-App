@@ -46,6 +46,13 @@ export async function seedProducts() {
         strict: true,
       });
 
+    const code =
+      (item as { code?: string }).code ||
+      slugify(item.name, {
+        lower: true,
+        strict: true,
+      });
+
     const existing = await Product.findOne({ slug });
 
     if (existing) {
@@ -55,6 +62,7 @@ export async function seedProducts() {
           $set: {
             name: item.name,
             slug,
+            code,
             description: item.description,
             images: item.image,
             price: item.price,
@@ -71,6 +79,7 @@ export async function seedProducts() {
     await Product.create({
       name: item.name,
       slug,
+      code,
       description: item.description,
       images: item.image,
       price: item.price,

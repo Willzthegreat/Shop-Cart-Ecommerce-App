@@ -1,44 +1,145 @@
-// import Image from "next/image";
+"use client";
 
-// interface ProductProps {
-//   name: string;
-//   description: string;
-//   price: number;
-//   category: string;
-//   image: any[];
-// }
+import Image from "next/image";
+import Link from "next/link";
+import { FlameIcon, ShoppingCart } from "lucide-react";
+// import { Eye, FlameIcon, Heart, ShoppingCart } from "lucide-react";
+import { Product } from "@/types/product";
+import AddToWish from "./addToWishlist";
 
-// export default function ProductCard({
-//   name,
-//   price,
-//   category,
-//   image,
-// }: ProductProps) {
-//   return (
-//     <div className="border rounded-xl p-4 bg-white group overflow-hidden">
-//       <Image
-//         src={image[0]}
-//         alt={name}
-//         width={250}
-//         height={250}
-//         className="h-52 w-full hover:cursor-pointer object-cover transition-transform duration-500 group-hover:scale-110"
-//       />
-//       <p className="text-sm text-gray-400 mt-3">{category}</p>
-//       <h2 className="font-semibold truncate">{name}</h2>
-//       <p className="font-bold mt-2">${price}</p>
-//       <button
-//         className="
-//         mt-4
-//         bg-[#064e3b]
-//         text-white
-//         px-5
-//         py-2
-//         rounded-lg
-//         w-full
-//         "
-//       >
-//         Add to Cart
-//       </button>
-//     </div>
-//   );
-// }
+interface ProductCardProps {
+  product: Product;
+}
+
+export default function ProductCard({ product }: ProductCardProps) {
+  if (!product) return null;
+
+  const image =
+    product.images && product.images.length > 0
+      ? product.images[0]
+      : "/products/product-placeholder.png";
+
+  const discount =
+    product.originalPrice && product.originalPrice > product.price
+      ? Math.round(
+          ((product.originalPrice - product.price) / product.originalPrice) *
+            100,
+        )
+      : 0;
+
+  const categoryName =
+    typeof product.category === "string"
+      ? product.category
+      : product.category?.title || "General";
+
+  const brandName =
+    typeof product.brand === "string"
+      ? product.brand
+      : product.brand?.title || "";
+
+  return (
+    <div className="group overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+      {/* Image */}
+      <div className="relative aspect-square overflow-hidden bg-gray-100">
+        <Link href={`/product/${product.slug}`}>
+          <Image
+            src={image}
+            alt={product.name}
+            fill
+            sizes="(max-width:768px)100vw,(max-width:1200px)50vw,25vw"
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        </Link>
+        <div className="flex justify-around px-2">
+          <div>
+            {product.status === "sale" && (
+              <span className="absolute left-3 top-3 rounded-full bg-shop-light-green hover:cursor-pointer hover:border group-hover:border-shop-light-green hoverEffect hover:bg-white hover:text-shop-light-green border px-3 py-1 text-xs font-semibold text-white">
+                SALE
+              </span>
+            )}
+
+            {product.status === "new" && (
+              <Link href={"/new"} className="absolute left-3 top-3 rounded-full bg-shop-light-green
+              hover:cursor-pointer hover:border group-hover:border-shop-light-green hoverEffect hover:bg-white hover:text-shop-light-green border px-3 py-1 text-xs font-semibold text-white">
+                <FlameIcon size={14} />
+              </Link>
+            )}
+
+            {discount > 0 && (
+              <span className="absolute right-3 top-3 rounded-full bg-black px-3 py-1 text-xs font-semibold text-white">
+                -{discount}%
+              </span>
+            )}
+          </div>
+          <div>
+            <AddToWish product={product} />
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        {/* <div className="absolute right-3 top-1/2 flex -translate-y-1/2 translate-x-14 flex-col gap-2 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100">
+          <button className="rounded-full bg-white p-2 shadow hover:border border hover:border-shop-light-green  hover:bg-gray-100">
+            <Heart size={18} />
+          </button>
+
+          <button className="rounded-full bg-white p-2 shadow hover:border border hover:border-shop-light-green hover:bg-gray-100">
+            <Eye size={18} />
+          </button>
+        </div> */}
+
+        {/* Add to Cart */}
+       <div className="absolute bottom-0 left-0 w-full translate-y-full transition-all duration-300 group-hover:translate-y-0">
+          <button className="flex w-full items-center justify-center gap-2 bg-shop-light-green py-3 text-sm font-medium text-white hover:bg-shop-dark-green">
+            <ShoppingCart size={18} />
+            Add to Cart
+          </button>
+        </div>
+      </div>
+
+      {/* Details */}
+      <div className="space-y-3 p-4">
+        <p className="text-xs uppercase tracking-wide text-gray-500">
+          {categoryName}
+        </p>
+
+        <Link href={`/product/${product.slug}`}>
+          <h2 className="line-clamp-2 text-base font-semibold hover:text-green-600">
+            {product.name}
+          </h2>
+        </Link>
+
+        {brandName && (
+          <p className="text-sm text-gray-500">{brandName}</p>
+        )}
+
+        {product.code && (
+          <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
+            Code: {product.code}
+          </p>
+        )}
+
+        <div className="flex items-center gap-3">
+          <span className="text-xl font-bold text-green-700">
+            ${product.price.toLocaleString()}
+          </span>
+
+          {product.originalPrice && (
+            <span className="text-sm text-gray-400 line-through">
+              ${product.originalPrice.toLocaleString()}
+            </span>
+          )}
+        </div>
+
+        <p
+          className={`text-sm ${
+            (product.stock ?? 0) > 0 ? "text-green-600" : "text-red-600"
+          }`}
+        >
+          {(product.stock ?? 0) > 0
+            ? `${product.stock} In Stock`
+            : "Out of Stock"}
+        </p>
+      </div>
+    </div>
+  );
+}

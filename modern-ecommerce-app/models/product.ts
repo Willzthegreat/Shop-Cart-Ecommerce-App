@@ -4,6 +4,7 @@ import slugify from "slugify";
 export interface IProduct extends Document {
   name: string;
   slug: string;
+  code?: string;
   description: string;
   images: string[];
   price: number;
@@ -27,6 +28,14 @@ const ProductSchema = new Schema<IProduct>(
     slug: {
       type: String,
       unique: true,
+      lowercase: true,
+      trim: true,
+    },
+
+    code: {
+      type: String,
+      unique: true,
+      sparse: true,
       lowercase: true,
       trim: true,
     },

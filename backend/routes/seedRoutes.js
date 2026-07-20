@@ -57,6 +57,14 @@ router.post("/", async (req, res) => {
           strict: true,
         });
 
+      const code =
+        item.code ||
+        slugify(item.name, {
+          lower: true,
+
+          strict: true,
+        });
+
       const existing = await Product.findOne({
         slug,
       });
@@ -73,6 +81,7 @@ router.post("/", async (req, res) => {
               description: item.description,
               images: item.images,
               price: item.price,
+              code,
               category: category._id,
               brand: brand._id,
             },
@@ -85,6 +94,8 @@ router.post("/", async (req, res) => {
           name: item.name,
 
           slug,
+
+          code,
 
           description: item.description,
 

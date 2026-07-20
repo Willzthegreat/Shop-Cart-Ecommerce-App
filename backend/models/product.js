@@ -16,6 +16,14 @@ const ProductSchema = new mongoose.Schema(
       trim: true,
     },
 
+    code: {
+      type: String,
+      unique: true,
+      sparse: true,
+      lowercase: true,
+      trim: true,
+    },
+
     description: {
       type: String,
       default: "",

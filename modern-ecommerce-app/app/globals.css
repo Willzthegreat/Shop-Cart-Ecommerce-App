@@ -9,15 +9,15 @@
   --font-poppins: "Poppins", "sans-serif";
   --color-shop-light-pink: #fcf0e4;
   --color-shop-dark-green: #063c28;
+  --color-shop-light-green: #3b9c3c;
   --color-shop-btn-dark-green: #063d29;
   --color-shop-light-bg: #f6f6f6;
-  --color-shop-light-green: #3b9c3c;
   --color-shop-orange: #fb6c08;
   --color-dark-color: #151515;
   --color-light-Color: #52525b;
   --lightOrange: #fca99b;
   --lightGreen: #3b9c3c;
- 
+  --color-darkBlue: #6c7fd8;
 }
 
 @theme inline {
