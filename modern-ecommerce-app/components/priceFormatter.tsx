@@ -4,7 +4,7 @@
 
  
  interface Props {
-    amount: number | underfined;
+    amount: number | undefined;
     className?: string;
  }
 

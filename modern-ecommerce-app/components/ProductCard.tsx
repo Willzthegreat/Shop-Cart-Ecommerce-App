@@ -20,13 +20,10 @@ export default function ProductCard({ product }: ProductCardProps) {
       ? product.images[0]
       : "/products/product-placeholder.png";
 
-  const discount =
-    product.originalPrice && product.originalPrice > product.price
-      ? Math.round(
-          ((product.originalPrice - product.price) / product.originalPrice) *
-            100,
-        )
-      : 0;
+  // `price`, `discount`, and `stock` are returned directly from MongoDB.
+  // The discount is stored as a percentage, so do not derive it from the
+  // optional `originalPrice` field.
+  const discount = Math.max(0, Number(product.discount ?? 0));
 
   const categoryName =
     typeof product.category === "string"
@@ -110,21 +107,13 @@ export default function ProductCard({ product }: ProductCardProps) {
         )}
 
         <div className="flex items-center gap-3">
-          {/* <span className="text-xl font-bold text-green-700">
-            ${product.price.toLocaleString()}
-          </span>
-
-          {product.originalPrice && (
-            <span className="text-sm text-gray-400 line-through">
-              ${product.originalPrice.toLocaleString()}
-            </span>
-          )} */}
-
-          <PriceView 
-            price={product?.price}
-            discount={product?.discount}
-            className="text-sm"
-          />
+          <div className="flex items-center gap-3">
+            <PriceView
+              price={product.price}
+              discount={discount}
+              className="text-shop-dark-green text-medium font-semibold"
+            />
+          </div>
         </div>
         <div className="flex items-center ">
           <div className="flex items-center gap-1 ">
@@ -144,10 +133,9 @@ export default function ProductCard({ product }: ProductCardProps) {
             (product.stock ?? 0) > 0 ? "text-green-600" : "text-red-600"
           }`}
         >
-          {(product?.stock as number) > 0
-            ? `In Stock ${product?.stock} `
-            : "Out of Stock"}
-          
+          {(product.stock ?? 0) > 0
+            ? `In Stock: ${product.stock}`
+            : "Out of Stock (0)"}
         </p>
       </div>
     </div>
