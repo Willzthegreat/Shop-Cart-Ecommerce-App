@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import Banner1 from "@/public/banner1..png";
+import Banner1 from "@/public/banner1.png";
 import { Title } from "@/components/ui/text";
 import ProductGrid from "@/components/productGrid";
 
