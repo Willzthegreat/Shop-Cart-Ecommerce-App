@@ -11,6 +11,7 @@ export interface Brand {
 }
 
 export interface Product {
+  discount: number | undefined;
   code: import("react").JSX.Element;
   _id: string;
   name: string;

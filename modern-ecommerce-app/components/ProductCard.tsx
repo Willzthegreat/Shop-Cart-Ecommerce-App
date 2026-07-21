@@ -6,6 +6,7 @@ import { FlameIcon, ShoppingCart, StarIcon } from "lucide-react";
 // import { Eye, FlameIcon, Heart, ShoppingCart } from "lucide-react";
 import { Product } from "@/types/product";
 import AddToWish from "./addToWishlist";
+import PriceView from "./priceView";
 
 interface ProductCardProps {
   product: Product;
@@ -109,7 +110,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         )}
 
         <div className="flex items-center gap-3">
-          <span className="text-xl font-bold text-green-700">
+          {/* <span className="text-xl font-bold text-green-700">
             ${product.price.toLocaleString()}
           </span>
 
@@ -117,7 +118,13 @@ export default function ProductCard({ product }: ProductCardProps) {
             <span className="text-sm text-gray-400 line-through">
               ${product.originalPrice.toLocaleString()}
             </span>
-          )}
+          )} */}
+
+          <PriceView 
+            price={product?.price}
+            discount={product?.discount}
+            className="text-sm"
+          />
         </div>
         <div className="flex items-center ">
           <div className="flex items-center gap-1 ">
@@ -137,9 +144,10 @@ export default function ProductCard({ product }: ProductCardProps) {
             (product.stock ?? 0) > 0 ? "text-green-600" : "text-red-600"
           }`}
         >
-          {(product.stock ?? 0) > 0
-            ? `${product.stock} In Stock`
+          {(product?.stock as number) > 0
+            ? `In Stock ${product?.stock} `
             : "Out of Stock"}
+          
         </p>
       </div>
     </div>
