@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { FlameIcon, ShoppingCart } from "lucide-react";
+import { FlameIcon, ShoppingCart, StarIcon } from "lucide-react";
 // import { Eye, FlameIcon, Heart, ShoppingCart } from "lucide-react";
 import { Product } from "@/types/product";
 import AddToWish from "./addToWishlist";
@@ -74,25 +74,8 @@ export default function ProductCard({ product }: ProductCardProps) {
           <div>
             <AddToWish product={product} />
           </div>
-          <div className="p-3">
-            {product?.category &&  (
-              <p>{product?.category?.map((cat) => cat).join(", ")}</p>
-            )}
-          </div>
-
         </div>
-
-
-        {/* Action Buttons */}
-        {/* <div className="absolute right-3 top-1/2 flex -translate-y-1/2 translate-x-14 flex-col gap-2 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100">
-          <button className="rounded-full bg-white p-2 shadow hover:border border hover:border-shop-light-green  hover:bg-gray-100">
-            <Heart size={18} />
-          </button>
-
-          <button className="rounded-full bg-white p-2 shadow hover:border border hover:border-shop-light-green hover:bg-gray-100">
-            <Eye size={18} />
-          </button>
-        </div> */}
+        
 
         {/* Add to Cart */}
        <div className="absolute bottom-0 left-0 w-full translate-y-full transition-all duration-300 group-hover:translate-y-0">
@@ -110,7 +93,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         </p>
 
         <Link href={`/product/${product.slug}`}>
-          <h2 className="line-clamp-2 text-base font-semibold hover:text-green-600">
+          <h2 className="line-clamp-1 text-base font-semibold hover:text-green-600">
             {product.name}
           </h2>
         </Link>
@@ -135,6 +118,18 @@ export default function ProductCard({ product }: ProductCardProps) {
               ${product.originalPrice.toLocaleString()}
             </span>
           )}
+        </div>
+        <div className="flex items-center ">
+          <div className="flex items-center gap-1 ">
+            {[...Array(5)].map((_, index) => (
+              <StarIcon  key={index} size={12} className={
+                index < 4 
+                ? "text-shop-lighter-green" 
+                : "text-shopLighterText"
+              } />
+            ))}
+          </div>
+          <p className="text-shopLightText text-[10px] pt-1 px-2 tracking-wide">5 Reviews</p>
         </div>
 
         <p
