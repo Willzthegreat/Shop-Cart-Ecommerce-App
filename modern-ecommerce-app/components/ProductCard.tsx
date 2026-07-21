@@ -74,7 +74,14 @@ export default function ProductCard({ product }: ProductCardProps) {
           <div>
             <AddToWish product={product} />
           </div>
+          <div className="p-3">
+            {product?.category &&  (
+              <p>{product?.category?.map((cat) => cat).join(", ")}</p>
+            )}
+          </div>
+
         </div>
+
 
         {/* Action Buttons */}
         {/* <div className="absolute right-3 top-1/2 flex -translate-y-1/2 translate-x-14 flex-col gap-2 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100">
