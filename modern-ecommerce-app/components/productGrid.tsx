@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import HomeTabBar from "./homeTabBar";
-import Image from "next/image";
 import { productType } from "@/constants/data";
 import { Loader2 } from "lucide-react";
 import NoProductAvailable from "./noProductAvailable";
