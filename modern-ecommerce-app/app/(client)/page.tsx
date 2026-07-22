@@ -3,6 +3,7 @@ import Image from "next/image";
 import Banner1 from "@/public/banner1.png";
 import { Title } from "@/components/ui/text";
 import ProductGrid from "@/components/productGrid";
+import HomeCategories from "@/components/homeCategories";
 
 export default function Home() {
 
@@ -28,6 +29,7 @@ export default function Home() {
 
       <section className="mt-10">
         <ProductGrid />
+        <HomeCategories  />
       </section>
     </main>
   );

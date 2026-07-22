@@ -7,6 +7,7 @@ import { FlameIcon, ShoppingCart, StarIcon } from "lucide-react";
 import { Product } from "@/types/product";
 import AddToWish from "./addToWishlist";
 import PriceView from "./priceView";
+import AddToCartButton from "./addToCart";
 
 interface ProductCardProps {
   product: Product;
@@ -77,10 +78,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Add to Cart */}
        <div className="absolute bottom-0 left-0 w-full translate-y-full transition-all duration-300 group-hover:translate-y-0">
-          <button className="flex w-full items-center justify-center gap-2 bg-shop-light-green py-3 text-sm font-medium text-white hover:bg-shop-dark-green">
-            <ShoppingCart size={18} />
-            Add to Cart
-          </button>
+            <AddToCartButton product={undefined} />
         </div>
       </div>
 
@@ -119,8 +117,8 @@ export default function ProductCard({ product }: ProductCardProps) {
           <div className="flex items-center gap-1 ">
             {[...Array(5)].map((_, index) => (
               <StarIcon  key={index} size={12} className={
-                index < 4 
-                ? "text-shop-lighter-green" 
+                index < 4
+                ? "text-shop-lighter-green"
                 : "text-shopLighterText"
               } />
             ))}
@@ -137,6 +135,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             ? `In Stock: ${product.stock}`
             : "Out of Stock (0)"}
         </p>
+        
       </div>
     </div>
   );

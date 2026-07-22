@@ -66,11 +66,10 @@ import UserAvatar from "./userAvatar";
 
 const Navbar = async () => {
 
-  // You can fetch server data here
-  // const user = await getUser();
+  
 
   return (
-    <header className="bg-white py-5 border-b border-b-black/20">
+    <header className="bg-white/70 backdrop-blur-md py-5 sticky top-0 z-50 border-b border-b-black/20">
       <Container className="flex items-center justify-between text-lightColor">
 
         {/* Logo */}
@@ -89,17 +88,7 @@ const Navbar = async () => {
           <SearchBar />
           <CartIcon />
           <FavoriteButton  />
-          {/* User profile Avatar Icon & Log out link */}
-        {/* 
-          if(User){
-           Console.log( "Stay Logged in")
-          } else {
-            Console.log(" ")
-          } 
-        */}
-
           <UserAvatar/>
-          {/* <SignUpButton /> */}
         </div>
 
       </Container>
