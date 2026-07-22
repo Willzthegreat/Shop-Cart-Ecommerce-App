@@ -4,8 +4,13 @@ import Banner1 from "@/public/banner1.png";
 import { Title } from "@/components/ui/text";
 import ProductGrid from "@/components/productGrid";
 import HomeCategories from "@/components/homeCategories";
+import { getCategories } from "@/queries";
 
-export default function Home() {
+const Home = async() => {
+  
+  const categories = await getCategories({ quantity: 10 });
+  
+  console.log(categories);
 
   return (
     <main className="px-6 md:px-8 lg:px-30">
@@ -29,9 +34,11 @@ export default function Home() {
 
       <section className="mt-10">
         <ProductGrid />
-        <HomeCategories  />
+        <HomeCategories categories={categories} />
       </section>
     </main>
   );
 }
 
+
+export default Home;

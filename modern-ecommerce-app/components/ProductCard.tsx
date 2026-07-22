@@ -78,7 +78,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Add to Cart */}
        <div className="absolute bottom-0 left-0 w-full translate-y-full transition-all duration-300 group-hover:translate-y-0">
-            <AddToCartButton product={undefined} />
+            <AddToCartButton product={product} />
         </div>
       </div>
 

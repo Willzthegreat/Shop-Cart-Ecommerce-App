@@ -2,6 +2,8 @@ export interface Category {
   _id: string;
   title: string;
   slug: string;
+  image?: string;
+  productCount?: number;
 }
 
 export interface Brand {
