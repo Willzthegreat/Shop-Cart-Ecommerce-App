@@ -24,11 +24,14 @@ const ProductGrid = () => {
         console.log("Fetching products from:", apiUrl);
         const res = await fetch(apiUrl);
 
-        if (!res.ok) {
-          throw new Error("Failed to fetch products");
-        }
+      if (!res.ok) {
 
-        console.log(res);
+        console.log(res);        const error = await res.text();
+          console.error("API Status:", res.status);
+          console.error("API Error:", error);
+
+          throw new Error(`Failed to fetch products (${res.status})`);
+        }
 
         const json = await res.json();
         console.log("JSON Response:", json);

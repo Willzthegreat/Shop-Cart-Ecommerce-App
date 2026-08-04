@@ -22,6 +22,7 @@
   --color-shopLighterBg: #f1f3f8;
   --color-shopLightText: #686e7d;
   --color-shopLighterText: #ababab;
+  --color-deal-bg: #f1f3f8;
 }
 
 @theme inline {

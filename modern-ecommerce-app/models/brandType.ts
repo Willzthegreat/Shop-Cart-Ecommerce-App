@@ -4,6 +4,7 @@ import slugify from "slugify";
 export interface IBrand extends Document {
   title: string;
   slug: string;
+  logo?: string;
 }
 
 const BrandSchema = new Schema<IBrand>(
@@ -21,6 +22,10 @@ const BrandSchema = new Schema<IBrand>(
       trim: true,
       unique: true,
       lowercase: true,
+    },
+    logo: {
+      type: String,
+      default: "",
     },
   },
   {

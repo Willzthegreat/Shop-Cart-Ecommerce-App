@@ -1,40 +1,3 @@
-// import React from 'react'
-// import { Title } from './ui/text';
-
-
-// const HomeCategories = ({categories}:{categories: Category[]}) => {
-//   return (
-//     <>
-//       <div className='bg-white border border-shop-light-green/20 my-10 md:my-20 p-5 lg:p-7 rounded-md'>
-//         <Title  className="border-b pb-3">Popular Categories</Title>
-//         <div>
-//           {categories?.map((category) => <div
-//           key={category?._id} >
-//             {category?.image && (
-//               <Image
-//                 src={urlFor(category?.image).url()}
-//                 alt={categoryImage}
-//                 width={500}
-//                 height={500}
-//                 className="w-full h-full object-contain group-hover:scale-110 hoverEffect"
-//             )}
-            
-//           </div>)}
-
-//         </div>
-//       </div>
-//     </>
-//   )
-// }
-
-// export default HomeCategories;
-
-
-
-
-
-
-
 "use client";
 
 import Image from "next/image";
@@ -67,25 +30,26 @@ const HomeCategories = ({ categories }: HomeCategoriesProps) => {
           <Link
             key={category._id}
             href={`/category/${category.slug}`}
-            className="group flex flex-col items-center rounded-lg border p-4 transition hover:shadow-md"
+            className="group flex  items-center rounded-lg border p-4 transition hover:shadow-md"
           >
             <Image
               src={category.image || categoryImages[category.slug] || "/products/iphone-17-pro1.jpg"}
               alt={`${category.title} category`}
               width={96}
               height={96}
-              className="h-20 w-20 object-contain transition-transform duration-300 group-hover:scale-110"
+              className="h-20 w-20 object-contain border rounded-sm mr-2 transition-transform duration-300 group-hover:scale-110"
             />
+            <div className="space-y-1">
+              <h3 className="mt-3 text-sm  text-center md:text-start font-medium">
+                {category.title}
+              </h3>
 
-            <h3 className="mt-3 text-center font-medium">
-              {category.title}
-            </h3>
-
-            {category.productCount !== undefined && (
-              <p className="text-sm text-gray-500">
-                {category.productCount} Products
-              </p>
-            )}
+              {category.productCount !== undefined && (
+                <p className="text-[10px] md:text-start text-shop-dark-green">
+                  {category.productCount} Products Available
+                </p>
+              )}
+            </div>
           </Link>
         ))}
       </div>

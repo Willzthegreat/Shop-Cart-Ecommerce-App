@@ -33,6 +33,7 @@ async function seedProducts() {
       brand = await Brand.create({
         title: brandName,
         slug: slugify(brandName, { lower: true, strict: true }),
+        logo: "",
       });
     }
 

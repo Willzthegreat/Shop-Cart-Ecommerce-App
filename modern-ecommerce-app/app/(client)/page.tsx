@@ -4,13 +4,18 @@ import Banner1 from "@/public/banner1.png";
 import { Title } from "@/components/ui/text";
 import ProductGrid from "@/components/productGrid";
 import HomeCategories from "@/components/homeCategories";
-import { getCategories } from "@/queries";
+import { getCategories, getAllBrands } from "@/queries";
+import ShopByBrands from "@/components/shopByBrands";
+import LatestBlog from "@/components/latestBlog";
+
+export const dynamic = "force-dynamic";
 
 const Home = async() => {
   
   const categories = await getCategories({ quantity: 10 });
+  const brands = await getAllBrands();
   
-  console.log(categories);
+  
 
   return (
     <main className="px-6 md:px-8 lg:px-30">
@@ -35,6 +40,8 @@ const Home = async() => {
       <section className="mt-10">
         <ProductGrid />
         <HomeCategories categories={categories} />
+        <ShopByBrands brands={brands} />
+        <LatestBlog  />
       </section>
     </main>
   );

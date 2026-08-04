@@ -36,6 +36,7 @@ export async function seedProducts() {
       brand = await Brand.create({
         title: brandTitle,
         slug: slugify(brandTitle, { lower: true, strict: true }),
+        logo: "",
       });
     }
 

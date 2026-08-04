@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FlameIcon, ShoppingCart, StarIcon } from "lucide-react";
-// import { Eye, FlameIcon, Heart, ShoppingCart } from "lucide-react";
 import { Product } from "@/types/product";
 import AddToWish from "./addToWishlist";
 import PriceView from "./priceView";
@@ -40,7 +39,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     <div className="group overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
       {/* Image */}
       <div className="relative aspect-square overflow-hidden bg-gray-100">
-        <Link href={`/product/${product.slug}`}>
+        <Link href={`/product/${product.slug}`} className="relative block h-full w-full">
           <Image
             src={image}
             alt={product.name}
@@ -88,7 +87,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           {categoryName}
         </p>
 
-        <Link href={`/product/${product.slug}`}>
+        <Link href={`/product/${product.slug}`} className="relative block h-full w-full">
           <h2 className="line-clamp-1 text-base font-semibold hover:text-green-600">
             {product.name}
           </h2>
