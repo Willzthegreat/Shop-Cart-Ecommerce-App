@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { FlameIcon, ShoppingCart, StarIcon } from "lucide-react";
+import { FlameIcon, StarIcon } from "lucide-react";
 import { Product } from "@/types/product";
 import AddToWish from "./addToWishlist";
 import PriceView from "./priceView";
@@ -20,9 +20,6 @@ export default function ProductCard({ product }: ProductCardProps) {
       ? product.images[0]
       : "/products/product-placeholder.png";
 
-  // `price`, `discount`, and `stock` are returned directly from MongoDB.
-  // The discount is stored as a percentage, so do not derive it from the
-  // optional `originalPrice` field.
   const discount = Math.max(0, Number(product.discount ?? 0));
 
   const categoryName =

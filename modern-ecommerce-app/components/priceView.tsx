@@ -37,28 +37,30 @@ import PriceFormatter from "./priceFormatter";
 
 interface Props {
   price: number | undefined;
-  discount: number | undefined;
+  discount?: number;
   className?: string;
 }
 
 const PriceView = ({ price, discount = 0, className = "" }: Props) => {
-  if (price === undefined) return null;
+  if (price === undefined || !Number.isFinite(Number(price))) return null;
 
-  // Calculate original price
-  // The database price is the current price. Reconstruct the crossed-out
-  // price from the stored percentage discount.
-  const originalPrice = discount > 0 ? price * (1 + discount / 100) : null;
+  const regularPrice = Number(price);
+  const discountPercent = Math.min(100, Math.max(0, Number(discount) || 0));
+  const hasDiscount = discountPercent > 0;
+  const discountedPrice = hasDiscount
+    ? Math.round(regularPrice * (1 - discountPercent / 100) * 100) / 100
+    : regularPrice;
 
   return (
     <div className="flex items-center gap-3">
       <PriceFormatter
-        amount={price}
+        amount={discountedPrice}
         className={className || "text-shop-dark-green text-lg font-semibold"}
       />
 
-      {originalPrice && (
+      {hasDiscount && (
         <PriceFormatter
-          amount={Math.round(originalPrice * 100) / 100}
+          amount={regularPrice}
           className="text-sm font-medium line-through text-shopLightText"
         />
       )}

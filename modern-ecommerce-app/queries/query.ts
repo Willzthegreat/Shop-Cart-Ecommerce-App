@@ -12,7 +12,9 @@ const getAllBrands = async (
   try {
     await dbConnect();
 
-    const query = Brand.find({}).sort({ title: 1 });
+    const query = Brand.find({}).sort({
+      title: 1,
+    });
 
     if (quantity && quantity > 0) {
       query.limit(quantity);
@@ -48,8 +50,7 @@ const getLatestBlogs = async (
       query.limit(quantity);
     }
 
-    const blogs = await query
-      .lean();
+    const blogs = await query.lean();
 
     return blogs.map((blog) => ({
       ...blog,
@@ -110,8 +111,79 @@ const getDealProducts = async (
   }
 };
 
+/**
+ * Get product by slug
+ */
+const getProductBySlug = async (slug: string) => {
+  try {
+    await dbConnect();
+
+    const product = await Product.findOne({
+      slug,
+    })
+      .populate("category", "title slug")
+      .populate("brand", "title slug image")
+      .lean();
+
+    if (!product) {
+      return null;
+    }
+
+    return {
+      ...product,
+
+      _id: product._id.toString(),
+
+      category: product.category
+        ? {
+            ...product.category,
+            _id: product.category._id.toString(),
+          }
+        : null,
+
+      brand: product.brand
+        ? {
+            ...product.brand,
+            _id: product.brand._id.toString(),
+          }
+        : null,
+    };
+  } catch (error) {
+    console.error("Error fetching product by slug:", error);
+    return null;
+  }
+};
+
+/**
+ * Get brand by slug
+ */
+const getBrand = async (slug: string) => {
+  try {
+    await dbConnect();
+
+    const brand = await Brand.findOne({
+      slug,
+    }).lean();
+
+    if (!brand) {
+      return null;
+    }
+
+    return {
+      ...brand,
+      _id: brand._id.toString(),
+    };
+  } catch (error) {
+    console.error("Error fetching brand:", error);
+    return null;
+  }
+};
+
 export {
   getAllBrands,
   getLatestBlogs,
   getDealProducts,
+  getProductBySlug,
+  getBrand,
 };
+

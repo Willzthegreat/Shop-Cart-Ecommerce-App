@@ -24,6 +24,7 @@ export interface Product {
   originalPrice?: number;
 
   images: string[];
+  variants?: string[];
 
   category?: string | Category;
   brand?: string | Brand;

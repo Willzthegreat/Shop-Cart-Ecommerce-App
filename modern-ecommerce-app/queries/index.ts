@@ -82,8 +82,6 @@ const getLatestBlogs = async (
   try {
     await DatabaseConnection();
 
-    // Latest Blog is a storefront listing, so include existing published
-    // documents as well as newer documents marked isLatest.
     const query = Blog.find({}).sort({
       publishedAt: -1,
       createdAt: -1,
@@ -100,12 +98,15 @@ const getLatestBlogs = async (
     return blogs.map((blog) => ({
       ...blog,
       _id: blog._id.toString(),
-      // BlogCategory is not currently registered or managed by the dashboard.
-      // Keep the response safe until blog-category management is added.
+
       blogCategories: [],
+
       author: blog.author
         ? typeof blog.author === "object"
-          ? { ...blog.author, _id: blog.author._id.toString() }
+          ? {
+              ...blog.author,
+              _id: blog.author._id.toString(),
+            }
           : blog.author.toString()
         : null,
     }));
@@ -118,7 +119,7 @@ const getLatestBlogs = async (
 /**
  * Get deal products
  *
- * Gets active products with a discount greater than 0.
+ * Gets products with a discount greater than 0.
  */
 const getDealProducts = async (
   { quantity }: { quantity?: number } = {}
@@ -169,9 +170,80 @@ const getDealProducts = async (
   }
 };
 
+/**
+ * Get product by slug
+ */
+const getProductBySlug = async (slug: string) => {
+  try {
+    await DatabaseConnection();
+
+    const product = await Product.findOne({
+      slug,
+    })
+      .populate("category", "title slug")
+      .populate("brand", "title slug image")
+      .lean();
+
+    if (!product) {
+      return null;
+    }
+
+    return {
+      ...product,
+
+      _id: product._id.toString(),
+
+      category: product.category
+        ? {
+            ...product.category,
+            _id: product.category._id.toString(),
+          }
+        : null,
+
+      brand: product.brand
+        ? {
+            ...product.brand,
+            _id: product.brand._id.toString(),
+          }
+        : null,
+    };
+  } catch (error) {
+    console.error("Error fetching product by slug:", error);
+    return null;
+  }
+};
+
+/**
+ * Get brand by slug
+ */
+const getBrand = async (slug: string) => {
+  try {
+    await DatabaseConnection();
+
+    const brand = await Brand.findOne({
+      slug,
+    }).lean();
+
+    if (!brand) {
+      return null;
+    }
+
+    return {
+      ...brand,
+      _id: brand._id.toString(),
+    };
+  } catch (error) {
+    console.error("Error fetching brand:", error);
+    return null;
+  }
+};
+
 export {
   getCategories,
   getAllBrands,
   getLatestBlogs,
   getDealProducts,
+  getProductBySlug,
+  getBrand,
 };
+

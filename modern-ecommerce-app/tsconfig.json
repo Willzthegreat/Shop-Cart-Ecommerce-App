@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "lib/mongodb/mongodb.ts"  ],
+, "lib/mongodb/mongodb.ts", "app/(client)/product/[slug]/page.tsx"  ],
   "exclude": ["node_modules"]
 }

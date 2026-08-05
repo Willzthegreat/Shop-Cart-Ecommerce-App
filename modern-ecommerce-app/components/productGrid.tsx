@@ -26,7 +26,8 @@ const ProductGrid = () => {
 
       if (!res.ok) {
 
-        console.log(res);        const error = await res.text();
+          console.log(res);        
+          const error = await res.text();
           console.error("API Status:", res.status);
           console.error("API Error:", error);
 
