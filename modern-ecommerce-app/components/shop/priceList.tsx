@@ -4,7 +4,7 @@ const PriceList = () => {
   return (
     <>
       <div>
-
+        Price List
       </div>
     </>
   )
