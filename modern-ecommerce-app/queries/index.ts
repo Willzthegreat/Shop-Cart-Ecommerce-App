@@ -3,6 +3,9 @@ import Category from "@/models/categoryType";
 import Product from "@/models/product";
 import Blog from "@/models/blogType";
 import Brand from "@/models/brandType";
+// Blog.author uses the Author model. Importing it here registers the model
+// before Mongoose tries to populate the author field below.
+import "@/models/authorType";
 
 /**
  * Get all categories
@@ -105,7 +108,7 @@ const getLatestBlogs = async (
         ? typeof blog.author === "object"
           ? {
               ...blog.author,
-              _id: blog.author._id.toString(),
+              _id: blog.author._id?.toString(),
             }
           : blog.author.toString()
         : null,

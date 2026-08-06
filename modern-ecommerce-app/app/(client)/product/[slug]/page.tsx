@@ -1,90 +1,3 @@
-// import AddToCartButton from "@/components/addToCart";
-// import Container from "@/components/container";
-// import FavoriteButton from "@/components/favoriteButton";
-// import ImageView from "@/components/imageView";
-// import PriceView from "@/components/priceView";
-// import { getProductBySlug } from "@/queries/query";
-// import { StarIcon } from "lucide-react";
-// import React from "react";
-
-// const SingleProductPage = async ({
-//   params,
-// }: {
-//   params: Promise<{ slug: string }>;
-// }) => {
-//   const { slug } = await params;
-//   const product = await getProductBySlug(slug);
-
-//   if (!product) {
-//     return <div>Product not found</div>;
-//   }
-
-//   return (
-//     <>
-//       <Container className="py-15 flex flex-col md:flex-row gap-10 pb-10">
-//         {product.images && product.images.length > 0 && (
-//           <ImageView
-//             images={product.images}
-//             isStock={product.stock}
-//           />
-//         )}
-
-//         <div className="w-full md:w-1/2 flex flex-col gap-5">
-//           <div className="space-y-5">
-//             <h2 className="text-3xl font-bold ">{product?.name}</h2>
-//             <p className="text-gray-600 tracking-wide ">
-//               {product?.description}
-//             </p>
-//             <div className="flex items-center gap-0.5 text-xs">
-//               {[...Array(5)].map((_, index) => (
-//                 <StarIcon
-//                   key={index}
-//                   size={12}
-//                   className="text-shop-light-green"
-//                   fill={"#3b9c3c"}
-//                 />
-//               ))}
-//               <p className="font-semibold">{`(120)`}</p>
-//             </div>
-//           </div>
-//           <div className="space-y-2 border-t border-b border-gray-200 py-5">
-//             <PriceView
-//               price={product?.price}
-//               discount={product?.discount}
-//               className="text-lg font-bold"
-//             />
-//           </div>
-//           <p className="font-bold text-lg ">
-//             Current State: 
-//             <span className={`font-medium text-sm text-center inline-block rounded-sm text-gray-400 px-4 
-//               ${product?.stock === 0 ? "bg-red-100 text-red-600 py-2" 
-//               : "bg-green-100 text-green-600 py-2"}`} >{(product?.stock as number) 
-//               > 0 ? "In Stock " : "Out of Stock"}
-//             </span>
-//           </p>
-//         </div>
-//         <div className="flex items-center gap-2.5 lg:gap-5 mt-5 md:mt-0">
-//           <AddToCartButton product={product} />
-//           <FavoriteButton showProduct={true} product={product} />
-//         </div>
-//       </Container>
-//     </>
-//   );
-// };
-
-// export default SingleProductPage;
-
-
-
-
-
-
-
-
-
-
-
-
 import AddToCartButton from "@/components/addToCart";
 import Container from "@/components/container";
 import FavoriteButton from "@/components/favoriteButton";
@@ -114,7 +27,8 @@ const SingleProductPage = async ({
     return <div>Product not found</div>;
   }
 
-  return (
+  return ( 
+    <>
     <Container className="py-15 flex flex-col md:flex-row gap-10 pb-10">
       {/* Product Images */}
       <ImageView
@@ -173,7 +87,7 @@ const SingleProductPage = async ({
 
         {/* Actions */}
         <div className="flex items-center gap-2.5 lg:gap-5 mt-5">
-          <AddToCartButton product={product} className="w-full rounded-sm sm:w-auto" />
+          <AddToCartButton product={product} className="w-150 rounded-sm sm:w-auto" />
 
           <FavoriteButton
             showProduct={true}
@@ -223,6 +137,10 @@ const SingleProductPage = async ({
         </div>
       </div>
     </Container>
+    <div>
+      Love of God
+    </div>
+  </>
   );
 };
 

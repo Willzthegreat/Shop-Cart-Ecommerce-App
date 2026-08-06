@@ -34,7 +34,7 @@ const LatestBlog = async ({
       </div>
 
       {/* Blog Grid */}
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-5">
         {blogs.length > 0 ? (
           blogs.map((blog) => (
             <article

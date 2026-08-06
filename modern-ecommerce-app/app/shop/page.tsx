@@ -1,11 +1,22 @@
 import React from 'react'
+import { Suspense } from 'react'
+import { getAllBrands, getCategories } from '@/queries'
+import Shop from '@/components/shop';
 
-const Shop = () => {
+
+
+
+
+const ShopPage = async() => {
+  const categories = await getCategories();
+  const brands = await getAllBrands();
   return (
-    <div>
-      <h2>Shop Page</h2>
-    </div>
+    <>
+      <Suspense fallback={null}>
+        <Shop categories={categories} brands={brands} />
+      </Suspense>
+    </>
   )
 }
 
-export default Shop
+export default ShopPage
