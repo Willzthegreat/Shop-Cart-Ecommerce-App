@@ -5,6 +5,7 @@ import Product from "@/models/product";
 import Category from "@/models/categoryType";
 import Brand from "@/models/brandType";
 import slugify from "slugify";
+import { normalizeCategoryName } from "@/lib/categoryName";
 
 export async function POST(req: Request) {
   try {
@@ -66,6 +67,11 @@ export async function GET(req: Request) {
     const url = new URL(req.url);
     const tab = url.searchParams.get("tab") || "";
     const categorySlug = url.searchParams.get("category") || "";
+    const brandSlug = url.searchParams.get("brand") || "";
+    const minPriceParam = url.searchParams.get("minPrice");
+    const maxPriceParam = url.searchParams.get("maxPrice");
+    const minPrice = minPriceParam === null ? NaN : Number(minPriceParam);
+    const maxPrice = maxPriceParam === null ? NaN : Number(maxPriceParam);
 
     const tabMap: Record<string, string[]> = {
       Gadget: ["Mobiles", "Smartphones", "Gadget Accessories"],
@@ -79,7 +85,42 @@ export async function GET(req: Request) {
     if (categorySlug) {
       const category = await Category.findOne({ slug: categorySlug }).select("_id");
       if (!category) return NextResponse.json({ data: [] });
-      filter.category = category._id;
+
+      const selectedCategory = await Category.findById(category._id).select("title");
+      const matchingCategories = selectedCategory
+        ? await Category.find({}).select("_id title").lean()
+        : [];
+      const matchingIds = matchingCategories
+        .filter(
+          (item) =>
+            normalizeCategoryName(item.title) === normalizeCategoryName(selectedCategory?.title || ""),
+        )
+        .map((item) => item._id);
+
+      filter.category = { $in: matchingIds };
+    }
+
+    if (brandSlug) {
+      const brand = await Brand.findOne({ slug: brandSlug }).select("_id");
+      if (!brand) return NextResponse.json({ data: [] });
+      const selectedBrand = await Brand.findById(brand._id).select("title");
+      const matchingBrands = selectedBrand
+        ? await Brand.find({}).select("_id title").lean()
+        : [];
+      const matchingIds = matchingBrands
+        .filter(
+          (item) =>
+            normalizeCategoryName(item.title) === normalizeCategoryName(selectedBrand?.title || ""),
+        )
+        .map((item) => item._id);
+
+      filter.brand = { $in: matchingIds };
+    }
+
+    if (Number.isFinite(minPrice) || Number.isFinite(maxPrice)) {
+      filter.price = {};
+      if (Number.isFinite(minPrice)) (filter.price as Record<string, number>).$gte = minPrice;
+      if (Number.isFinite(maxPrice)) (filter.price as Record<string, number>).$lte = maxPrice;
     }
 
     if (tab) {

@@ -9,16 +9,15 @@ interface Props {
   brands: Brand[];
   selectedBrand?: string | null;
   setSelectedBrand: React.Dispatch<React.SetStateAction<string | null>>;
-
 }
 
 const BrandsList = ({ brands, selectedBrand, setSelectedBrand }: Props ) => {
   return (
     <>
       <div className="w-full bg-white py-5 ">
-        <Title className="text-base font-black ">Brands </Title>
+        <Title className="text-base mb-5 font-black ">Brands </Title>
         <RadioGroup
-          value={selectedBrand ?? undefined}
+          value={selectedBrand || ""}
           onValueChange={setSelectedBrand}
           className="mt-2 space-y-1"
         >
@@ -40,17 +39,17 @@ const BrandsList = ({ brands, selectedBrand, setSelectedBrand }: Props ) => {
               </Label>
             </div>
           ))}
-
+        </RadioGroup>
           {selectedBrand && (
             <button
+              type="button"
               onClick={() => setSelectedBrand(null)}
-              className="text-sm font-medium mt-2  underline
+              className="text-sm font-medium mt-10  underline
               underline-offset-2 decoration-1 text-left hover:text-shop-dark-green hoverEffect"
             >
               Reset selection
             </button>
           )}
-        </RadioGroup>
       </div>      
     </>
   )

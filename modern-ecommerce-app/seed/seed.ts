@@ -1,5 +1,6 @@
 import DatabaseConnection from "@/lib/mongodb/mongodb";
 import slugify from "slugify";
+import { normalizeCategoryName } from "@/lib/categoryName";
 
 import Category from "@/models/categoryType";
 import Brand from "@/models/brandType";
@@ -11,9 +12,10 @@ async function seedProducts() {
   await DatabaseConnection();
 
   for (const item of products) {
-    let category = await Category.findOne({
-      title: item.category,
-    });
+    const categories = await Category.find({}).select("title");
+    let category = categories.find(
+      (candidate) => normalizeCategoryName(candidate.title) === normalizeCategoryName(item.category),
+    );
 
     if (!category) {
       category = await Category.create({
@@ -25,9 +27,10 @@ async function seedProducts() {
     }
 
     const brandName = item.name.split(" ")[0];
-    let brand = await Brand.findOne({
-      title: brandName,
-    });
+    const brands = await Brand.find({}).select("title");
+    let brand = brands.find(
+      (candidate) => normalizeCategoryName(candidate.title) === normalizeCategoryName(brandName),
+    );
 
     if (!brand) {
       brand = await Brand.create({

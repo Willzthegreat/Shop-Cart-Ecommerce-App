@@ -25,7 +25,7 @@ const HomeCategories = ({ categories }: HomeCategoriesProps) => {
     <div className="my-10 rounded-md border border-shop-light-green/20 bg-white p-5 lg:p-7 md:my-20">
       <Title className="border-b pb-3">Popular Categories</Title>
 
-      <div className="mt-6 grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-5">
+      <div className="mt-6 grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
         {categories.map((category) => (
           <Link
             key={category._id}

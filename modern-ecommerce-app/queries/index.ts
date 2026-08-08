@@ -6,6 +6,7 @@ import Brand from "@/models/brandType";
 // Blog.author uses the Author model. Importing it here registers the model
 // before Mongoose tries to populate the author field below.
 import "@/models/authorType";
+import { normalizeCategoryName } from "@/lib/categoryName";
 
 /**
  * Get all categories
@@ -26,10 +27,24 @@ const getCategories = async (
 
     const categories = await query.lean();
 
+    const uniqueCategories = categories.filter(
+      (category, index, all) =>
+        index === all.findIndex(
+          (candidate) => normalizeCategoryName(candidate.title) === normalizeCategoryName(category.title),
+        ),
+    );
+
     const categoriesWithCount = await Promise.all(
-      categories.map(async (category) => {
+      uniqueCategories.map(async (category) => {
+        const matchingCategoryIds = categories
+          .filter(
+            (candidate) =>
+              normalizeCategoryName(candidate.title) === normalizeCategoryName(category.title),
+          )
+          .map((candidate) => candidate._id);
+
         const productCount = await Product.countDocuments({
-          category: category._id,
+          category: { $in: matchingCategoryIds },
         });
 
         return {
@@ -66,10 +81,17 @@ const getAllBrands = async (
 
     const brands = await query.lean();
 
-    return brands.map((brand) => ({
-      ...brand,
-      _id: brand._id.toString(),
-    }));
+    const uniqueBrands = brands.filter(
+      (brand, index, all) =>
+        index === all.findIndex(
+          (candidate) => normalizeCategoryName(candidate.title) === normalizeCategoryName(brand.title),
+        ),
+    );
+
+    return uniqueBrands.map((brand) => ({
+        ...brand,
+        _id: brand._id.toString(),
+      }));
   } catch (error) {
     console.error("Error fetching brands:", error);
     return [];

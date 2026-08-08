@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import slugify from "slugify";
 import DatabaseConnection from "@/lib/mongodb/mongodb";
 import Brand from "@/models/brandType";
+import { normalizeCategoryName } from "@/lib/categoryName";
 
 export const runtime = "nodejs";
 
@@ -20,6 +21,15 @@ export async function POST(request: Request) {
     }
 
     await DatabaseConnection();
+    const existingBrands = await Brand.find({}).select("_id title slug logo").lean();
+    const existingBrand = existingBrands.find(
+      (brand) => normalizeCategoryName(brand.title) === normalizeCategoryName(title),
+    );
+
+    if (existingBrand) {
+      return NextResponse.json({ ...existingBrand, _id: existingBrand._id.toString(), existing: true });
+    }
+
     const logo = `data:${file.type};base64,${Buffer.from(await file.arrayBuffer()).toString("base64")}`;
     const slug = slugify(title, { lower: true, strict: true });
     const brand = await Brand.findOneAndUpdate(

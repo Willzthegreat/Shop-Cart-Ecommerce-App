@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export default function CreateBlog() {
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [content] = useState("");
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

@@ -50,6 +50,7 @@ import { connectDB } from "@/lib/db";
 import Category from "@/models/categoryType";
 
 import slugify from "slugify";
+import { normalizeCategoryName } from "@/lib/categoryName";
 
 // CREATE CATEGORY
 
@@ -58,11 +59,29 @@ export async function POST(req: Request) {
     await connectDB();
 
     const body = await req.json();
+    const title = String(body.title || "").trim();
+
+    if (!title) {
+      return NextResponse.json(
+        { success: false, message: "Category name is required." },
+        { status: 400 },
+      );
+    }
+
+    const normalizedTitle = normalizeCategoryName(title);
+    const existingCategories = await Category.find({}).select("_id title slug").lean();
+    const existingCategory = existingCategories.find(
+      (category) => normalizeCategoryName(category.title) === normalizedTitle,
+    );
+
+    if (existingCategory) {
+      return NextResponse.json({ success: true, data: existingCategory, existing: true });
+    }
 
     const category = await Category.create({
-      title: body.title,
+      title,
 
-      slug: slugify(body.title, {
+      slug: slugify(title, {
         lower: true,
 
         strict: true,

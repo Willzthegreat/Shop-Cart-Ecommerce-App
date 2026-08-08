@@ -1,13 +1,16 @@
 "use client"
 
 import { Category, Product } from "@/types/product";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Container from "./container";
 import Title from "./title";
 import CategoryList from "./shop/categoryList";
 import BrandsList from "./shop/brandsList";
 import PriceList from "./shop/priceList";
 import { useSearchParams } from "next/navigation";
+import ProductCard from "./productCard";
+import { Loader2 } from "lucide-react";
+import NoProductAvailable from "./noProductAvailable";
 
 type Brand = {
   _id: string;
@@ -30,11 +33,38 @@ const Shop = ({ categories, brands }: Props) => {
   const [selectedBrand, setSelectedBrand] = useState<string | null>(
     brandParams || null
   );
-  const [selectedPrice, setselectPrice] = useState<string | null>(null);  
+  const [selectedPrice, setselectedPrice] = useState<string | null>(null);  
 
+  const fetchProducts = async () => {
+    setLoading(true);
+    try {
+      const params = new URLSearchParams();
+      if (selectedCategory) params.set("category", selectedCategory);
+      if (selectedBrand) params.set("brand", selectedBrand);
+      if (selectedPrice) {
+        const [min, max] = selectedPrice.split("-").map(Number);
+        params.set("minPrice", String(min));
+        if (Number.isFinite(max)) params.set("maxPrice", String(max));
+      }
 
+      const response = await fetch(`/api/products?${params.toString()}`, {
+        cache: "no-store",
+      });
+      if (!response.ok) throw new Error("Failed to fetch products");
 
+      const result = await response.json();
+      setProducts(result.data || []);
+    } catch (error) {
+      console.error("Failed to load shop products:", error);
+      setProducts([]);
+    } finally {
+      setLoading(false);
+    }
+  }
 
+  useEffect(() => {
+    fetchProducts();
+  }, [selectedCategory, selectedBrand, selectedPrice])
 
   return (
     <>
@@ -43,20 +73,34 @@ const Shop = ({ categories, brands }: Props) => {
           <div className="sticky top-0 z-10 mb-5">
             <div className="flex items-center justify-between">
               <Title className="text-lg uppercase tracking-wide" >Get the products as your needs</Title>
-              <button className="text-shop-dark-green underline text-sm mt-2 font-medium hover:text-shop-orange hoverEffect ">Reset Filters</button>
+              {(selectedCategory !== null ||
+                selectedBrand !== null ||
+                selectedPrice !== null 
+              ) && (
+                <button 
+                  onClick={() => {
+                    setSelectedCategory(null);
+                    setSelectedBrand(null);
+                    setselectedPrice(null); 
+                  }}
+                  className="text-shop-dark-green underline text-sm mt-2 
+                  font-medium hover:text-shop-orange hoverEffect "
+                  >Reset Filters</button>
+
+              )}
             </div>
           </div>
           <div  className="flex flex-col md:flex-row gap-5 border-t border-t-shop-dark-green/50 ">
             <div className="md:sticky md:top-20 md:self-start 
-            md:h-[calc(100vh-160px)] md:overflow-y-auto md:overflow-x-hidden md:min-w-64
-            pb-5 border-r border-r-shop-btn-dark-green/50
+            md:h-[calc(200vh-160px)] md:overflow-y-auto md:overflow-x-hidden md:min-w-64
+            pb-5 border-r border-r-shop-btn-dark-green/50 scrollbar-hide
             ">
               {/* CategoryList */}
               <CategoryList 
                 categories={categories} 
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
-                />
+              />
               {/* BrandList */}
               <BrandsList
                 brands={brands}
@@ -64,9 +108,30 @@ const Shop = ({ categories, brands }: Props) => {
                 selectedBrand={selectedBrand}
               />
               {/* PriceList */}
-              <PriceList />
+              <PriceList
+                setSelectedPrice={setselectedPrice}
+                selectedPrice={selectedPrice}
+
+              />
             </div>
-            <div></div>
+            <div className="min-w-0 flex-1">
+              {loading ? (
+                <div className="flex min-h-80 items-center justify-center gap-2">
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                  <span>Loading products...</span>
+                </div>
+              ) : products?.length > 0 ? (
+                <div className="grid grid-cols-1 mt-10 gap-6 sm:grid-cols-3 lg:grid-cols-4">
+                  {products.map((product) => (
+                    <ProductCard key={product._id} product={product} />
+                  ))}
+                </div>
+              ) : (
+                <div className="py-16 text-center text-gray-500">
+                  <NoProductAvailable className="bg-white mt-0" />
+                </div>
+              )}
+            </div>
           </div>
         </Container>
       </div>
