@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { FlameIcon, StarIcon } from "lucide-react";
+import { FlameIcon, StarIcon, TagIcon } from "lucide-react";
 import { Product } from "@/types/product";
 import AddToWish from "./addToWishlist";
 import PriceView from "./priceView";
@@ -19,8 +19,13 @@ export default function ProductCard({ product }: ProductCardProps) {
     product.images && product.images.length > 0
       ? product.images[0]
       : "/products/product-placeholder.png";
+  const isExternalImage = image.startsWith("data:") || /^https?:\/\//i.test(image);
 
-  const discount = Math.max(0, Number(product.discount ?? 0));
+  const originalPrice = Math.max(0, Number(product.discount ?? 0));
+  const discount =
+    originalPrice > Number(product.price)
+      ? Math.round(((originalPrice - Number(product.price)) / originalPrice) * 100)
+      : 0;
 
   const categoryName =
     typeof product.category === "string"
@@ -41,6 +46,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             src={image}
             alt={product.name}
             fill
+            unoptimized={isExternalImage}
             sizes="(max-width:768px)100vw,(max-width:1200px)50vw,25vw"
             className="object-cover transition-transform duration-300 group-hover:scale-105"
           />
@@ -48,8 +54,16 @@ export default function ProductCard({ product }: ProductCardProps) {
         <div className="flex justify-around px-2">
           <div>
             {product.status === "sale" && (
-              <span className="absolute left-3 top-3 rounded-full bg-shop-light-green hover:cursor-pointer hover:border group-hover:border-shop-light-green hoverEffect hover:bg-white hover:text-shop-light-green border px-3 py-1 text-xs font-semibold text-white">
-                SALE
+              <span className="absolute left-3 top-3 flex items-center gap-1 rounded-full border bg-shop-light-green px-3 py-1 text-xs font-semibold text-white hover:cursor-pointer hover:border-shop-light-green hover:bg-white hover:text-shop-light-green hoverEffect">
+                <TagIcon size={14} />
+                <span>SALE</span>
+              </span>
+            )}
+
+            {product.status === "hot" && (
+              <span className="absolute left-3 top-3 flex items-center gap-1 rounded-full border bg-red-500 px-3 py-1 text-xs font-semibold text-white hover:cursor-pointer hover:border-shop-light-green hover:bg-white hover:text-shop-light-green hoverEffect">
+                <FlameIcon size={14} />
+                <span>HOT</span>
               </span>
             )}
 
@@ -104,7 +118,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           <div className="flex items-center gap-3">
             <PriceView
               price={product.price}
-              discount={discount}
+              discount={originalPrice}
               className="text-shop-dark-green text-medium font-semibold"
             />
           </div>

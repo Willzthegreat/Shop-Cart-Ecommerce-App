@@ -36,7 +36,9 @@ const ProductGrid = () => {
 
         const json = await res.json();
         console.log("JSON Response:", json);
-        setProducts(json.data || []);
+        // Keep the home section compact: 20 items means 4 rows on the
+        // five-column layout and 5 rows on the four-column layout.
+        setProducts((json.data || []).slice(0, 20));
       } catch (error) {
         console.error("Product fetching error:", error);
       } finally {

@@ -37,6 +37,7 @@ import PriceFormatter from "./priceFormatter";
 
 interface Props {
   price: number | undefined;
+  /** Compare-at/original price saved in the discount field. */
   discount?: number;
   className?: string;
 }
@@ -44,25 +45,24 @@ interface Props {
 const PriceView = ({ price, discount = 0, className = "" }: Props) => {
   if (price === undefined || !Number.isFinite(Number(price))) return null;
 
-  const regularPrice = Number(price);
-  const discountPercent = Math.min(100, Math.max(0, Number(discount) || 0));
-  const hasDiscount = discountPercent > 0;
-  const discountedPrice = hasDiscount
-    ? Math.round(regularPrice * (1 - discountPercent / 100) * 100) / 100
-    : regularPrice;
+  const currentPrice = Number(price);
+  const originalPrice = Number(discount) || 0;
+  const hasDiscount = originalPrice > currentPrice;
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-2 whitespace-nowrap">
       <PriceFormatter
-        amount={discountedPrice}
+        amount={currentPrice}
         className={className || "text-shop-dark-green text-lg font-semibold"}
       />
 
       {hasDiscount && (
-        <PriceFormatter
-          amount={regularPrice}
-          className="text-sm font-medium line-through text-shopLightText"
-        />
+        <del className="flex items-center gap-1 text-sm font-medium text-gray-500 decoration-2">
+          <PriceFormatter
+            amount={originalPrice}
+            className="text-sm font-medium text-gray-500"
+          />
+        </del>
       )}
     </div>
   );

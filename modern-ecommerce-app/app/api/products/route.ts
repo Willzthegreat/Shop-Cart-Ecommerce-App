@@ -10,13 +10,27 @@ import { normalizeCategoryName } from "@/lib/categoryName";
 export async function POST(req: Request) {
   try {
     await connectDB();
-    const body = await req.json();
+    const form = await req.formData();
+    const body = Object.fromEntries(form.entries());
     const name = String(body.name || "").trim();
     const categoryId = String(body.category || "");
     const brandId = String(body.brand || "");
+    const price = Number(body.price);
+    const discount = Number(body.discount || 0);
+    const imageUrls = String(body.images || "")
+      .split(",")
+      .map((item) => item.trim())
+      .filter(Boolean);
+    const imageFiles = form
+      .getAll("imageFiles")
+      .filter((entry): entry is File => entry instanceof File && entry.size > 0);
 
-    if (!name || !categoryId || !brandId || body.price === undefined) {
+    if (!name || !categoryId || !brandId || !Number.isFinite(price) || price < 0) {
       return NextResponse.json({ error: "Name, price, category, and brand are required." }, { status: 400 });
+    }
+
+    if (!Number.isFinite(discount) || discount < 0) {
+      return NextResponse.json({ error: "Discount price must be zero or a valid positive price." }, { status: 400 });
     }
 
     const [category, brand] = await Promise.all([
@@ -27,14 +41,30 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Selected category or brand was not found." }, { status: 400 });
     }
 
+    for (const imageFile of imageFiles) {
+      if (!imageFile.type.startsWith("image/")) {
+        return NextResponse.json({ error: "The uploaded file must be an image." }, { status: 400 });
+      }
+
+      if (imageFile.size > 5 * 1024 * 1024) {
+        return NextResponse.json({ error: "Uploaded images must be 5 MB or smaller." }, { status: 400 });
+      }
+    }
+
+    const uploadedImages = await Promise.all(
+      imageFiles.map(async (imageFile) =>
+        `data:${imageFile.type};base64,${Buffer.from(await imageFile.arrayBuffer()).toString("base64")}`
+      )
+    );
+
     const product = await Product.create({
       name,
       slug: slugify(name, { lower: true, strict: true }),
       code: body.code ? String(body.code).trim() : undefined,
       description: String(body.description || ""),
-      images: Array.isArray(body.images) ? body.images.map(String).filter(Boolean) : [],
-      price: Number(body.price),
-      discount: Number(body.discount || 0),
+      images: [...uploadedImages, ...imageUrls],
+      price,
+      discount,
       category: category._id,
       brand: brand._id,
       stock: Number(body.stock || 0),
@@ -74,7 +104,7 @@ export async function GET(req: Request) {
     const maxPrice = maxPriceParam === null ? NaN : Number(maxPriceParam);
 
     const tabMap: Record<string, string[]> = {
-      Gadget: ["Mobiles", "Smartphones", "Gadget Accessories"],
+      Gadget: ["Mobiles", "Smartphones", "Gadget Accessories", "Gadgets", "Mobile Phones", "Phones", "Electronics"],
       Appliances: ["Appliances", "Kitchen Appliances", "Washing Machines", "Air Conditioners"],
       Refrigerators: ["Appliances"],
       Others: [],
@@ -127,7 +157,11 @@ export async function GET(req: Request) {
       const categoryTitles = tabMap[tab] || [];
 
       if (categoryTitles.length > 0) {
-        const categoriesFound = await Category.find({ title: { $in: categoryTitles } }).select("_id");
+        const allCategories = await Category.find({}).select("_id title").lean();
+        const supportedTitles = categoryTitles.map(normalizeCategoryName);
+        const categoriesFound = allCategories.filter((category) =>
+          supportedTitles.includes(normalizeCategoryName(category.title)),
+        );
         const ids = categoriesFound.map((category) => category._id);
 
         if (ids.length > 0) {
@@ -144,7 +178,11 @@ export async function GET(req: Request) {
       }
     }
 
-    const products = await Product.find(filter).populate("category").populate("brand").lean();
+    const products = await Product.find(filter)
+      .sort({ createdAt: -1 })
+      .populate("category")
+      .populate("brand")
+      .lean();
 
     return NextResponse.json({ data: products });
   } catch (error) {

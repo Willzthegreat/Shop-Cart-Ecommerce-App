@@ -142,9 +142,43 @@ const getLatestBlogs = async (
 };
 
 /**
+ * Get one blog by slug
+ */
+const getBlogBySlug = async (slug: string) => {
+  try {
+    await DatabaseConnection();
+
+    const blog = (await Blog.findOne({ slug })
+      .populate("author", "name image bio")
+      .lean()) as any;
+
+    if (!blog) {
+      return null;
+    }
+
+    return {
+      ...blog,
+      _id: blog._id.toString(),
+      author: blog.author
+        ? typeof blog.author === "object"
+          ? {
+              ...blog.author,
+              _id: blog.author._id?.toString(),
+            }
+          : blog.author.toString()
+        : null,
+    };
+  } catch (error) {
+    console.error("Error fetching blog by slug:", error);
+    return null;
+  }
+};
+
+/**
  * Get deal products
  *
- * Gets products with a discount greater than 0.
+ * Gets products marked as hot/sale or products whose original price is above
+ * the current price.
  */
 const getDealProducts = async (
   { quantity }: { quantity?: number } = {}
@@ -153,13 +187,14 @@ const getDealProducts = async (
     await DatabaseConnection();
 
     const query = Product.find({
-      discount: {
-        $gt: 0,
-      },
+      $or: [
+        { $expr: { $gt: ["$discount", "$price"] } },
+        { status: { $in: ["hot", "sale"] } },
+      ],
     })
       .sort({
-        discount: -1,
         createdAt: -1,
+        discount: -1,
       })
       .populate("category", "title slug")
       .populate("brand", "title slug image");
@@ -267,6 +302,7 @@ export {
   getCategories,
   getAllBrands,
   getLatestBlogs,
+  getBlogBySlug,
   getDealProducts,
   getProductBySlug,
   getBrand,

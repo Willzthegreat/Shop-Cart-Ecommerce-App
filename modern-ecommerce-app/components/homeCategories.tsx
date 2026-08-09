@@ -26,11 +26,19 @@ const HomeCategories = ({ categories }: HomeCategoriesProps) => {
       <Title className="border-b pb-3">Popular Categories</Title>
 
       <div className="mt-6 grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
-        {categories.map((category) => (
+        {categories.map((category, index) => (
           <Link
             key={category._id}
             href={`/category/${category.slug}`}
-            className="group flex  items-center rounded-lg border p-4 transition hover:shadow-md"
+            className={`group items-center rounded-lg border p-4 transition hover:shadow-md ${
+              index < 4
+                ? "flex"
+                : index < 6
+                  ? "hidden md:flex"
+                  : index < 8
+                    ? "hidden lg:flex"
+                    : "hidden"
+            }`}
           >
             <Image
               src={category.image || categoryImages[category.slug] || "/products/iphone-17-pro1.jpg"}

@@ -31,5 +31,5 @@ export interface Product {
 
   stock?: number;
 
-  status?: "new" | "sale" | "featured";
+  status?: "new" | "hot" | "sale" | "featured";
 }

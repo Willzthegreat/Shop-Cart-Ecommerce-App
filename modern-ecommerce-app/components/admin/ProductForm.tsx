@@ -10,10 +10,11 @@ export default function ProductForm({ categories, brands }: { categories: Option
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
-    const images = String(form.get("images") || "").split(",").map((item) => item.trim()).filter(Boolean);
-    const payload = { ...Object.fromEntries(form), images, isFeatured: form.get("isFeatured") === "true" };
     setMessage("Saving product...");
-    const response = await fetch("/api/products", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+    const response = await fetch("/api/products", {
+      method: "POST",
+      body: form,
+    });
     const result = await response.json();
     setMessage(response.ok ? "Product saved to MongoDB." : result.error || "Could not save product.");
     if (response.ok) event.currentTarget.reset();
@@ -26,8 +27,34 @@ export default function ProductForm({ categories, brands }: { categories: Option
         <input name="name" required placeholder="Product name" className="rounded border p-3" />
         <input name="code" placeholder="Product code" className="rounded border p-3" />
         <textarea name="description" placeholder="Description" className="rounded border p-3" />
-        <input name="images" placeholder="Image URLs, separated by commas" className="rounded border p-3" />
-        <div className="grid gap-3 sm:grid-cols-2"><input name="price" required type="number" min="0" placeholder="Price" className="rounded border p-3" /><input name="discount" type="number" min="0" placeholder="Discount" className="rounded border p-3" /></div>
+        <label className="grid gap-1 text-sm font-medium text-gray-700">
+          Online image URL(s)
+          <input
+            name="images"
+            placeholder="https://example.com/image.jpg (comma-separated)"
+            className="rounded border p-3 font-normal"
+          />
+        </label>
+        <label className="grid gap-1 text-sm font-medium text-gray-700">
+          Or upload an image
+          <input
+            name="imageFiles"
+            type="file"
+            multiple
+            accept="image/png,image/jpeg,image/webp,image/gif"
+            className="cursor-pointer rounded border p-3 font-normal"
+          />
+        </label>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <label className="grid gap-1 text-sm font-medium text-gray-700">
+            Original price
+            <input name="price" required type="number" min="0" step="0.01" placeholder="Price before discount" className="rounded border p-3 font-normal" />
+          </label>
+          <label className="grid gap-1 text-sm font-medium text-gray-700">
+            Original / discount price
+            <input name="discount" type="number" min="0" step="0.01" placeholder="e.g. 460" className="rounded border p-3 font-normal" />
+          </label>
+        </div>
         <div className="grid gap-3 sm:grid-cols-2"><input name="stock" type="number" min="0" placeholder="Stock" className="rounded border p-3" /><select name="status" className="rounded border p-3"><option value="new">New</option><option value="hot">Hot</option><option value="sale">Sale</option></select></div>
         <select name="category" required className="rounded border p-3"><option value="">Select category</option>{categories.map((item) => <option key={item._id} value={item._id}>{item.title}</option>)}</select>
         <select name="brand" required className="rounded border p-3"><option value="">Select brand</option>{brands.map((item) => <option key={item._id} value={item._id}>{item.title}</option>)}</select>
