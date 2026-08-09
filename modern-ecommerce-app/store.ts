@@ -38,15 +38,28 @@ const useStore = create<StoreState>()(
 
       addItem: (product) =>
         set((state) => {
+          const stock = Number(product.stock);
           const existingItem = state.items.find(
             (item) => item.product._id === product._id,
           );
+
+          if (Number.isFinite(stock) && stock <= 0) {
+            return state;
+          }
+
+          if (
+            existingItem &&
+            Number.isFinite(stock) &&
+            existingItem.quantity >= stock
+          ) {
+            return state;
+          }
 
           if (existingItem) {
             return {
               items: state.items.map((item) =>
                 item.product._id === product._id
-                  ? { ...item, quantity: item.quantity + 1 }
+                  ? { ...item, quantity: Number(item.quantity) + 1 }
                   : item,
               ),
             };
@@ -59,8 +72,8 @@ const useStore = create<StoreState>()(
         set((state) => ({
           items: state.items
             .map((item) =>
-              item.product._id === productId
-                ? { ...item, quantity: item.quantity - 1 }
+                item.product._id === productId
+                ? { ...item, quantity: Number(item.quantity) - 1 }
                 : item,
             )
             .filter((item) => item.quantity > 0),
@@ -82,7 +95,9 @@ const useStore = create<StoreState>()(
       getTotalPrice: () => get().getSubTotalPrice(),
 
       getItemCount: (productId) =>
-        get().items.find((item) => item.product._id === productId)?.quantity || 0,
+        Number(
+          get().items.find((item) => item.product._id === productId)?.quantity,
+        ) || 0,
 
       getGroupItems: () => get().items,
 
@@ -106,5 +121,5 @@ const useStore = create<StoreState>()(
     { name: "cart-store" },
   ),
 );
-
+ 
 export default useStore;

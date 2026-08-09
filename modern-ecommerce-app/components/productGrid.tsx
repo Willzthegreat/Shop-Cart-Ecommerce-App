@@ -22,7 +22,7 @@ const ProductGrid = () => {
       try {
         const apiUrl = "/api/products?tab=" + encodeURIComponent(selectedTab);
         console.log("Fetching products from:", apiUrl);
-        const res = await fetch(apiUrl);
+        const res = await fetch(apiUrl, { cache: "no-store" });
 
       if (!res.ok) {
 

@@ -1,38 +1,3 @@
-// import React from 'react'
-// import PriceFormatter from './priceFormatter';
-
-
-// interface Props {
-//     price: number | undefined;
-//     discount: number | undefined;
-//     className: string;
-// }
-
-
-// const PriceView = ({ price, discount, className }: Props) => {
-//   return (
-//     <>
-//       <div>
-//         <PriceFormatter amount={price} className='text-shop-dark-green' />
-//         {price && discount && (
-//           <PriceFormatter amount={price + (discount * price) / 100 }
-//           className="line-through text-sm pl-4 font-medium text-shopLightText"  />
-//         )}
-//       </div>
-//     </>
-//   )
-// }
-
-// export default PriceView
-
-
-
-
-
-
-
-
-
 import PriceFormatter from "./priceFormatter";
 
 interface Props {

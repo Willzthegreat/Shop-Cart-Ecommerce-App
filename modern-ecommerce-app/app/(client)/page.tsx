@@ -18,7 +18,7 @@ const Home = async() => {
   
 
   return (
-    <main className="px-6 md:px-8 lg:px-30">
+    <div className="px-6 md:px-8 lg:px-30">
       {/* Hero Section */}
 
       <section className="py-16 md:py-0 bg-shop-light-pink rounded-lg px-10 lg:px-24 flex items-center justify-between">
@@ -43,7 +43,7 @@ const Home = async() => {
         <ShopByBrands brands={brands} />
         <LatestBlog  />
       </section>
-    </main>
+    </div>
   );
 }
 
