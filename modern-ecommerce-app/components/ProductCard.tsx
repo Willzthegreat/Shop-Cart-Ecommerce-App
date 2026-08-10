@@ -7,19 +7,26 @@ import { Product } from "@/types/product";
 import AddToWish from "./addToWishlist";
 import PriceView from "./priceView";
 import AddToCartButton from "./addToCart";
+import { resolveProductImage } from "@/lib/productImage";
+import { useEffect, useState } from "react";
 
 interface ProductCardProps {
   product: Product;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
-  if (!product) return null;
-
-  const image =
+  const originalImage =
     product.images && product.images.length > 0
       ? product.images[0]
-      : "/products/product-placeholder.png";
-  const isExternalImage = image.startsWith("data:") || /^https?:\/\//i.test(image);
+      : undefined;
+  const image = resolveProductImage(originalImage);
+  const [imageSource, setImageSource] = useState(image);
+
+  useEffect(() => {
+    setImageSource(image);
+  }, [image]);
+
+  const isExternalImage = imageSource.startsWith("data:") || /^https?:\/\//i.test(imageSource);
 
   const originalPrice = Math.max(0, Number(product.discount ?? 0));
   const discount =
@@ -43,12 +50,13 @@ export default function ProductCard({ product }: ProductCardProps) {
       <div className="relative aspect-square overflow-hidden bg-gray-100">
         <Link href={`/product/${product.slug}`} className="relative block h-full w-full">
           <Image
-            src={image}
+            src={imageSource}
             alt={product.name}
             fill
             unoptimized={isExternalImage}
             sizes="(max-width:768px)100vw,(max-width:1200px)50vw,25vw"
             className="object-cover transition-transform duration-300 group-hover:scale-105"
+            onError={() => setImageSource("/products/product-placeholder.svg")}
           />
         </Link>
         <div className="flex justify-around px-2">

@@ -4,6 +4,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
+import { resolveProductImage } from "@/lib/productImage";
 
 interface Props {
   images?: string[];
@@ -23,7 +24,7 @@ const ImageView = ({ images = [], isStock }: Props) => {
     );
   }
 
-  const activeImage = images[active];
+  const activeImage = resolveProductImage(images[active]);
   const isRemoteOrDataImage =
     activeImage.startsWith("data:") || /^https?:\/\//i.test(activeImage);
 
@@ -63,7 +64,10 @@ const ImageView = ({ images = [], isStock }: Props) => {
 
       {/* Image thumbnails */}
       <div className="flex py-3 px-1 gap-2 overflow-x-auto">
-        {images.map((image, index) => (
+        {images.map((image, index) => {
+          const thumbnailImage = resolveProductImage(image);
+
+          return (
           <button
             key={index}
             type="button"
@@ -72,15 +76,15 @@ const ImageView = ({ images = [], isStock }: Props) => {
               active === index ? "ring-1 ring-shop-dark-green/40 shadow-sm border-darkColor" : "border-darkColor/10 opacity-80"
             }`}
           >
-            {image.startsWith("data:") || /^https?:\/\//i.test(image) ? (
+            {thumbnailImage.startsWith("data:") || /^https?:\/\//i.test(thumbnailImage) ? (
               <img
-                src={image}
+                src={thumbnailImage}
                 alt={`Product image ${index + 1}`}
                 className="h-full w-full object-contain"
               />
             ) : (
               <Image
-                src={image}
+                src={thumbnailImage}
                 alt={`Product image ${index + 1}`}
                 width={80}
                 height={80}
@@ -88,7 +92,8 @@ const ImageView = ({ images = [], isStock }: Props) => {
               />
             )}
           </button>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

@@ -892,7 +892,7 @@ export const products = [
     slug: "haier-s80",
     category: "Television",
     image: [
-      "/products/haier-s80_1.jpg",
+      "/products/haier-s80_2.jpg",
       "/products/haier-s80_2.jpg",
       "/products/haier-s80_3.jpg",
       "/products/haier-s80_4.jpg",
