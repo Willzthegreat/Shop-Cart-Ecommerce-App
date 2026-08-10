@@ -83,6 +83,7 @@
 "use client";
 
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import SignUpForm from "./SignUpForm";
 import SignInForm from "./SignInForm";
 
@@ -109,9 +110,10 @@ export default function SignUpModal({
 
 
 
-  return (
+  return createPortal(
+    (
     <div className="
-    fixed inset-0 z-50 
+    fixed inset-0 z-[9999] min-h-screen w-screen overflow-y-auto
     flex items-center justify-center
     bg-black/70
     ">
@@ -171,5 +173,7 @@ export default function SignUpModal({
         }
       </div>
     </div>
+    ),
+    document.body,
   );
 }

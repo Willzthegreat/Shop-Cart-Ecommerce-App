@@ -91,9 +91,8 @@ export async function POST(req: Request) {
 }
 
 export async function GET(req: Request) {
-  await connectDB();
-
   try {
+    await connectDB();
     const url = new URL(req.url);
     const tab = url.searchParams.get("tab") || "";
     const categorySlug = url.searchParams.get("category") || "";
@@ -189,8 +188,8 @@ export async function GET(req: Request) {
     console.error("Error fetching products:", error);
 
     return NextResponse.json(
-      { success: false, message: "Error fetching products" },
-      { status: 500 },
+      { success: false, message: "The product database is temporarily unavailable." },
+      { status: 503 },
     );
   }
 }

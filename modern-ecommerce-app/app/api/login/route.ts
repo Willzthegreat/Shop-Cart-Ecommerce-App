@@ -2,6 +2,7 @@ import DatabaseConnection from "@/lib/mongodb/mongodb";
 import User from "@/models/userModel";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
+import { createUserSession, SESSION_COOKIE } from "@/lib/authSession";
 
 
 export async function POST(req: NextRequest) {
@@ -52,7 +53,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    return NextResponse.json(
+    const response = NextResponse.json(
       {
         message:"Login successful",
         user:{
@@ -61,10 +62,18 @@ export async function POST(req: NextRequest) {
           email:user.email
         }
       },
-      {
-        status:200
-      }
+      { status: 200 },
     );
+
+    response.cookies.set(SESSION_COOKIE, await createUserSession(user._id.toString(), user.email), {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 60 * 60 * 24 * 7,
+      path: "/",
+    });
+
+    return response;
 
   } catch(error){
     console.log(error);

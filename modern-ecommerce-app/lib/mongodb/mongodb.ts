@@ -85,10 +85,25 @@ const DatabaseConnection = async () => {
   }
 
   if (!cached.promise) {
-    cached.promise = mongoose.connect(MONGODB_URI).then((mongoose) => mongoose);
+    cached.promise = mongoose
+      .connect(MONGODB_URI, {
+        serverSelectionTimeoutMS: 10000,
+        connectTimeoutMS: 10000,
+        socketTimeoutMS: 45000,
+        maxPoolSize: 10,
+      })
+      .then((mongoose) => mongoose);
   }
 
-  cached.conn = await cached.promise;
+  try {
+    cached.conn = await cached.promise;
+  } catch (error) {
+    // Do not keep a rejected connection promise. The next request should be
+    // able to retry after a temporary MongoDB/network failure.
+    cached.promise = null;
+    cached.conn = null;
+    throw error;
+  }
 
   return cached.conn;
 };

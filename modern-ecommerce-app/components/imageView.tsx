@@ -24,6 +24,8 @@ const ImageView = ({ images = [], isStock }: Props) => {
   }
 
   const activeImage = images[active];
+  const isRemoteOrDataImage =
+    activeImage.startsWith("data:") || /^https?:\/\//i.test(activeImage);
 
   return (
     <div className="w-full md:w-1/2 space-y-2 md:space-y-4">
@@ -36,16 +38,26 @@ const ImageView = ({ images = [], isStock }: Props) => {
           transition={{ duration: 0.5 }}
           className="w-full max-h-[550px] min-h-[450px] border border-darkColor/10 rounded-md group overflow-hidden"
         >
-          <Image
-            src={activeImage}
-            alt="productImage"
-            width={700}
-            height={700}
-            priority
-            className={`w-full h-96 object-contain group-hover:scale-110 hoverEffect rounded-md ${
-              isStock === 0 ? "opacity-50" : ""
-            }`}
-          />
+          {isRemoteOrDataImage ? (
+            <img
+              src={activeImage}
+              alt="productImage"
+              className={`h-96 w-full rounded-md object-contain group-hover:scale-110 hoverEffect ${
+                isStock === 0 ? "opacity-50" : ""
+              }`}
+            />
+          ) : (
+            <Image
+              src={activeImage}
+              alt="productImage"
+              width={700}
+              height={700}
+              priority
+              className={`h-96 w-full rounded-md object-contain group-hover:scale-110 hoverEffect ${
+                isStock === 0 ? "opacity-50" : ""
+              }`}
+            />
+          )}
         </motion.div>
       </AnimatePresence>
 
@@ -60,13 +72,21 @@ const ImageView = ({ images = [], isStock }: Props) => {
               active === index ? "ring-1 ring-shop-dark-green/40 shadow-sm border-darkColor" : "border-darkColor/10 opacity-80"
             }`}
           >
-            <Image
-              src={image}
-              alt={`Product image ${index + 1}`}
-              width={80}
-              height={80}
-              className="w-full h-full object-contain"
-            />
+            {image.startsWith("data:") || /^https?:\/\//i.test(image) ? (
+              <img
+                src={image}
+                alt={`Product image ${index + 1}`}
+                className="h-full w-full object-contain"
+              />
+            ) : (
+              <Image
+                src={image}
+                alt={`Product image ${index + 1}`}
+                width={80}
+                height={80}
+                className="h-full w-full object-contain"
+              />
+            )}
           </button>
         ))}
       </div>
