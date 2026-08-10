@@ -83,7 +83,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             )}
 
             {discount > 0 && (
-              <span className="absolute right-3 top-3 rounded-full bg-black px-3 py-1 text-xs font-semibold text-white">
+              <span className="absolute -right-1 top-28  rounded-bl-full rounded-tl-full bg-black px-3 py-1 text-xs font-semibold text-white">
                 -{discount}%
               </span>
             )}
