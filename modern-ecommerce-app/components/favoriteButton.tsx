@@ -38,9 +38,15 @@ const FavoriteButton = ({
       {!showProduct ? (
       <Link href='/wishlist' className="group relative">
         <Heart className='w-5 h-5 hover:text-shop-light-green' />
-        <span className="absolute -top-2 -right-2 bg-shop-dark-green text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-          {favoriteProduct.length}
-        </span>
+        {favoriteProduct.length > 0 ? (
+          <span className="absolute -top-2 -right-2 bg-shop-dark-green text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+            {favoriteProduct.length}
+          </span>
+        ) : (
+          <span className="absolute -top-2 -right-2  text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+            {favoriteProduct.length === null }
+          </span>
+        )}
       </Link>
       ) : (
         <button

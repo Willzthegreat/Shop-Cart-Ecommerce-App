@@ -35,7 +35,7 @@ const AddToWishlist = ({
       <div className={cn("absolute top-2 z-10", className)}>
         <div
           onClick={handleFavorite}
-          aria-label={existingProduct ? "Remove from wishlist" : "Add to wishlist"}
+          aria-label={existingProduct ? "Remove from wishlist bg-none" : "Add to wishlist"}
           className={cn(
             "p-2.5 rounded-full hover:bg-shop-dark-green hover:text-white hover:cursor-pointer text-shop-light-green",
             existingProduct && "bg-shop-dark-green text-white",

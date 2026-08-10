@@ -113,6 +113,7 @@ const useStore = create<StoreState>()(
         set((state) => ({
           favoriteProduct: state.favoriteProduct.filter(
             (product) => product._id !== productId,
+            
           ),
         })),
 
