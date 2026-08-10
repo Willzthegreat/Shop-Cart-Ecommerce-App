@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import PriceFormatter from "@/components/priceFormatter";
 import useStore from "@/store";
+import { resolveProductImage } from "@/lib/productImage";
 
 export default function CartPage() {
   const items = useStore((state) => state.items);
@@ -27,11 +29,20 @@ export default function CartPage() {
     <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10">
       <h1 className="text-2xl font-bold sm:text-3xl">Shopping Cart</h1>
       <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
-        <div className="space-y-4">
+        <div className="space-y-4 overflow-hidden">
           {items.map(({ product, quantity }) => (
-            <div key={product._id} className="flex flex-col gap-4 rounded-lg border bg-white p-4 sm:flex-row sm:items-center">
-              <div className="min-w-0 flex-1">
-                <h2 className="truncate font-semibold">{product.name}</h2>
+            <div key={product._id} className="flex flex-col gap-4 rounded-lg border justify-between bg-white p-4 sm:flex-row sm:items-center">
+              <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-md bg-gray-100">
+                <Image
+                  src={resolveProductImage(product.images?.[0])}
+                  alt={product.name}
+                  fill
+                  sizes="96px"
+                  className={`object-contain ${product.stock === 0 ? "opacity-50" : ""}`}
+                />
+              </div>
+              <div className="min-w-0 flex-1 overflow-hidden">
+                <h2 className="truncate font-semibold mb-4">{product.name}</h2>
                 <PriceFormatter amount={product.price} className="text-shop-dark-green" />
               </div>
               <div className="flex items-center justify-between gap-2 sm:justify-start">

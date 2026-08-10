@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 
 interface Props {
   product: Product;
+  // product: Product || null | undefined;
   className?: string;
 }
 
