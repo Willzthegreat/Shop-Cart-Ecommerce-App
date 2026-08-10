@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { Button } from './ui/button';
 import { Category } from '@/types/product';
 import { useRouter } from 'next/navigation';
-import ProductCard from './productCard'
+import ProductCard from '@/components/productCard'
 import type { Product } from '@/types/product';
 import { Loader2 } from 'lucide-react';
 

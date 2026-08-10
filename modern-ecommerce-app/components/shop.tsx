@@ -8,7 +8,7 @@ import CategoryList from "./shop/categoryList";
 import BrandsList from "./shop/brandsList";
 import PriceList from "./shop/priceList";
 import { useSearchParams } from "next/navigation";
-import ProductCard from "./productCard";
+import ProductCard from "@/components/productCard";
 import { Loader2 } from "lucide-react";
 import NoProductAvailable from "./noProductAvailable";
 
