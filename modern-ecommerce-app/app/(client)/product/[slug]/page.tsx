@@ -86,13 +86,14 @@ const SingleProductPage = async ({
         </p>
 
         {/* Actions */}
-        <div className="flex items-center gap-2.5 lg:gap-5 mt-5">
-          <AddToCartButton product={product} className="w-150 rounded-sm sm:w-auto" />
+        <div className="mt-5 flex w-full flex-col items-stretch gap-3 sm:flex-row sm:items-center lg:gap-5">
+          <div className="min-w-0 flex-1">
+            <AddToCartButton product={product} className="w-full rounded-sm" />
+          </div>
 
-          <FavoriteButton
-            showProduct={true}
-            product={product}
-          />
+          <div className="flex justify-start sm:shrink-0">
+            <FavoriteButton showProduct={true} product={product} />
+          </div>
         </div>
         <ProductCharacteristics product={product} />
         <div className="flex flex-wrap items-center justify-between gap-2.5 border-b 

@@ -16,7 +16,7 @@ interface Props {
 }
 
 const AddToCartButton = ({ product, className}: Props) => {
-  const isOutOfStock = product?.stock === 0;
+  const isOutOfStock = Number(product?.stock) === 0;
   const addItem = useStore((state) => state.addItem);
   const removeItem = useStore((state) => state.removeItem);
   const quantity = useStore((state) => state.getItemCount(product._id));
@@ -63,7 +63,7 @@ const AddToCartButton = ({ product, className}: Props) => {
           disabled={isOutOfStock}
           className={cn("flex w-full items-center justify-center gap-2 rounded-none bg-shop-light-green py-6 text-sm font-medium text-white hover:bg-shop-dark-green hoverEffect", className)}
         >
-          <ShoppingBag /> {isOutOfStock ? "Out of Stock" : "Add to Cart"}
+          <ShoppingBag size={18} aria-hidden="true" /> {isOutOfStock ? "Out of Stock" : "Add to Cart"}
         </Button>
       )}
     </div>
