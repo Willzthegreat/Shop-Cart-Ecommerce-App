@@ -90,10 +90,10 @@ const Shop = ({ categories, brands }: Props) => {
               )}
             </div>
           </div>
-          <div  className="flex flex-col md:flex-row gap-5 border-t border-t-shop-dark-green/50 ">
-            <div className="md:sticky md:top-20 md:self-start 
+          <div  className="flex min-w-0 flex-col gap-5 border-t border-t-shop-dark-green/50 md:flex-row ">
+            <div className="w-full min-w-0 border-b border-b-shop-btn-dark-green/50 pb-5 md:sticky md:top-20 md:w-auto md:self-start 
             md:h-[calc(200vh-160px)] md:overflow-y-auto md:overflow-x-hidden md:min-w-64
-            pb-5 border-r border-r-shop-btn-dark-green/50 scrollbar-hide
+            md:border-b-0 md:border-r md:border-r-shop-btn-dark-green/50 scrollbar-hide
             ">
               {/* CategoryList */}
               <CategoryList 

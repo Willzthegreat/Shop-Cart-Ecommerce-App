@@ -30,7 +30,7 @@ const HomeCategories = ({ categories }: HomeCategoriesProps) => {
           <Link
             key={category._id}
             href={`/category/${category.slug}`}
-            className={`group items-center rounded-lg border p-4 transition hover:shadow-md ${
+            className={`group flex min-w-0 flex-col items-center rounded-lg border p-3 transition hover:shadow-md sm:flex-row sm:p-4 ${
               index < 4
                 ? "flex"
                 : index < 6
@@ -45,15 +45,15 @@ const HomeCategories = ({ categories }: HomeCategoriesProps) => {
               alt={`${category.title} category`}
               width={96}
               height={96}
-              className="h-20 w-20 object-contain border rounded-sm mr-2 transition-transform duration-300 group-hover:scale-110"
+              className="h-16 w-16 shrink-0 rounded-sm border object-contain transition-transform duration-300 group-hover:scale-110 sm:mr-2 sm:h-20 sm:w-20"
             />
-            <div className="space-y-1">
-              <h3 className="mt-3 text-sm  text-center md:text-start font-medium">
+            <div className="min-w-0 space-y-1 text-center sm:text-left">
+              <h3 className="mt-2 break-words text-sm font-medium sm:mt-3">
                 {category.title}
               </h3>
 
               {category.productCount !== undefined && (
-                <p className="text-[10px] md:text-start text-shop-dark-green">
+                <p className="text-[10px] text-shop-dark-green">
                   {category.productCount} Products Available
                 </p>
               )}

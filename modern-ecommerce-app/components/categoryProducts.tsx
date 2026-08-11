@@ -49,13 +49,14 @@ const CategoryProducts = ({categories, slug}: Props ) => {
 
   return (
     <>
-      <div className="flex flex-col py-5 md:flex-row gap-5 items-start">
-        <div className="flex flex-col py-3 md:min-w-20 border ">
+      <div className="flex flex-col items-stretch gap-5 py-5 md:flex-row md:items-start">
+        <div className="flex w-full min-w-0 flex-row overflow-x-auto border py-3 md:min-w-20 md:w-auto md:flex-col md:overflow-x-visible">
           {categories?.map((item) => (
               <Button 
                 key={item?._id}
                 onClick={() => handleCategoryChange(item.slug)}
-                className={`bg-transparent border p-3  rounded-none 
+                className={`shrink-0 whitespace-nowrap bg-transparent border p-3 rounded-none 
+                  md:w-full
                   text-dark-color shadow-none hover:bg-shop-orange hover:text-white 
                   font-semibold hoverEffect border-b-2  last:border-b-2 capitalize
                   ${item.slug === currentSlug ? "bg-shop-orange text-white border-shop-orange" : ""} `}>
@@ -71,7 +72,7 @@ const CategoryProducts = ({categories, slug}: Props ) => {
               <Loader2 className="h-5 w-5 animate-spin" /> Loading products...
             </div>
           ) : products.length > 0 ? (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-3 lg:grid-cols-5 px-4 md:px-10">
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6 lg:grid-cols-5 lg:px-10">
               {products.map((product) => <ProductCard key={product._id} product={product} />)}
             </div>
           ) : (
