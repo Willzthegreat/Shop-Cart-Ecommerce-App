@@ -8,9 +8,10 @@ import { useRouter } from "next/navigation";
 
 interface Props {
   close: () => void;
+  className: string;
 }
 
-export default function SignUpForm({ close }: Props) {
+export default function SignUpForm({ close, className }: Props) {
   const router = useRouter();
 
   const [name, setName] = useState("");
@@ -124,15 +125,7 @@ export default function SignUpForm({ close }: Props) {
         <button
           type="submit"
           disabled={loading}
-          className="
-        mt-4
-        bg-shop-dark-green
-        text-white
-        px-4
-        py-2
-        rounded
-        "
-        >
+          className="mt-4 w-full rounded bg-shop-dark-green px-4 py-2 text-white disabled:cursor-not-allowed disabled:opacity-60" >
           {loading ? "Creating Account..." : "Sign Up"}
         </button>
       </form>

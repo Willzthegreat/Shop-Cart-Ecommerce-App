@@ -84,7 +84,7 @@ const Navbar = async () => {
 
 
         {/* Right side */}
-        <div className="w-auto md:w-2 flex items-center justify-end gap-4">
+        <div className="flex w-auto min-w-0 items-center justify-end gap-2 sm:gap-4">
           <SearchBar />
           <CartIcon />
           <FavoriteButton  />

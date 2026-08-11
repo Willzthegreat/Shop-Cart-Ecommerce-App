@@ -37,11 +37,11 @@ export default function UserAvatar() {
   };
 
   if (!user) {
-    return <SignUpButton />;
+    return <SignUpButton label="Sign Up" initialMode="signup" />;
   }
 
   return (
-    <div className="relative ml-10">
+    <div className="relative ml-2 sm:ml-10">
       <button onClick={() => setOpen(!open)} className="flex items-center gap-2 ">
         <div className=" w-8 h-8 rounded-full bg-shop-dark-green text-white flex items-center justify-center font-bold ">
           {user.name ? (

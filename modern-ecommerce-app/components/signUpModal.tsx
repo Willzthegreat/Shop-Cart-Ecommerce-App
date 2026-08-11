@@ -1,108 +1,33 @@
-// "use client";
-
-// import { useState } from "react";
-// import SignUpForm from "./SignUpForm";
-// import SignInForm from "./SignInForm";
-
-// interface Props {
-//   open: boolean;
-//   close: () => void;
-// }
-
-// export default function SignUpModal({ open, close }: Props) {
-//   const [mode, setMode] = useState<"signin" | "signup">("signin");
-
-//   if (!open) return null;
-
-//   return (
-//     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
-
-//       <div className="relative w-full max-w-[50%] h-[60%] rounded-lg bg-white p-6">
-
-//         {/* Close button */}
-//         <button
-//           onClick={close}
-//           className="absolute right-3 top-3 text-xl"
-//         >
-//           ✕
-//         </button>
-
-
-//         {/* Toggle Buttons */}
-//         <div className="mb-6 flex justify-center gap-4">
-
-//           <button
-//             onClick={() => setMode("signin")}
-//             className={`px-4 py-1 rounded ${
-//               mode === "signin"
-//                 ? "bg-shop-dark-green text-white"
-//                 : "bg-shop-light-green"
-//             }`}
-//           >
-//             Sign In
-//           </button>
-
-
-//           <button
-//             onClick={() => setMode("signup")}
-//             className={`px-4 py-1 rounded ${
-//               mode === "signup"
-//                 ? "bg-shop-dark-green text-white"
-//                 : "bg-shop-light-green"
-//             }`}
-//           >
-//             Sign Up
-//           </button>
-
-//         </div>
-
-
-//         {/* Display Form */}
-//         {/* {mode === "signin" ? (
-//           <SignInForm />
-//         ) : (
-//           <SignUpForm />
-//         )} */}
-
-//         {mode === "signin" ? (
-//           <SignInForm />
-//         ) : (
-//           <SignUpForm close={close} />
-//         )}
-
-//       </div>
-
-//     </div>
-//   );
-// }
-
-
-
-
-
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import SignUpForm from "./SignUpForm";
 import SignInForm from "./SignInForm";
+import Logo from "./logo";
 
 
 interface Props {
   open:boolean;
   close:()=>void;
+  initialMode?: "signin" | "signup";
 }
 
 
 export default function SignUpModal({
   open,
-  close
+  close,
+  initialMode = "signin",
 }:Props){
 
 
   const [mode,setMode] = useState<
   "signin" | "signup"
-  >("signin");
+  >(initialMode);
+
+  useEffect(() => {
+    if (open) setMode(initialMode);
+  }, [open, initialMode]);
 
 
 
@@ -113,14 +38,13 @@ export default function SignUpModal({
   return createPortal(
     (
     <div className="
-    fixed inset-0 z-[9999] min-h-screen w-screen overflow-y-auto
-    flex items-center justify-center
+    fixed inset-0 z-9999 flex min-h-screen w-screen items-center justify-center overflow-y-auto
+    p-4
     bg-black/70
     ">
       <div className="
       relative
-      w-full
-      max-w-[500px]
+      w-full max-w-lg max-h-[calc(100vh-2rem)] overflow-y-auto
       rounded-lg
       bg-white
       p-6
@@ -136,12 +60,7 @@ export default function SignUpModal({
         >
           ✕
         </button>
-        <div className="
-        mb-6
-        flex
-        justify-center
-        gap-4
-        ">
+        <div className="mb-6 flex flex-wrap justify-center gap-2 pr-8 sm:gap-4">
           <button
           onClick={()=>setMode("signin")}
           className="
@@ -167,9 +86,18 @@ export default function SignUpModal({
         {
           mode === "signup"
           ?
-          <SignUpForm close={close}/>
+          <SignUpForm className={"px-4 py-2 rounded mt-4"} close={close}/>
           :
-          <SignInForm close={close}/>
+          <SignInForm
+            text={
+              <>
+              <p>Welcome Back To </p>
+               <Logo className="px-2 text-md" />
+              </>
+            }
+            className={"w-full"}
+            // text="Welcome Back To " 
+           close={close}/>
         }
       </div>
     </div>
