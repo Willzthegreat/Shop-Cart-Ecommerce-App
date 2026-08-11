@@ -10,6 +10,7 @@ import { resolveProductImage } from "@/lib/productImage";
 import NoAccess from "@/components/noAccess";
 import Container from "@/components/container";
 import EmptyCart from "@/components/emptyCart";
+import FavoriteButton from "@/components/favoriteButton";
 
 interface StoredUser {
   name?: string;
@@ -80,7 +81,12 @@ export default function CartPage() {
                       </div>
                       <div className="min-w-0 flex-1 overflow-hidden">
                         <h2 className="truncate font-semibold mb-4">{product.name}</h2>
-                        <PriceFormatter amount={product.price} className="text-shop-dark-green" />
+                        <div className="flex flex-wrap items-center gap-3">
+                          <PriceFormatter amount={product.price} className="text-shop-dark-green" />
+                          <FavoriteButton size="small" showProduct={true} product={product} />
+                        </div>
+                      
+                      
                       </div>
                       <div className="flex items-center justify-between gap-2 sm:justify-start">
                         <button type="button" aria-label="Decrease quantity" onClick={() => removeItem(product._id)} className="rounded border p-1">

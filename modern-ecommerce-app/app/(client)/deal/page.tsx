@@ -2,7 +2,7 @@ import React from "react";
 import { getDealProducts } from "@/queries";
 import Title from "@/components/title";
 import Container from "@/components/container";
-import ProductCard from "@/components/productCard";
+import ProductCard from "@/components/ProductCard";
 
 export const dynamic = "force-dynamic";
 

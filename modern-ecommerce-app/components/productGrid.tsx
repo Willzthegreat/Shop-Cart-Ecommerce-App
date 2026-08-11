@@ -6,7 +6,7 @@ import { productType } from "@/constants/data";
 import { Loader2 } from "lucide-react";
 import NoProductAvailable from "./noProductAvailable";
 import { AnimatePresence, motion } from "motion/react";
-import ProductCard from "./productCard";
+import ProductCard from "./ProductCard";
 import type { Product } from "@/types/product";
 
 const ProductGrid = () => {
