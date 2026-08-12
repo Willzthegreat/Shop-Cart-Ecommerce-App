@@ -1,4 +1,4 @@
-import Link from "next/link";
+import InfoPage from "@/components/infoPage";
 
 export const metadata = {
   title: "About Us",
@@ -7,15 +7,11 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <main className="mx-auto max-w-5xl px-6 py-16">
-      <h1 className="text-4xl font-bold text-shop-dark-green">About Us</h1>
-      <p className="mt-6 max-w-2xl text-lg leading-8 text-gray-600">
-        We make it easy to discover quality gadgets, appliances, and everyday
-        essentials from trusted brands.
-      </p>
-      <Link href="/shop" className="mt-8 inline-block rounded bg-shop-dark-green px-5 py-3 font-semibold text-white">
-        Browse products
-      </Link>
-    </main>
+    <InfoPage title="About Us" intro="We make it easy to discover quality gadgets, appliances, and everyday essentials from trusted brands.">
+      <h2>Shopping made simple</h2>
+      <p>Shopcart brings useful products, dependable value, and a smooth shopping experience together in one place.</p>
+      <h2>Our promise</h2>
+      <p>We are committed to clear product information, secure account access, and helpful customer support from browsing to delivery.</p>
+    </InfoPage>
   );
 }

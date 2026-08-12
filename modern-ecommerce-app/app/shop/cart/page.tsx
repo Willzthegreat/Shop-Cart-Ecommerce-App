@@ -11,6 +11,7 @@ import NoAccess from "@/components/noAccess";
 import Container from "@/components/container";
 import EmptyCart from "@/components/emptyCart";
 import FavoriteButton from "@/components/favoriteButton";
+import Checkout from "@/components/checkout";
 
 interface StoredUser {
   name?: string;
@@ -123,6 +124,11 @@ export default function CartPage() {
                     <div className="mt-4 flex justify-between pt-4 font-bold">
                       <span>Total</span>
                       <PriceFormatter amount={total} />
+                    </div>
+                    <div className="mt-8 items-center flex justify-center ">
+                      <Link href={"/modern-ecommerce-app/components/checkout.tsx"} className="mt-6 bg-shop-btn-dark-green text-white py-2 px-6 border rounded-sm ">
+                        Proceed to Checkout
+                      </Link>
                     </div>
                   </div>
                   <div className="h-fit rounded-lg border mt-8 bg-white p-5">
