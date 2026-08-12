@@ -5,9 +5,7 @@ const Checkout = () => {
   return (
     <>
       <div>
-        {/* <Link href={} className=""> */}
-          Welcome to Check out
-        {/* </Link> */}
+        Welcome to Check out
       </div>
     </>
   )

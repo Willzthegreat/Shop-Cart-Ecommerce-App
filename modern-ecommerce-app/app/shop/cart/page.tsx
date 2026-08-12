@@ -31,7 +31,7 @@ export default function CartPage() {
     const saving = originalPrice > price ? originalPrice - price : 0;
     return total + saving * quantity;
   }, 0);
-  const total = subtotal;
+  const total = Math.max(0, subtotal - discount);
 
   useEffect(() => {
     const loadUser = () => {
@@ -126,7 +126,7 @@ export default function CartPage() {
                       <PriceFormatter amount={total} />
                     </div>
                     <div className="mt-8 items-center flex justify-center ">
-                      <Link href={"/modern-ecommerce-app/components/checkout.tsx"} className="mt-6 bg-shop-btn-dark-green text-white py-2 px-6 border rounded-sm ">
+                      <Link href="/shop/checkout" className="mt-6 bg-shop-btn-dark-green text-white py-2 px-6 border rounded-sm ">
                         Proceed to Checkout
                       </Link>
                     </div>

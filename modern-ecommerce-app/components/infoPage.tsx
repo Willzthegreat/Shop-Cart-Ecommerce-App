@@ -1,5 +1,4 @@
 import Link from "next/link";
-// import Logo from "./logo";
 
 interface InfoPageProps {
   title: string;
