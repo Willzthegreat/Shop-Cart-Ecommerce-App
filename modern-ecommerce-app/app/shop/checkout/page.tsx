@@ -1,1 +1,5 @@
-export default function PlaceholderPage() { return <div className="p-6">Page coming soon.</div>; }
+import Checkout from "@/components/checkout";
+
+export default function CheckoutPage() {
+  return <Checkout />;
+}

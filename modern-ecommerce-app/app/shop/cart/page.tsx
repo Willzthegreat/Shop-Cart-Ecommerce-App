@@ -11,7 +11,6 @@ import NoAccess from "@/components/noAccess";
 import Container from "@/components/container";
 import EmptyCart from "@/components/emptyCart";
 import FavoriteButton from "@/components/favoriteButton";
-import Checkout from "@/components/checkout";
 
 interface StoredUser {
   name?: string;
@@ -121,7 +120,7 @@ export default function CartPage() {
                       <span>Discount</span>
                       <PriceFormatter amount={discount} />
                     </div>
-                    <div className="mt-4 flex justify-between pt-4 font-bold">
+                    <div className="mt-8 flex border-t border-gray-100  justify-between pt-4 font-bold">
                       <span>Total</span>
                       <PriceFormatter amount={total} />
                     </div>
@@ -131,9 +130,8 @@ export default function CartPage() {
                       </Link>
                     </div>
                   </div>
-                  <div className="h-fit rounded-lg border mt-8 bg-white p-5">
+                  <div className="h-fit rounded-lg border mt-6 bg-white p-5">
                     <h2 className="font-semibold">Delivery Address</h2>
-                    {user ? (
                       <div className="mt-3 rounded border border-gray-200 p-3 text-sm">
                         <p className="font-semibold">{user.name || "Customer"}</p>
                         <p className="text-gray-500">{user.email || "No email available"}</p>
@@ -141,16 +139,9 @@ export default function CartPage() {
                           Manage delivery details
                         </Link>
                       </div>
-                    ) : (
-                      <div className="mt-3">
-                        <p className="text-sm text-gray-500">Sign in to use your saved delivery details.</p>
-                        
-                        <Link href="/?auth=required" className="font-semibold text-shop-dark-green hover:underline">
-                          Sign in
-                        </Link>
-                        
-                      </div>
-                    )}
+                    <div>
+
+                    </div>
                   </div>
                 </aside>
               </div>
