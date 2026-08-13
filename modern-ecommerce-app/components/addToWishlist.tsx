@@ -5,6 +5,7 @@ import useStore from '@/store';
 import { Product } from '@/types/product';
 import { Heart } from 'lucide-react';
 import React from 'react'
+import toast from 'react-hot-toast';
 
 const AddToWishlist = ({
   product,
@@ -25,8 +26,10 @@ const AddToWishlist = ({
 
     if (existingProduct) {
       removeFromFavorite(product._id);
+      toast.success(`${product.name.substring(0, 12)}... removed from wishlist!`);
     } else {
       void addToFavorite(product);
+      toast.success(`${product.name.substring(0, 12)}... added to wishlist!`);
     }
   };
 

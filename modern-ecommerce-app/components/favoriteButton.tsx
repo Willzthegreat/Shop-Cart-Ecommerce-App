@@ -5,6 +5,7 @@ import { Heart } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 import useStore from '@/store';
+import toast from 'react-hot-toast';
 
 
 interface Props {
@@ -36,8 +37,10 @@ const FavoriteButton = ({
 
     if (isFavorite) {
       removeFromFavorite(product._id);
+      toast.success(`${product.name.substring(0, 12)}... removed from wishlist!`);
     } else {
       void addToFavorite(product);
+      toast.success(`${product.name.substring(0, 12)}... added to wishlist!`);
     }
   };
 
