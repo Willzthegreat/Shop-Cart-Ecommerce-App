@@ -50,11 +50,7 @@ const FavoriteButton = ({
           <span className="absolute -top-2 -right-2 bg-shop-dark-green text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
             {favoriteProduct.length}
           </span>
-        ) : (
-          <span className="absolute -top-2 -right-2  text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-            {favoriteProduct.length === null }
-          </span>
-        )}
+        ) : null}
       </Link>
       ) : (
         <button

@@ -57,7 +57,7 @@ export default function ProfilePage() {
 
   return (
     <main className="">
-      <div className="grid min-h-[700px] grid-cols-1 md:grid-cols-[280px_1fr]">
+      <div className="grid min-h-175 grid-cols-1 md:grid-cols-[280px_1fr]">
         <aside className="border-r bg-gray-100">
           <div className="p-6">
             <h1 className="text-2xl font-bold">My Profile</h1>
