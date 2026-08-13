@@ -147,7 +147,7 @@ export default function WishlistPage() {
             <button
               type="button"
               onClick={loadMore}
-              className="rounded bg-shop-dark-green px-5 py-3 font-medium text-white transition hover:opacity-90"
+              className="rounded bg-shop-dark-green px-5 w-170 py-1 font-medium text-white transition hover:opacity-90"
             >
               Load more
             </button>
