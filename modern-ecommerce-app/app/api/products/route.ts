@@ -99,6 +99,7 @@ export async function GET(req: Request) {
     const brandSlug = url.searchParams.get("brand") || "";
     const minPriceParam = url.searchParams.get("minPrice");
     const maxPriceParam = url.searchParams.get("maxPrice");
+    const search = url.searchParams.get("q")?.trim() || "";
     const minPrice = minPriceParam === null ? NaN : Number(minPriceParam);
     const maxPrice = maxPriceParam === null ? NaN : Number(maxPriceParam);
 
@@ -110,6 +111,24 @@ export async function GET(req: Request) {
     };
 
     const filter: Record<string, unknown> = {};
+
+    if (search) {
+      const escapedSearch = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const searchRegex = new RegExp(escapedSearch, "i");
+      const [matchingCategories, matchingBrands] = await Promise.all([
+        Category.find({ title: searchRegex }).select("_id").lean(),
+        Brand.find({ title: searchRegex }).select("_id").lean(),
+      ]);
+
+      filter.$or = [
+        { name: searchRegex },
+        { code: searchRegex },
+        { description: searchRegex },
+        { status: searchRegex },
+        { category: { $in: matchingCategories.map((item) => item._id) } },
+        { brand: { $in: matchingBrands.map((item) => item._id) } },
+      ];
+    }
 
     if (categorySlug) {
       const category = await Category.findOne({ slug: categorySlug }).select("_id");
