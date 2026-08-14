@@ -90,18 +90,18 @@ export default function SearchBar() {
   }, []);
 
   return (
-    <div ref={searchRef} className="relative">
+    <div ref={searchRef} className="relative shrink-0">
       <button
         type="button"
         aria-label="Search"
         onClick={() => setOpen((value) => !value)}
-        className="rounded-full p-1 hover:text-shop-light-green"
+        className="rounded-full p-2 hover:text-shop-light-green sm:p-1"
       >
         {open ? <X className="h-5 w-5" /> : <Search className="h-5 w-5" />}
       </button>
 
       {open && (
-        <div className="absolute right-0 top-10 z-50 w-[min(92vw,24rem)] rounded-lg border bg-white p-3 shadow-xl">
+        <div className="fixed left-3 right-3 top-20 z-50 rounded-lg border bg-white p-3 shadow-xl sm:absolute sm:left-auto sm:right-0 sm:top-10 sm:w-96">
           <div className="flex items-center gap-2 rounded-md border px-3 py-2">
             <Search className="h-4 w-4 text-gray-400" />
             <input
@@ -113,7 +113,7 @@ export default function SearchBar() {
             />
           </div>
 
-          <div className="mt-3 max-h-96 overflow-y-auto">
+          <div className="mt-3 max-h-[65vh] overflow-y-auto sm:max-h-96">
             {loading && <p className="px-2 py-3 text-sm text-gray-500">Searching...</p>}
 
             {!loading && normalizedQuery && products.length > 0 && (
