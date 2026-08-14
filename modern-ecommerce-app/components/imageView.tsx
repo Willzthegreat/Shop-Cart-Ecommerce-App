@@ -17,7 +17,7 @@ const ImageView = ({ images = [], isStock }: Props) => {
   if (!images.length) {
     return (
       <div className="w-full md:w-1/2">
-        <div className="w-full min-h-[450px] border border-darkColor/10 rounded-md flex items-center justify-center">
+        <div className="w-full min-h-112.5 border border-darkColor/10 rounded-md flex items-center justify-center">
           <p>No image available</p>
         </div>
       </div>
@@ -37,10 +37,10 @@ const ImageView = ({ images = [], isStock }: Props) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0.5 }}
           transition={{ duration: 0.5 }}
-          className="w-full max-h-[550px] min-h-[450px] border border-darkColor/10 rounded-md group overflow-hidden"
+          className="w-full max-h-137.5 min-h-112.5 border border-darkColor/10 rounded-md group overflow-hidden"
         >
           {isRemoteOrDataImage ? (
-            <img
+            <Image
               src={activeImage}
               alt="productImage"
               className={`h-96 w-full rounded-md object-contain group-hover:scale-110 hoverEffect ${
@@ -77,7 +77,7 @@ const ImageView = ({ images = [], isStock }: Props) => {
             }`}
           >
             {thumbnailImage.startsWith("data:") || /^https?:\/\//i.test(thumbnailImage) ? (
-              <img
+              <Image
                 src={thumbnailImage}
                 alt={`Product image ${index + 1}`}
                 className="h-full w-full object-contain"

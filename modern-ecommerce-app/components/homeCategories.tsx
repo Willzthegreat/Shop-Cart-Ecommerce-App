@@ -48,7 +48,7 @@ const HomeCategories = ({ categories }: HomeCategoriesProps) => {
               className="h-16 w-16 shrink-0 rounded-sm border object-contain transition-transform duration-300 group-hover:scale-110 sm:mr-2 sm:h-20 sm:w-20"
             />
             <div className="min-w-0 space-y-1 text-center sm:text-left">
-              <h3 className="mt-2 break-words text-sm font-medium sm:mt-3">
+              <h3 className="mt-2 wrap-break-words text-sm font-medium sm:mt-3">
                 {category.title}
               </h3>
 

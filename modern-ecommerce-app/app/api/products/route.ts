@@ -100,6 +100,10 @@ export async function GET(req: Request) {
     const minPriceParam = url.searchParams.get("minPrice");
     const maxPriceParam = url.searchParams.get("maxPrice");
     const search = url.searchParams.get("q")?.trim() || "";
+    const requestedLimit = Number(url.searchParams.get("limit"));
+    const limit = Number.isFinite(requestedLimit) && requestedLimit > 0
+      ? Math.min(Math.floor(requestedLimit), 100)
+      : 0;
     const minPrice = minPriceParam === null ? NaN : Number(minPriceParam);
     const maxPrice = maxPriceParam === null ? NaN : Number(maxPriceParam);
 
@@ -196,11 +200,14 @@ export async function GET(req: Request) {
       }
     }
 
-    const products = await Product.find(filter)
+    const productQuery = Product.find(filter)
       .sort({ createdAt: -1 })
       .populate("category")
-      .populate("brand")
-      .lean();
+      .populate("brand");
+
+    if (limit > 0) productQuery.limit(limit);
+
+    const products = await productQuery.lean();
 
     return NextResponse.json({ data: products });
   } catch (error) {

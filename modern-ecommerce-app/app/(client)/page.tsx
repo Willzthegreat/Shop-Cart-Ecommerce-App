@@ -12,8 +12,10 @@ export const dynamic = "force-dynamic";
 
 const Home = async() => {
   
-  const categories = await getCategories({ quantity: 10 });
-  const brands = await getAllBrands();
+  const [categories, brands] = await Promise.all([
+    getCategories({ quantity: 10 }),
+    getAllBrands(),
+  ]);
   
   
 

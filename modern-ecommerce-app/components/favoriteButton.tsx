@@ -64,7 +64,7 @@ const FavoriteButton = ({
         >
           <Heart
             fill={isFavorite ? "currentColor" : "none"}
-            className={`mt-.5 rounded-[4px] border border-shop-light-green text-shop-light-green/80 group-hover:text-shop-light-green hoverEffect ${
+            className={`mt-.5 rounded-lg border border-shop-light-green text-shop-light-green/80 group-hover:text-shop-light-green hoverEffect ${
               size === "small" ? "h-9 w-9 p-1.5" : "h-12 w-13 p-2"
             }`}
           />

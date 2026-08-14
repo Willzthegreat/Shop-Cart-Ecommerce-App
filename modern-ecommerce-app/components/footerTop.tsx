@@ -62,15 +62,4 @@ const FooterTop = () => {
   )
 };
 
-
-// const ContactItem = () => {
-//   return (
-//     <>
-//       <div>
-//         <p>Hello</p>
-//       </div>
-//     </>
-//   )
-// }
-
 export default FooterTop

@@ -34,26 +34,32 @@ const getCategories = async (
         ),
     );
 
-    const categoriesWithCount = await Promise.all(
-      uniqueCategories.map(async (category) => {
-        const matchingCategoryIds = categories
-          .filter(
-            (candidate) =>
-              normalizeCategoryName(candidate.title) === normalizeCategoryName(category.title),
-          )
-          .map((candidate) => candidate._id);
-
-        const productCount = await Product.countDocuments({
-          category: { $in: matchingCategoryIds },
-        });
-
-        return {
-          ...category,
-          _id: category._id.toString(),
-          productCount,
-        };
-      })
+    const productCounts = await Product.aggregate([
+      { $group: { _id: "$category", count: { $sum: 1 } } },
+    ]);
+    const countByCategory = new Map(
+      productCounts.map((item) => [String(item._id), item.count as number]),
     );
+
+    const categoriesWithCount = uniqueCategories.map((category) => {
+      const matchingCategoryIds = categories
+        .filter(
+          (candidate) =>
+            normalizeCategoryName(candidate.title) === normalizeCategoryName(category.title),
+        )
+        .map((candidate) => String(candidate._id));
+
+      const productCount = matchingCategoryIds.reduce(
+        (total, categoryId) => total + (countByCategory.get(categoryId) || 0),
+        0,
+      );
+
+      return {
+        ...category,
+        _id: category._id.toString(),
+        productCount,
+      };
+    });
 
     return categoriesWithCount;
   } catch (error) {

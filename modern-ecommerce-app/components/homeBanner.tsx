@@ -3,7 +3,6 @@ import { Title } from "./ui/text"
 import Image from "next/image"
 import Banner1 from "@/public/banner1..png"
 import ProductGrid from "./productGrid";
-import { productType } from "@/constants/data";
 
 
 const HomeBanner = () => {

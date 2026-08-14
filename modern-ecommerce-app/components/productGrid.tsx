@@ -20,25 +20,16 @@ const ProductGrid = () => {
       setLoading(true);
 
       try {
-        const apiUrl = "/api/products?tab=" + encodeURIComponent(selectedTab);
-        console.log("Fetching products from:", apiUrl);
+        const apiUrl = "/api/products?tab=" + encodeURIComponent(selectedTab) + "&limit=20";
         const res = await fetch(apiUrl, { cache: "no-store" });
 
       if (!res.ok) {
-
-          console.log(res);        
           const error = await res.text();
-          console.error("API Status:", res.status);
-          console.error("API Error:", error);
-
           throw new Error(`Failed to fetch products (${res.status})`);
         }
 
         const json = await res.json();
-        console.log("JSON Response:", json);
-        // Keep the home section compact: 20 items means 4 rows on the
-        // five-column layout and 5 rows on the four-column layout.
-        setProducts((json.data || []).slice(0, 20));
+        setProducts(json.data || []);
       } catch (error) {
         console.error("Product fetching error:", error);
       } finally {

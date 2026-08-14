@@ -64,7 +64,7 @@ import SignUpButton from "./SignUpButton";
 import UserAvatar from "./userAvatar";
 
 
-const Navbar = async () => {
+const Navbar = () => {
 
   
 

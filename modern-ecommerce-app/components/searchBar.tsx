@@ -61,7 +61,7 @@ export default function SearchBar() {
     const timer = window.setTimeout(async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/api/products?q=${encodeURIComponent(query.trim())}`, {
+        const response = await fetch(`/api/products?q=${encodeURIComponent(query.trim())}&limit=8`, {
           signal: controller.signal,
           cache: "no-store",
         });
@@ -101,7 +101,7 @@ export default function SearchBar() {
       </button>
 
       {open && (
-        <div className="fixed left-3 right-3 top-20 z-50 rounded-lg border bg-white p-3 shadow-xl sm:absolute sm:left-auto sm:right-0 sm:top-10 sm:w-96">
+        <div className="fixed inset-x-2 top-2 z-[60] w-auto rounded-lg border bg-white p-3 shadow-xl sm:absolute sm:inset-x-auto sm:right-0 sm:top-10 sm:w-96">
           <div className="flex items-center gap-2 rounded-md border px-3 py-2">
             <Search className="h-4 w-4 text-gray-400" />
             <input
