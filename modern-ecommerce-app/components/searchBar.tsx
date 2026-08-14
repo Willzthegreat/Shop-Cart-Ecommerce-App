@@ -42,6 +42,12 @@ export default function SearchBar() {
   const [products, setProducts] = useState<ProductResult[]>([]);
   const [loading, setLoading] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const closeSearch = () => {
+    inputRef.current?.blur();
+    setOpen(false);
+  };
 
   const normalizedQuery = query.trim().toLowerCase();
   const matchingLinks = normalizedQuery
@@ -83,7 +89,10 @@ export default function SearchBar() {
 
   useEffect(() => {
     const closeSearch = (event: MouseEvent) => {
-      if (!searchRef.current?.contains(event.target as Node)) setOpen(false);
+      if (!searchRef.current?.contains(event.target as Node)) {
+        inputRef.current?.blur();
+        setOpen(false);
+      }
     };
     document.addEventListener("mousedown", closeSearch);
     return () => document.removeEventListener("mousedown", closeSearch);
@@ -94,7 +103,7 @@ export default function SearchBar() {
       <button
         type="button"
         aria-label="Search"
-        onClick={() => setOpen((value) => !value)}
+        onClick={() => (open ? closeSearch() : setOpen(true))}
         className="rounded-full p-2 hover:text-shop-light-green sm:p-1"
       >
         {open ? <X className="h-5 w-5" /> : <Search className="h-5 w-5" />}
@@ -105,9 +114,13 @@ export default function SearchBar() {
           <div className="flex items-center gap-2 rounded-md border px-3 py-2">
             <Search className="h-4 w-4 text-gray-400" />
             <input
+              ref={inputRef}
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               inputMode="search"
+              onKeyDown={(event) => {
+                if (event.key === "Escape") closeSearch();
+              }}
               placeholder="Search products, pages, accounts..."
               className="w-full bg-transparent text-base outline-none sm:text-sm"
             />
@@ -123,7 +136,7 @@ export default function SearchBar() {
                   <Link
                     key={product._id}
                     href={`/product/${product.slug}`}
-                    onClick={() => setOpen(false)}
+                    onClick={closeSearch}
                     className="block rounded px-2 py-2 text-sm hover:bg-gray-100"
                   >
                     <span className="font-medium">{product.name}</span>
@@ -142,7 +155,7 @@ export default function SearchBar() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    onClick={() => setOpen(false)}
+                    onClick={closeSearch}
                     className="flex items-center justify-between rounded px-2 py-2 text-sm hover:bg-gray-100"
                   >
                     <span>{item.label}</span>
