@@ -135,7 +135,7 @@ export default function CartPage() {
                       <div className="mt-3 rounded border border-gray-200 p-3 text-sm">
                         <p className="font-semibold">{user.name || "Customer"}</p>
                         <p className="text-gray-500">{user.email || "No email available"}</p>
-                        <Link href="/shop/profile" className="mt-3 inline-block font-semibold text-shop-dark-green hover:underline">
+                        <Link href="/profile" className="mt-3 inline-block font-semibold text-shop-dark-green hover:underline">
                           Manage delivery details
                         </Link>
                       </div>
