@@ -49,33 +49,36 @@ const DashboardSidebar = () => {
   }, []);
 
   return (
-    <aside className="border-b border-gray-200 bg-white md:border-b-0 md:border-r">
-      <div className="sticky top-0 p-4 md:p-6">
-        <div className="mt-3 flex  items-center gap-3">
-          <div className="h-16 w-16 overflow-hidden rounded-full border-2 border-shop-dark-green shadow-lg">
+    <aside className="border-b border-gray-200 bg-white md:min-h-screen md:border-b-0 md:border-r">
+      <div className="p-4 md:sticky md:top-0 md:p-6">
+        <div className="flex items-center gap-3">
+          <div className="h-14 w-14 shrink-0 overflow-hidden rounded-full border-2 border-shop-dark-green shadow-lg sm:h-16 sm:w-16">
             <Image
               src={UserProfilePic}
               className="h-full w-full object-cover"
               alt="User profile"
             />
           </div>
-          <div className="w-33 ">
-            <h2 className="truncate text-md font-bold text-gray-900">
+          <div className="min-w-0 flex-1">
+            <h2 className="truncate text-base font-bold text-gray-900 sm:text-lg">
               {user?.name || "Customer"}
             </h2>
-            <p className="truncate text-sm text-gray-500">
+            <p className="truncate text-xs text-gray-500 sm:text-sm">
               {user?.email || "Admin account"}
             </p>
           </div>
         </div>
 
-        <nav className="mt-6 space-y-1" aria-label="Dashboard sections">
+        <nav
+          className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4 md:mt-8 md:grid-cols-1 md:gap-1"
+          aria-label="Dashboard sections"
+        >
           {sections.map((section) => (
             <button
               key={section}
               type="button"
               onClick={() => setActiveSection(section)}
-              className={`w-full rounded-md px-4 py-3 text-left font-semibold transition-colors ${
+              className={`w-full rounded-md px-3 py-2 text-left text-sm font-semibold transition-colors sm:px-4 sm:py-3 sm:text-base ${
                 activeSection === section
                   ? "bg-shop-btn-dark-green text-white"
                   : "text-gray-700 hover:bg-gray-100"
