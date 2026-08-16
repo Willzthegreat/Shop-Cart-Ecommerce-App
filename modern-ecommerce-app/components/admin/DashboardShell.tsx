@@ -46,9 +46,10 @@ const DashboardShell = ({ brands, categories }: DashboardShellProps) => {
           )}
 
           {activeView === "products" && (
-            <div className="grid gap-6 lg:grid-cols-2">
-              <ProductForm categories={categories} brands={brands} />
-              <ImageUpLoader initialBrands={brands} />
+            <div className="grid gap-6 justify-center px-3 lg:grid-cols-2">
+              {/* <ProductForm categories={categories} brands={brands} />
+              <ImageUpLoader initialBrands={brands} /> */}
+              <p className="text-center">Page is Under Construction and will be available shortly.</p>
             </div>
           )}
 
