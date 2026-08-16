@@ -1,6 +1,7 @@
 import DatabaseConnection from "@/lib/mongodb/mongodb";
 import Category from "@/models/categoryType";
 import Product from "@/models/product";
+import Order from "@/models/orderType";
 import Blog from "@/models/blogType";
 import Brand from "@/models/brandType";
 // Blog.author uses the Author model. Importing it here registers the model
@@ -304,6 +305,135 @@ const getBrand = async (slug: string) => {
   }
 };
 
+/**
+ * Get revenue from completed customer orders for the seller dashboard.
+ */
+const getSellerTotalSales = async () => {
+  try {
+    await DatabaseConnection();
+
+    const now = new Date();
+    const currentWeekStart = new Date(now);
+    currentWeekStart.setDate(now.getDate() - 7);
+    const previousWeekStart = new Date(now);
+    previousWeekStart.setDate(now.getDate() - 14);
+    const completedStatuses = [
+      "paid",
+      "shipped",
+      "out_for_delivery",
+      "delivered",
+    ];
+
+    const [result] = await Order.aggregate([
+      { $match: { status: { $in: completedStatuses } } },
+      {
+        $facet: {
+          allTime: [{ $group: { _id: null, total: { $sum: "$totalPrice" } } }],
+          currentWeek: [
+            { $match: { orderDate: { $gte: currentWeekStart, $lte: now } } },
+            { $group: { _id: null, total: { $sum: "$totalPrice" } } },
+          ],
+          previousWeek: [
+            {
+              $match: {
+                orderDate: {
+                  $gte: previousWeekStart,
+                  $lt: currentWeekStart,
+                },
+              },
+            },
+            { $group: { _id: null, total: { $sum: "$totalPrice" } } },
+          ],
+          orders: [
+            { $match: { status: { $ne: "cancelled" } } },
+            { $count: "count" },
+          ],
+          visitors: [
+            { $match: { status: { $ne: "cancelled" } } },
+            { $group: { _id: "$email" } },
+            { $count: "count" },
+          ],
+          currentWeekOrders: [
+            {
+              $match: {
+                status: { $ne: "cancelled" },
+                orderDate: { $gte: currentWeekStart, $lte: now },
+              },
+            },
+            { $count: "count" },
+          ],
+          previousWeekOrders: [
+            {
+              $match: {
+                status: { $ne: "cancelled" },
+                orderDate: { $gte: previousWeekStart, $lt: currentWeekStart },
+              },
+            },
+            { $count: "count" },
+          ],
+          currentWeekVisitors: [
+            {
+              $match: {
+                status: { $ne: "cancelled" },
+                orderDate: { $gte: currentWeekStart, $lte: now },
+              },
+            },
+            { $group: { _id: "$email" } },
+            { $count: "count" },
+          ],
+          previousWeekVisitors: [
+            {
+              $match: {
+                status: { $ne: "cancelled" },
+                orderDate: { $gte: previousWeekStart, $lt: currentWeekStart },
+              },
+            },
+            { $group: { _id: "$email" } },
+            { $count: "count" },
+          ],
+        },
+      },
+    ]);
+
+    const totalSales = Number(result?.allTime?.[0]?.total) || 0;
+    const currentWeekSales = Number(result?.currentWeek?.[0]?.total) || 0;
+    const previousWeekSales = Number(result?.previousWeek?.[0]?.total) || 0;
+    const totalOrders = Number(result?.orders?.[0]?.count) || 0;
+    const visitors = Number(result?.visitors?.[0]?.count) || 0;
+    const currentWeekOrders = Number(result?.currentWeekOrders?.[0]?.count) || 0;
+    const previousWeekOrders = Number(result?.previousWeekOrders?.[0]?.count) || 0;
+    const currentWeekVisitors = Number(result?.currentWeekVisitors?.[0]?.count) || 0;
+    const previousWeekVisitors = Number(result?.previousWeekVisitors?.[0]?.count) || 0;
+    const getPercentageChange = (current: number, previous: number) =>
+      previous === 0 ? (current > 0 ? 100 : 0) : ((current - previous) / previous) * 100;
+    const percentageChange =
+      previousWeekSales === 0
+        ? currentWeekSales > 0
+          ? 100
+          : 0
+        : ((currentWeekSales - previousWeekSales) / previousWeekSales) * 100;
+
+    return {
+      totalSales,
+      percentageChange,
+      totalOrders,
+      visitors,
+      ordersPercentageChange: getPercentageChange(currentWeekOrders, previousWeekOrders),
+      visitorsPercentageChange: getPercentageChange(currentWeekVisitors, previousWeekVisitors),
+    };
+  } catch (error) {
+    console.error("Error fetching seller sales:", error);
+    return {
+      totalSales: 0,
+      percentageChange: 0,
+      totalOrders: 0,
+      visitors: 0,
+      ordersPercentageChange: 0,
+      visitorsPercentageChange: 0,
+    };
+  }
+};
+
 export {
   getCategories,
   getAllBrands,
@@ -312,5 +442,6 @@ export {
   getDealProducts,
   getProductBySlug,
   getBrand,
+  getSellerTotalSales,
 };
 

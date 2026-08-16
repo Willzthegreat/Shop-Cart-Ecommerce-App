@@ -6,7 +6,7 @@ import CategoryForm from "@/components/admin/CategoryForm";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
 import ImageUpLoader from "@/components/admin/ImageUpLoader";
 import ProductForm from "@/components/admin/ProductForm";
-import Overview from "./overview/page";
+import Overview from "@/components/admin/overview/page";
 
 type Option = { _id: string; title: string };
 type Brand = Option & { slug: string; logo?: string };
@@ -15,9 +15,24 @@ type DashboardView = "overview" | "products" | "orders" | "marketing" | "custome
 type DashboardShellProps = {
   brands: Brand[];
   categories: Option[];
+  totalSales: number;
+  percentageChange: number;
+  totalOrders: number;
+  visitors: number;
+  ordersPercentageChange: number;
+  visitorsPercentageChange: number;
 };
 
-const DashboardShell = ({ brands, categories }: DashboardShellProps) => {
+const DashboardShell = ({
+  brands,
+  categories,
+  totalSales,
+  percentageChange,
+  totalOrders,
+  visitors,
+  ordersPercentageChange,
+  visitorsPercentageChange,
+}: DashboardShellProps) => {
   const [activeView, setActiveView] = useState<DashboardView>("overview");
 
   return (
@@ -39,17 +54,23 @@ const DashboardShell = ({ brands, categories }: DashboardShellProps) => {
           </header>
 
           {activeView === "overview" && (
-            <div className="grid gap-6 lg:grid-cols-2">
-
-              <Overview />
+            <div className="w-full">
+              <Overview
+                totalSales={totalSales}
+                percentageChange={percentageChange}
+                totalOrders={totalOrders}
+                visitors={visitors}
+                ordersPercentageChange={ordersPercentageChange}
+                visitorsPercentageChange={visitorsPercentageChange}
+              />
             </div>
           )}
 
           {activeView === "products" && (
             <div className="grid gap-6 justify-center px-3 lg:grid-cols-2">
-              {/* <ProductForm categories={categories} brands={brands} />
-              <ImageUpLoader initialBrands={brands} /> */}
-              <p className="text-center">Page is Under Construction and will be available shortly.</p>
+              <ProductForm categories={categories} brands={brands} />
+              <ImageUpLoader initialBrands={brands} />
+              {/* <p className="text-center">Page is Under Construction and will be available shortly.</p> */}
             </div>
           )}
 

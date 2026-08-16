@@ -96,7 +96,6 @@ export default function SignUpModal({
               </>
             }
             className={"w-full"}
-            // text="Welcome Back To " 
            close={close}/>
         }
       </div>
