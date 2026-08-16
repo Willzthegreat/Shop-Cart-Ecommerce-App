@@ -24,9 +24,9 @@ export default function ProductForm({ categories, brands }: { categories: Option
     <section className="rounded-xl border bg-white p-6 shadow-sm">
       <h2 className="text-xl font-bold text-gray-800">Add product</h2>
       <form onSubmit={submit} className="mt-4 grid gap-3">
-        <input name="name" required placeholder="Product name" className="rounded border p-3" />
+        <input name="name" required placeholder="Product name" className="rounded border p-3 w-auto md:min-w-md" />
         <input name="code" placeholder="Product code" className="rounded border p-3" />
-        <textarea name="description" placeholder="Description" className="rounded border p-3" />
+        <textarea name="description" placeholder="Description" className="rounded border p-3 w-auto md:min-w-md" />
         <label className="grid gap-1 text-sm font-medium text-gray-700">
           Online image URL(s)
           <input

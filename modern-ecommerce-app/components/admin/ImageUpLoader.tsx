@@ -33,7 +33,7 @@ export default function ImageUpLoader({ initialBrands = [] }: { initialBrands?: 
   return (
     <div className="space-y-8">
       <form onSubmit={submit} className="flex max-w-full justify-center items-center text-center flex-col gap-3">
-        <input name="title" required placeholder="Brand name" className="w-150 my-6 rounded border p-2" />
+        <input name="title" required placeholder="Brand name" className=" my-6 rounded border p-2 w-auto md:min-w-md" />
         <input name="logo" className="cursor-pointer hover:text-gray-500 text-center pl-40" required type="file" accept="image/png,image/jpeg,image/webp,image/gif" />
         <button type="submit" className="rounded bg-shop-dark-green cursor-pointer px-4 py-2 text-white">
           Upload brand

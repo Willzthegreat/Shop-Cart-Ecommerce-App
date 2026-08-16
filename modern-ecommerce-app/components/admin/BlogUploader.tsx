@@ -41,7 +41,7 @@ export default function BlogUploader() {
           name="title"
           required
           placeholder="Blog title"
-          className="rounded border p-3"
+          className="rounded border p-3 "
         />
         <input
           name="author"

@@ -61,8 +61,8 @@ const DashboardSidebar = ({
   return (
     <aside className="border-b border-gray-200 bg-white md:min-h-screen md:border-b-0 md:border-r">
       <div className="p-4 md:sticky md:top-0 md:p-6">
-            <h2 className="truncate text-base mb-4 font-bold text-gray-900 sm:text-3xl">
-             Dashboard
+            <h2 className="truncate text-base mb-4 font-bold text-gray-900 sm:text-xl">
+             Seller's Dashboard
             </h2>
         <div className="flex items-center gap-3">
           <div className="h-14 w-14 shrink-0 overflow-hidden rounded-full border-2 border-shop-dark-green shadow-lg sm:h-16 sm:w-16">
