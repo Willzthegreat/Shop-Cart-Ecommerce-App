@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { SESSION_COOKIE, verifyUserSession } from "@/lib/authSession";
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const isPublicRead =
     request.method === "GET" &&
     ["/api/products", "/api/categories", "/api/brands"].some((path) =>
@@ -21,7 +21,10 @@ export async function middleware(request: NextRequest) {
   }
 
   if (request.nextUrl.pathname.startsWith("/api/")) {
-    return NextResponse.json({ error: "Authentication required." }, { status: 401 });
+    return NextResponse.json(
+      { error: "Authentication required." },
+      { status: 401 },
+    );
   }
 
   const loginUrl = new URL("/", request.url);

@@ -6,6 +6,8 @@ import {
   type CountryCode,
 } from "@/config/currency";
 
+type CurrencyDetails = (typeof currencies)[CountryCode];
+
 const euroCountries = new Set([
   "AT", "BE", "CY", "DE", "EE", "ES", "FI", "FR", "GR", "HR",
   "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PT", "SI", "SK",
@@ -38,8 +40,10 @@ function countryFromIpData(data: unknown): CountryCode | undefined {
   // Use the currency supplied by the IP service when the country is a
   // regional currency we support (for example, EUR across the euro zone).
   if (typeof response.currency === "string") {
+    const currencyCode = response.currency.toUpperCase();
     const currency = Object.entries(currencies).find(
-      ([, details]) => details.currency === response.currency.toUpperCase()
+      ([, details]) =>
+        (details as CurrencyDetails).currency === currencyCode,
     );
     if (currency) return currency[0] as CountryCode;
   }
