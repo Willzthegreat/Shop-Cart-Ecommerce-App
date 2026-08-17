@@ -108,12 +108,21 @@ const Overview = ({
         {/* Revenue & Montly Target */}
 
         <div className="grid gap-3 md:grid-cols-[minmax(0,2fr)_minmax(200px,1fr)]">
-          <div className="min-h-auto min-w-0 flex md:w-130  border border-gray-200 p-4 bg-white ">
-            <h2 className="text-lg font-semibold text-gray-900">Store overview</h2>
+          <div className="min-h-auto min-w-0 md:w-130  border border-gray-200 p-4 bg-white ">
+            <div className="flex justify-between">
+              <h2 className="text-lg font-semibold text-gray-900">Revenue Analytics</h2>
+              <div>
+                <h2>
+                  Last 8 Days
+                </h2>
+              </div>
+            </div>
             <p className="mt-2 text-sm text-gray-600">
               Your store performance summary will appear here.
             </p>
           </div>
+
+
           <div className="min-h-30 min-w-0 flex justify-end border border-gray-200 bg-white p-4 ">
             <h2 className="text-lg font-semibold text-gray-900">Store overview</h2>
             <p className="mt-2 text-sm text-gray-600">

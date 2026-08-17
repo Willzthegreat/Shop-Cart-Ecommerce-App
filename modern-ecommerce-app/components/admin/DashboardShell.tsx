@@ -7,6 +7,7 @@ import DashboardSidebar from "@/components/admin/DashboardSidebar";
 import ImageUpLoader from "@/components/admin/ImageUpLoader";
 import ProductForm from "@/components/admin/ProductForm";
 import Overview from "@/components/admin/overview/page";
+import UsersProductDashboard from "./usersProductDashboard";
 
 type Option = { _id: string; title: string };
 type Brand = Option & { slug: string; logo?: string };
@@ -67,10 +68,10 @@ const DashboardShell = ({
           )}
 
           {activeView === "products" && (
-            <div className="grid gap-6 justify-center px-3 lg:grid-cols-2">
-              <ProductForm categories={categories} brands={brands} />
-              <ImageUpLoader initialBrands={brands} />
-              {/* <p className="text-center">Page is Under Construction and will be available shortly.</p> */}
+            <div className="px-3 ">
+              {/* <ProductForm categories={categories} brands={brands} />
+              <ImageUpLoader initialBrands={brands} /> */}
+              <UsersProductDashboard />
             </div>
           )}
 

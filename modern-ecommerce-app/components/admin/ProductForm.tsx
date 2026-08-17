@@ -2,9 +2,15 @@
 
 import { FormEvent, useState } from "react";
 
+
+// interface Props {
+//   categories: string;
+//   brands: string[];
+// }
+
 type Option = { _id: string; title: string };
 
-export default function ProductForm({ categories, brands }: { categories: Option[]; brands: Option[] }) {
+export default function ProductForm({ categories, brands }: { categories: Option[]; brands: Option[] } ) {
   const [message, setMessage] = useState("");
 
   async function submit(event: FormEvent<HTMLFormElement>) {
