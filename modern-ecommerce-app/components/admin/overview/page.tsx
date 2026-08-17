@@ -64,11 +64,11 @@ const Overview = ({
               <div className="text-right">
                 <p
                   className={`text-sm font-semibold ${
-                    visitorsPercentageChange >= 0 ? "text-green-600" : "text-red-600"
+                    ordersPercentageChange >= 0 ? "text-green-600" : "text-red-600"
                   }`}
                 >
-                  {visitorsPercentageChange >= 0 ? "+" : ""}
-                  {visitorsPercentageChange.toFixed(1)}%
+                  {ordersPercentageChange >= 0 ? "+" : ""}
+                  {ordersPercentageChange.toFixed(1)}%
                 </p>
                 <p className="text-[9px] text-gray-500">
                   vs last week
