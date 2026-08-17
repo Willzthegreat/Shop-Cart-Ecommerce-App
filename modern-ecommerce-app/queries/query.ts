@@ -2,6 +2,8 @@ import dbConnect from "@/lib/mongodb/mongodb";
 import Brand from "@/models/brandType";
 import Blog from "@/models/blogType";
 import Product from "@/models/product";
+import { cookies } from "next/headers";
+import { SESSION_COOKIE, verifyUserSession } from "@/lib/authSession";
 
 /**
  * Get all brands
@@ -28,6 +30,28 @@ const getAllBrands = async (
     }));
   } catch (error) {
     console.error("Error fetching brands:", error);
+    return [];
+  }
+};
+
+const getSellerBrands = async () => {
+  try {
+    const session = await verifyUserSession(
+      (await cookies()).get(SESSION_COOKIE)?.value,
+    );
+    if (!session) return [];
+
+    await dbConnect();
+    const brands = await Brand.find({ ownerId: session.userId })
+      .sort({ title: 1 })
+      .lean();
+
+    return brands.map((brand) => ({
+      ...brand,
+      _id: brand._id.toString(),
+    }));
+  } catch (error) {
+    console.error("Error fetching seller brands:", error);
     return [];
   }
 };
@@ -181,6 +205,7 @@ const getBrand = async (slug: string) => {
 
 export {
   getAllBrands,
+  getSellerBrands,
   getLatestBlogs,
   getDealProducts,
   getProductBySlug,

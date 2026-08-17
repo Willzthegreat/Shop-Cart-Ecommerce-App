@@ -58,6 +58,12 @@ const DashboardSidebar = ({
     return () => window.removeEventListener("userChanged", loadUser);
   }, []);
 
+  useEffect(() => {
+    setActiveSection(activeView === "analysis"
+      ? "Analytics"
+      : (activeView[0].toUpperCase() + activeView.slice(1)) as (typeof sections)[number]);
+  }, [activeView]);
+
   return (
     <aside className="border-b border-gray-200 bg-white md:min-h-screen md:border-b-0 md:border-r">
       <div className="p-4 md:sticky md:top-0 md:p-6">
@@ -124,6 +130,5 @@ const DashboardSidebar = ({
 };
 
 export default DashboardSidebar;
-
 
 

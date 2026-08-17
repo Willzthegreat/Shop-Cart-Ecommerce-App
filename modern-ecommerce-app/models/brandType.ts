@@ -2,6 +2,7 @@ import mongoose, { Document, Schema } from "mongoose";
 import slugify from "slugify";
 
 export interface IBrand extends Document {
+  ownerId?: string;
   title: string;
   slug: string;
   logo?: string;
@@ -9,6 +10,10 @@ export interface IBrand extends Document {
 
 const BrandSchema = new Schema<IBrand>(
   {
+    ownerId: {
+      type: String,
+      index: true,
+    },
     title: {
       type: String,
       required: true,

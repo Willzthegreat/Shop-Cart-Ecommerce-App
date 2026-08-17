@@ -58,11 +58,16 @@ function detectCountryOnce(): Promise<CountryCode> {
     try {
       const controller = new AbortController();
       const timeout = window.setTimeout(() => controller.abort(), 5000);
-      const response = await fetch("https://ipapi.co/json/", {
-        signal: controller.signal,
-        cache: "no-store",
-      });
-      window.clearTimeout(timeout);
+      let response: Response;
+
+      try {
+        response = await fetch("https://ipapi.co/json/", {
+          signal: controller.signal,
+          cache: "no-store",
+        });
+      } finally {
+        window.clearTimeout(timeout);
+      }
 
       if (response.ok) {
         const data: unknown = await response.json();

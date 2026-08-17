@@ -1,6 +1,18 @@
 "use client";
 
+import { useState } from "react";
 import PriceView from "../amountCurrencies";
+
+const periods = [
+  "Yesterday",
+  "Last 7 Days",
+  "Last 1 Month",
+  "Last 3 Months",
+  "Last 6 Months",
+  "Last 1 Year",
+];
+
+
 
 const Overview = ({
   totalSales,
@@ -17,6 +29,11 @@ const Overview = ({
   ordersPercentageChange: number;
   visitorsPercentageChange: number;
 }) => {
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedPeriod, setSelectedPeriod] = useState("Last 8 Days");
+
+
 
   return (
     <div className="grid w-full min-w-0 grid-cols-1 gap-6 md:grid-cols-[minmax(0,3fr)_minmax(200px,1fr)]">
@@ -112,9 +129,44 @@ const Overview = ({
             <div className="flex justify-between">
               <h2 className="text-lg font-semibold text-gray-900">Revenue Analytics</h2>
               <div>
-                <h2>
-                  Last 8 Days
-                </h2>
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setIsOpen((prev) => !prev)}
+                    className="flex items-center gap-2 text-[10px] text-gray-600"
+                  >
+                    <span>{selectedPeriod}</span>
+
+                    <i
+                      className={`bx ${
+                        isOpen ? "bx-chevron-up" : "bx-chevron-down"
+                      }`}
+                    />
+                  </button>
+
+                  {isOpen && (
+                    <ul className="absolute right-0 top-full z-50 mt-2 w-40 rounded-lg border border-gray-200 bg-white p-1 shadow-lg">
+                      {periods.map((period) => (
+                        <li key={period}>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSelectedPeriod(period);
+                              setIsOpen(false);
+                            }}
+                            className={`w-full rounded-md px-3 py-2 text-left text-[10px] hover:bg-gray-100 ${
+                              selectedPeriod === period
+                                ? "bg-gray-50 font-medium"
+                                : ""
+                            }`}
+                          >
+                            {period}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
               </div>
             </div>
             <p className="mt-2 text-sm text-gray-600">
@@ -123,8 +175,8 @@ const Overview = ({
           </div>
 
 
-          <div className="min-h-30 min-w-0 flex justify-end border border-gray-200 bg-white p-4 ">
-            <h2 className="text-lg font-semibold text-gray-900">Store overview</h2>
+          <div className="min-h-30 min-w-0  justify-end border border-gray-200 bg-white p-4 ">
+            <h2 className="text-lg font-semibold text-gray-900">Monthly Target</h2>
             <p className="mt-2 text-sm text-gray-600">
               Your store performance summary will appear here.
             </p>

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import BlogUploader from "@/components/admin/BlogUploader";
 import CategoryForm from "@/components/admin/CategoryForm";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
@@ -34,13 +35,45 @@ const DashboardShell = ({
   ordersPercentageChange,
   visitorsPercentageChange,
 }: DashboardShellProps) => {
-  const [activeView, setActiveView] = useState<DashboardView>("overview");
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const viewFromUrl = searchParams.get("view");
+  const initialView: DashboardView =
+    viewFromUrl === "analysis"
+      ? "analysis"
+      : viewFromUrl === "products" ||
+          viewFromUrl === "orders" ||
+          viewFromUrl === "marketing" ||
+          viewFromUrl === "customers" ||
+          viewFromUrl === "content" ||
+          viewFromUrl === "overview"
+        ? viewFromUrl
+        : "overview";
+
+  const [activeView, setActiveView] = useState<DashboardView>(initialView);
+
+  useEffect(() => {
+    setActiveView(initialView);
+  }, [initialView]);
+
+  const changeView = (view: DashboardView) => {
+    setActiveView(view);
+
+    const params = new URLSearchParams(searchParams.toString());
+    if (view === "overview") params.delete("view");
+    else params.set("view", view);
+
+    const query = params.toString();
+    router.replace(`${pathname}${query ? `?${query}` : ""}`, { scroll: false });
+  };
 
   return (
     <div className="grid min-h-screen grid-cols-1 md:grid-cols-[260px_1fr]">
       <DashboardSidebar
         activeView={activeView}
-        onViewChange={setActiveView}
+        onViewChange={changeView}
       />
 
       <section className="min-w-0 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
@@ -69,9 +102,7 @@ const DashboardShell = ({
 
           {activeView === "products" && (
             <div className="px-3 ">
-              {/* <ProductForm categories={categories} brands={brands} />
-              <ImageUpLoader initialBrands={brands} /> */}
-              <UsersProductDashboard />
+              <UsersProductDashboard brands={brands} categories={categories} />
             </div>
           )}
 
