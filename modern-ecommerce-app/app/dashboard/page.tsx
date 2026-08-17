@@ -1,12 +1,11 @@
 import DashboardShell from "@/components/admin/DashboardShell";
-import { getCategories } from "@/action/getAllBrand";
-import { getSellerBrands, getSellerTotalSales } from "@/queries";
+import { getCategories, getAllBrands, getSellerTotalSales } from "@/queries";
 
 export const dynamic = "force-dynamic";
 
 const DashboardPage = async () => {
   const [brands, categories, sales] = await Promise.all([
-    getSellerBrands(),
+    getAllBrands(),
     getCategories(),
     getSellerTotalSales(),
   ]);

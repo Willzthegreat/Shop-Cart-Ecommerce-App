@@ -115,6 +115,7 @@ export default function ProductForm({
 }: ProductFormProps) {
   const [message, setMessage] = useState("");
   const [saving, setSaving] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -150,19 +151,38 @@ export default function ProductForm({
     }
   }
 
-  return (
-    <section className="w-full min-w-0 rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+  return isOpen ? (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+      <button
+        type="button"
+        aria-label="Close product form"
+        className="absolute inset-0 bg-black/50 backdrop-blur-[2px]"
+        onClick={() => setIsOpen(false)}
+      />
+
+      <section className="relative z-[101] max-h-[92vh] w-full max-w-2xl min-w-0 overflow-y-auto rounded-xl border border-gray-200 bg-white p-5 shadow-2xl">
 
       {/* Header */}
-      <div className="mb-5">
-        <h2 className="text-xl font-bold text-gray-800">
-          Add Product
-        </h2>
+        <div className="mb-5 flex items-start justify-between gap-4">
+          <div>
+            <h2 className="text-xl font-bold text-gray-800">
+              Add Product
+            </h2>
 
-        <p className="mt-1 text-sm text-gray-500">
-          Add a new product to your store.
-        </p>
-      </div>
+            <p className="mt-1 text-sm text-gray-500">
+              Add a new product to your store.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            aria-label="Close product form"
+            onClick={() => setIsOpen(false)}
+            className="rounded-md p-2 text-gray-500 transition hover:bg-gray-100 hover:text-gray-800"
+          >
+            <i className="bx bx-x text-xl" />
+          </button>
+        </div>
 
       <form
         onSubmit={submit}
@@ -406,6 +426,24 @@ export default function ProductForm({
         </div>
 
       </form>
-    </section>
+      </section>
+    </div>
+  ) : (
+    <button
+      type="button"
+      onClick={() => setIsOpen(true)}
+      className="flex min-h-20 w-full items-center justify-between rounded-xl border border-gray-200 bg-white px-5 py-4 text-left shadow-sm transition hover:border-shop-light-green hover:shadow-md"
+    >
+      <span>
+        <span className="flex items-center gap-2 text-base font-semibold text-gray-800">
+          <i className="bx bx-plus-circle text-xl text-shop-dark-green" />
+          Add Product
+        </span>
+        <span className="mt-1 block text-sm text-gray-500">
+          Click to open the product upload form.
+        </span>
+      </span>
+      <i className="bx bx-expand-alt text-xl text-gray-400" />
+    </button>
   );
 }
