@@ -9,7 +9,8 @@ export async function POST(req: NextRequest) {
 
   try {
     await DatabaseConnection();
-    const { email, password } = await req.json();
+    const { email: rawEmail, password } = await req.json();
+    const email = String(rawEmail || "").trim().toLowerCase();
 
     if (!email || !password) {
       return NextResponse.json(
@@ -57,7 +58,7 @@ export async function POST(req: NextRequest) {
       {
         message:"Login successful",
         user:{
-          id:user._id,
+          id:user._id.toString(),
           name:user.name,
           email:user.email
         }

@@ -21,11 +21,13 @@ export default function SignUpForm({ close, className }: Props) {
   const [showPassword, setShowPassword] = useState(false);
 
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     setLoading(true);
+    setErrorMessage("");
 
     console.log("SENDING DATA:", {
       name,
@@ -40,9 +42,6 @@ export default function SignUpForm({ close, className }: Props) {
         password,
       });
 
-      console.log("SIGNUP SUCCESS:", response.data);
-
-      // Save new user immediately
       localStorage.setItem("user", JSON.stringify(response.data.user));
 
       // Update Navbar Avatar
@@ -56,7 +55,9 @@ export default function SignUpForm({ close, className }: Props) {
 
       router.replace("/dashboard");
     } catch (error: any) {
-      console.log("SIGNUP ERROR:", error.response?.data || error.message);
+      setErrorMessage(
+        error.response?.data?.message || "Unable to create account. Please try again.",
+      );
     } finally {
       setLoading(false);
     }
@@ -78,6 +79,7 @@ export default function SignUpForm({ close, className }: Props) {
         mt-3
         "
           placeholder="Name"
+          required
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
@@ -91,6 +93,7 @@ export default function SignUpForm({ close, className }: Props) {
         "
           placeholder="Email"
           type="email"
+          required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -105,6 +108,7 @@ export default function SignUpForm({ close, className }: Props) {
           "
             placeholder="Password"
             type={showPassword ? "text" : "password"}
+            required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -121,6 +125,12 @@ export default function SignUpForm({ close, className }: Props) {
             {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
           </button>
         </div>
+
+        {errorMessage && (
+          <p role="alert" className="mt-3 text-sm text-red-600">
+            {errorMessage}
+          </p>
+        )}
 
         <button
           type="submit"
