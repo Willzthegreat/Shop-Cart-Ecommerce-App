@@ -107,7 +107,7 @@ const ProductSchema = new Schema<IProduct>(
 );
 
 ProductSchema.pre("save", function () {
-  if (this.isModified("name")) {
+  if (this.isModified("name") && !this.slug) {
     this.slug = slugify(this.name, {
       lower: true,
       strict: true,

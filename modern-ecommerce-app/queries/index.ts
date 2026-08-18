@@ -1,4 +1,5 @@
 import DatabaseConnection from "@/lib/mongodb/mongodb";
+import mongoose from "mongoose";
 import Category from "@/models/categoryType";
 import Product from "@/models/product";
 import Order from "@/models/orderType";
@@ -222,33 +223,31 @@ const getSellerProducts = async () => {
     if (!session) return [];
 
     await DatabaseConnection();
-    const sellerBrands = await Brand.find({ ownerId: session.userId })
+    const sellerObjectId = new mongoose.Types.ObjectId(session.userId);
+    const sellerIds = [session.userId, sellerObjectId];
+    const sellerBrands = await Brand.find({ ownerId: { $in: sellerIds } })
       .select("_id")
       .lean();
     const sellerBrandIds = sellerBrands.map((brand) => brand._id);
-    let products = await Product.find({
-      $or: [
-        { ownerId: session.userId },
-        ...(sellerBrandIds.length > 0
-          ? [{ ownerId: { $exists: false }, brand: { $in: sellerBrandIds } }]
-          : []),
-      ],
-    })
+    const ownershipFilters: Record<string, unknown>[] = [
+      { ownerId: { $in: sellerIds } },
+      { sellerId: session.userId },
+      { userId: session.userId },
+      { createdBy: session.userId },
+    ];
+
+    if (sellerBrandIds.length > 0) {
+      ownershipFilters.push({
+        ownerId: { $exists: false },
+        brand: { $in: sellerBrandIds },
+      });
+    }
+
+    const products = await Product.find({ $or: ownershipFilters })
       .sort({ createdAt: -1 })
       .populate("category", "title slug")
       .populate("brand", "title slug logo")
       .lean();
-
-    // Products created before seller ownership was added have no ownerId.
-    // Keep the dashboard useful for those existing records until they are
-    // assigned to a seller by a future migration.
-    if (products.length === 0) {
-      products = await Product.find({})
-        .sort({ createdAt: -1 })
-        .populate("category", "title slug")
-        .populate("brand", "title slug logo")
-        .lean();
-    }
 
     return products.map((product) => {
       const category = product.category as

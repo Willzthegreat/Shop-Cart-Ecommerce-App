@@ -118,7 +118,7 @@
 
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import ImageUpLoader from "./ImageUpLoader";
 import ProductForm from "./ProductForm";
@@ -157,12 +157,48 @@ const UsersProductDashboard = ({
   products = [],
 }: UsersProductDashboardProps) => {
   const router = useRouter();
+  const [dashboardProducts, setDashboardProducts] = useState(products);
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [brandFilter, setBrandFilter] = useState("all");
 
+  useEffect(() => {
+    setDashboardProducts(products);
+  }, [products]);
+
+  const handleProductSaved = (savedProduct: Record<string, unknown>) => {
+    const productId = String(savedProduct._id || "");
+    const categoryId = String(
+      typeof savedProduct.category === "object" && savedProduct.category
+        ? (savedProduct.category as { _id?: unknown })._id || ""
+        : savedProduct.category || "",
+    );
+    const brandId = String(
+      typeof savedProduct.brand === "object" && savedProduct.brand
+        ? (savedProduct.brand as { _id?: unknown })._id || ""
+        : savedProduct.brand || "",
+    );
+
+    const nextProduct: Product = {
+      _id: productId,
+      title: String(savedProduct.name || savedProduct.title || "Product"),
+      slug: String(savedProduct.slug || ""),
+      price: Number(savedProduct.price || 0),
+      stock: Number(savedProduct.stock || 0),
+      image: Array.isArray(savedProduct.images) ? String(savedProduct.images[0] || "") : "",
+      category: categories.find((category) => category._id === categoryId) || null,
+      brand: brands.find((brand) => brand._id === brandId) || null,
+    };
+
+    setDashboardProducts((current) => [
+      nextProduct,
+      ...current.filter((product) => product._id !== productId),
+    ]);
+    router.refresh();
+  };
+
   const filteredProducts = useMemo(() => {
-    return products.filter((product) => {
+    return dashboardProducts.filter((product) => {
       const matchesSearch = product.title
         .toLowerCase()
         .includes(search.toLowerCase());
@@ -177,11 +213,11 @@ const UsersProductDashboard = ({
 
       return matchesSearch && matchesCategory && matchesBrand;
     });
-  }, [products, search, categoryFilter, brandFilter]);
+  }, [dashboardProducts, search, categoryFilter, brandFilter]);
 
-  const totalProducts = products.length;
+  const totalProducts = dashboardProducts.length;
 
-  const totalStock = products.reduce(
+  const totalStock = dashboardProducts.reduce(
     (total, product) => total + product.stock,
     0
   );
@@ -319,7 +355,7 @@ const UsersProductDashboard = ({
           <ProductForm
             categories={categories}
             brands={brands}
-            onProductSaved={() => router.refresh()}
+            onProductSaved={handleProductSaved}
           />
         </div>
       </div>
@@ -616,7 +652,7 @@ const UsersProductDashboard = ({
             </span>{" "}
             of{" "}
             <span className="font-medium text-gray-900">
-              {products.length}
+              {dashboardProducts.length}
             </span>{" "}
             products
           </p>

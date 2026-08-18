@@ -107,7 +107,7 @@ type Option = {
 interface ProductFormProps {
   categories: Option[];
   brands: Option[];
-  onProductSaved?: () => void;
+  onProductSaved?: (product: Record<string, unknown>) => void;
 }
 
 export default function ProductForm({
@@ -155,7 +155,9 @@ export default function ProductForm({
 
       setMessage("Product saved successfully.");
       form.reset();
-      onProductSaved?.();
+      if (result.data && typeof result.data === "object") {
+        onProductSaved?.(result.data as Record<string, unknown>);
+      }
     } catch {
       setMessage(
         "Could not save product. Please check your connection and try again."

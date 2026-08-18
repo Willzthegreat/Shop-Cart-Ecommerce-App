@@ -14,6 +14,24 @@ function getSessionToken(request: Request) {
   )?.[1];
 }
 
+async function getUniqueProductSlug(name: string, excludeId?: string) {
+  const baseSlug = slugify(name, { lower: true, strict: true }) || "product";
+  let slug = baseSlug;
+  let suffix = 2;
+
+  while (
+    await Product.exists({
+      slug,
+      ...(excludeId ? { _id: { $ne: excludeId } } : {}),
+    })
+  ) {
+    slug = `${baseSlug}-${suffix}`;
+    suffix += 1;
+  }
+
+  return slug;
+}
+
 export async function POST(req: Request) {
   try {
     await connectDB();
@@ -68,11 +86,12 @@ export async function POST(req: Request) {
         `data:${imageFile.type};base64,${Buffer.from(await imageFile.arrayBuffer()).toString("base64")}`
       )
     );
+    const uniqueSlug = await getUniqueProductSlug(name);
 
     const product = await Product.create({
       ownerId: session.userId,
       name,
-      slug: slugify(name, { lower: true, strict: true }),
+      slug: uniqueSlug,
       code: body.code ? String(body.code).trim() : undefined,
       description: String(body.description || ""),
       images: [...uploadedImages, ...imageUrls],
@@ -283,13 +302,14 @@ export async function PATCH(req: Request) {
     }
 
     await connectDB();
-    const product = await Product.findByIdAndUpdate(
-      id,
+    const uniqueSlug = await getUniqueProductSlug(name, id);
+    const product = await Product.findOneAndUpdate(
+      { _id: id, ownerId: session.userId },
       {
         $set: {
           ownerId: session.userId,
           name,
-          slug: slugify(name, { lower: true, strict: true }),
+          slug: uniqueSlug,
           description: String(body.description || ""),
           price,
           discount,
