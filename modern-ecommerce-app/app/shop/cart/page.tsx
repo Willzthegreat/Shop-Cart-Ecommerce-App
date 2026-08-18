@@ -53,15 +53,12 @@ export default function CartPage() {
     return () => window.removeEventListener("userChanged", loadUser);
   }, []);
 
-  if (items.length === 0) {
-    return <EmptyCart />;
-  }
-
   return (
     <>
    
     <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10">
       {user ? (
+        items.length === 0 ? <EmptyCart /> : (
         <>
           <Container>
             {items.length ? <>
@@ -148,6 +145,7 @@ export default function CartPage() {
             </> : <EmptyCart />}
           </Container>  
         </>
+        )
       ) : (
         <NoAccess />
       )}

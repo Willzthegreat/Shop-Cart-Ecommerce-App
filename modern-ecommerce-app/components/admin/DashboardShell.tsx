@@ -10,6 +10,7 @@ import ProductForm from "@/components/admin/ProductForm";
 import Overview from "@/components/admin/overview/page";
 import UsersProductDashboard from "./usersProductDashboard";
 import OrdersPage from "./OrdersPage";
+import CustomersPage from "./customersPage";
 
 type Option = { _id: string; title: string };
 type Brand = Option & { slug: string; logo?: string };
@@ -141,9 +142,10 @@ const DashboardShell = ({
           {activeView === "orders" && <OrdersPage orders={orders} />}
 
           {activeView === "customers" && (
-            <div className="rounded-lg border border-dashed border-gray-300 bg-white p-8 text-center text-gray-600">
-              Customers management is coming soon.
-            </div>
+            // <div className="rounded-lg border border-dashed border-gray-300 bg-white p-8 text-center text-gray-600">
+            //   Customers management is coming soon.
+            // </div>
+            <CustomersPage  />
           )}
           
           {activeView === "marketing" && (

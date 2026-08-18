@@ -2,6 +2,7 @@ import "./globals.css";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { Toaster } from "react-hot-toast";
+import StoreUserSync from "@/components/storeUserSync";
 
 
 
@@ -20,6 +21,7 @@ export default function RootLayout({
         />
       </head>
       <body className="font-poppins antialiased">
+        <StoreUserSync />
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
