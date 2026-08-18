@@ -9,6 +9,7 @@ import ImageUpLoader from "@/components/admin/ImageUpLoader";
 import ProductForm from "@/components/admin/ProductForm";
 import Overview from "@/components/admin/overview/page";
 import UsersProductDashboard from "./usersProductDashboard";
+import OrdersPage from "./OrdersPage";
 
 type Option = { _id: string; title: string };
 type Brand = Option & { slug: string; logo?: string };
@@ -30,6 +31,17 @@ type DashboardShellProps = {
   categories: Option[];
   products: Product[];
   totalSales: number;
+  totalSold: number;
+  orders: {
+    _id: string;
+    customerName: string;
+    email: string;
+    totalPrice: number;
+    currency: string;
+    status: string;
+    orderDate: string | Date;
+    itemCount: number;
+  }[];
   percentageChange: number;
   totalOrders: number;
   visitors: number;
@@ -42,6 +54,8 @@ const DashboardShell = ({
   categories,
   products,
   totalSales,
+  totalSold,
+  orders,
   percentageChange,
   totalOrders,
   visitors,
@@ -119,14 +133,16 @@ const DashboardShell = ({
               brands={brands}
               categories={categories}
               products={products}
+              totalSold={totalSold}
             />
             </div>
           )}
 
-          {(activeView === "orders" || activeView === "customers") && (
+          {activeView === "orders" && <OrdersPage orders={orders} />}
+
+          {activeView === "customers" && (
             <div className="rounded-lg border border-dashed border-gray-300 bg-white p-8 text-center text-gray-600">
-              {activeView === "orders" ? "Orders" : "Customers"} management is
-              coming soon.
+              Customers management is coming soon.
             </div>
           )}
           

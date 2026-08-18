@@ -191,19 +191,36 @@ const getSellerCategories = async () => {
     if (!session) return [];
 
     await DatabaseConnection();
-    let categories = await Category.find({
+    const sellerObjectId = new mongoose.Types.ObjectId(session.userId);
+    const sellerIds = [session.userId, sellerObjectId];
+    const sellerProducts = await Product.find({
       $or: [
-        { ownerId: session.userId },
-        { ownerId: { $exists: false } },
-        { ownerId: null },
+        { ownerId: { $in: sellerIds } },
+        { sellerId: session.userId },
+        { userId: session.userId },
+        { createdBy: session.userId },
       ],
     })
+      .select("category")
+      .lean();
+    const productCategoryIds = sellerProducts
+      .map((product) => product.category)
+      .filter(Boolean);
+
+    const categoryFilters: Record<string, unknown>[] = [
+      { ownerId: session.userId },
+      { sellerId: session.userId },
+      { userId: session.userId },
+      { createdBy: session.userId },
+    ];
+
+    if (productCategoryIds.length > 0) {
+      categoryFilters.push({ _id: { $in: productCategoryIds } });
+    }
+
+    const categories = await Category.find({ $or: categoryFilters })
       .sort({ title: 1 })
       .lean();
-
-    if (categories.length === 0) {
-      categories = await Category.find({}).sort({ title: 1 }).lean();
-    }
 
     return categories.map((category) => ({
       ...category,
@@ -450,7 +467,34 @@ const getBrand = async (slug: string) => {
  */
 const getSellerTotalSales = async () => {
   try {
+    const session = await verifyUserSession(
+      (await cookies()).get(SESSION_COOKIE)?.value,
+    );
+    if (!session) {
+      return {
+        totalSales: 0,
+        totalSold: 0,
+        percentageChange: 0,
+        totalOrders: 0,
+        visitors: 0,
+        ordersPercentageChange: 0,
+        visitorsPercentageChange: 0,
+      };
+    }
+
     await DatabaseConnection();
+    const sellerObjectId = new mongoose.Types.ObjectId(session.userId);
+    const sellerProducts = await Product.find({
+      $or: [
+        { ownerId: { $in: [session.userId, sellerObjectId] } },
+        { sellerId: session.userId },
+        { userId: session.userId },
+        { createdBy: session.userId },
+      ],
+    })
+      .select("_id")
+      .lean();
+    const sellerProductIds = sellerProducts.map((product) => product._id);
 
     const now = new Date();
     const currentWeekStart = new Date(now);
@@ -465,17 +509,31 @@ const getSellerTotalSales = async () => {
     ];
 
     const [result] = await Order.aggregate([
-      { $match: { status: { $in: completedStatuses } } },
+      { $match: { status: { $ne: "cancelled" } } },
       {
         $facet: {
-          allTime: [{ $group: { _id: null, total: { $sum: "$totalPrice" } } }],
+          allTime: [
+            { $match: { status: { $in: completedStatuses } } },
+            { $group: { _id: null, total: { $sum: "$totalPrice" } } },
+          ],
+          totalSold: [
+            { $unwind: "$products" },
+            { $match: { "products.product": { $in: sellerProductIds } } },
+            { $group: { _id: null, total: { $sum: "$products.quantity" } } },
+          ],
           currentWeek: [
-            { $match: { orderDate: { $gte: currentWeekStart, $lte: now } } },
+            {
+              $match: {
+                status: { $in: completedStatuses },
+                orderDate: { $gte: currentWeekStart, $lte: now },
+              },
+            },
             { $group: { _id: null, total: { $sum: "$totalPrice" } } },
           ],
           previousWeek: [
             {
               $match: {
+                status: { $in: completedStatuses },
                 orderDate: {
                   $gte: previousWeekStart,
                   $lt: currentWeekStart,
@@ -536,6 +594,7 @@ const getSellerTotalSales = async () => {
     ]);
 
     const totalSales = Number(result?.allTime?.[0]?.total) || 0;
+    const totalSold = Number(result?.totalSold?.[0]?.total) || 0;
     const currentWeekSales = Number(result?.currentWeek?.[0]?.total) || 0;
     const previousWeekSales = Number(result?.previousWeek?.[0]?.total) || 0;
     const totalOrders = Number(result?.orders?.[0]?.count) || 0;
@@ -555,6 +614,7 @@ const getSellerTotalSales = async () => {
 
     return {
       totalSales,
+      totalSold,
       percentageChange,
       totalOrders,
       visitors,
@@ -565,12 +625,63 @@ const getSellerTotalSales = async () => {
     console.error("Error fetching seller sales:", error);
     return {
       totalSales: 0,
+      totalSold: 0,
       percentageChange: 0,
       totalOrders: 0,
       visitors: 0,
       ordersPercentageChange: 0,
       visitorsPercentageChange: 0,
     };
+  }
+};
+
+const getSellerOrders = async () => {
+  try {
+    const session = await verifyUserSession(
+      (await cookies()).get(SESSION_COOKIE)?.value,
+    );
+    if (!session) return [];
+
+    await DatabaseConnection();
+    const sellerObjectId = new mongoose.Types.ObjectId(session.userId);
+    const sellerProducts = await Product.find({
+      $or: [
+        { ownerId: { $in: [session.userId, sellerObjectId] } },
+        { sellerId: session.userId },
+        { userId: session.userId },
+        { createdBy: session.userId },
+      ],
+    })
+      .select("_id")
+      .lean();
+    const sellerProductIds = sellerProducts.map((product) => product._id);
+    if (sellerProductIds.length === 0) return [];
+
+    const orders = await Order.find({
+      status: { $ne: "cancelled" },
+      "products.product": { $in: sellerProductIds },
+    })
+      .sort({ orderDate: -1 })
+      .populate("products.product", "name title")
+      .lean();
+
+    return orders.map((order) => ({
+      _id: String(order._id),
+      customerName: order.customerName,
+      email: order.email,
+      totalPrice: Number(order.totalPrice) || 0,
+      currency: order.currency || "USD",
+      status: order.status,
+      orderDate: order.orderDate,
+      itemCount: order.products.reduce(
+        (total: number, item: { quantity?: number }) =>
+          total + (Number(item.quantity) || 0),
+        0,
+      ),
+    }));
+  } catch (error) {
+    console.error("Error fetching seller orders:", error);
+    return [];
   }
 };
 
@@ -586,5 +697,6 @@ export {
   getProductBySlug,
   getBrand,
   getSellerTotalSales,
+  getSellerOrders,
 };
 

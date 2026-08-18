@@ -59,6 +59,7 @@ export async function GET(request: NextRequest) {
     const session = await verifyUserSession(
       request.cookies.get(SESSION_COOKIE)?.value,
     );
+
     if (!session) {
       return NextResponse.json({ error: "You must be logged in." }, { status: 401 });
     }
@@ -105,6 +106,13 @@ export async function POST(req: Request) {
       )?.[1],
     );
 
+    if (!session) {
+      return NextResponse.json(
+        { success: false, message: "You must be logged in to create a category." },
+        { status: 401 },
+      );
+    }
+
     if (!title) {
       return NextResponse.json(
         { success: false, message: "Category name is required." },
@@ -123,7 +131,7 @@ export async function POST(req: Request) {
     }
 
     const category = await Category.create({
-      ownerId: session?.userId,
+      ownerId: session.userId,
       title,
 
       slug: slugify(title, {

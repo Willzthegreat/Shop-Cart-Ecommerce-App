@@ -149,12 +149,14 @@ interface UsersProductDashboardProps {
   brands: Brand[];
   categories: Option[];
   products?: Product[];
+  totalSold: number;
 }
 
 const UsersProductDashboard = ({
   brands,
   categories,
   products = [],
+  totalSold,
 }: UsersProductDashboardProps) => {
   const router = useRouter();
   const [dashboardProducts, setDashboardProducts] = useState(products);
@@ -221,6 +223,7 @@ const UsersProductDashboard = ({
     (total, product) => total + product.stock,
     0
   );
+  const totalCategories = categories.length;
 
   async function deleteProduct(product: Product) {
     if (!window.confirm(`Delete ${product.title}? This cannot be undone.`)) return;
@@ -294,7 +297,7 @@ const UsersProductDashboard = ({
 
           <div className="flex justify-between px-4 py-2">
             <p className="text-lg font-semibold text-gray-900">
-              12,760
+              {totalSold.toLocaleString()}
             </p>
           </div>
         </div>
@@ -311,7 +314,7 @@ const UsersProductDashboard = ({
 
           <div className="flex justify-between px-4 py-2">
             <p className="text-lg font-semibold text-gray-900">
-              {categories.length.toLocaleString()}
+              {totalCategories.toLocaleString()}
             </p>
           </div>
         </div>
