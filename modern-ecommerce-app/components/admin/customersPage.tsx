@@ -195,8 +195,6 @@ const CustomersPage = ({ orders }: { orders: CustomerOrder[] }) => {
     <div className="space-y-6 pb-10">
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div>
-          <p className="text-sm font-medium text-shop-dark-green">Customer intelligence</p>
-          <h2 className="mt-1 text-2xl font-bold tracking-tight text-slate-950">Customers</h2>
           <p className="mt-1 text-sm text-slate-500">Understand your customers and grow stronger relationships.</p>
         </div>
         <button className="flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50">
