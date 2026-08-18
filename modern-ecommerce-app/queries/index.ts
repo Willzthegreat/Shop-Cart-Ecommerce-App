@@ -158,9 +158,19 @@ const getSellerBrands = async () => {
     if (!session) return [];
 
     await DatabaseConnection();
-    const brands = await Brand.find({ ownerId: session.userId })
+    let brands = await Brand.find({
+      $or: [
+        { ownerId: session.userId },
+        { ownerId: { $exists: false } },
+        { ownerId: null },
+      ],
+    })
       .sort({ title: 1 })
       .lean();
+
+    if (brands.length === 0) {
+      brands = await Brand.find({}).sort({ title: 1 }).lean();
+    }
 
     return brands.map((brand) => ({
       ...brand,
@@ -168,6 +178,98 @@ const getSellerBrands = async () => {
     }));
   } catch (error) {
     console.error("Error fetching seller brands:", error);
+    return [];
+  }
+};
+
+const getSellerCategories = async () => {
+  try {
+    const session = await verifyUserSession(
+      (await cookies()).get(SESSION_COOKIE)?.value,
+    );
+    if (!session) return [];
+
+    await DatabaseConnection();
+    let categories = await Category.find({
+      $or: [
+        { ownerId: session.userId },
+        { ownerId: { $exists: false } },
+        { ownerId: null },
+      ],
+    })
+      .sort({ title: 1 })
+      .lean();
+
+    if (categories.length === 0) {
+      categories = await Category.find({}).sort({ title: 1 }).lean();
+    }
+
+    return categories.map((category) => ({
+      ...category,
+      _id: category._id.toString(),
+    }));
+  } catch (error) {
+    console.error("Error fetching seller categories:", error);
+    return [];
+  }
+};
+
+const getSellerProducts = async () => {
+  try {
+    const session = await verifyUserSession(
+      (await cookies()).get(SESSION_COOKIE)?.value,
+    );
+    if (!session) return [];
+
+    await DatabaseConnection();
+    const sellerBrands = await Brand.find({ ownerId: session.userId })
+      .select("_id")
+      .lean();
+    const sellerBrandIds = sellerBrands.map((brand) => brand._id);
+    let products = await Product.find({
+      $or: [
+        { ownerId: session.userId },
+        ...(sellerBrandIds.length > 0
+          ? [{ ownerId: { $exists: false }, brand: { $in: sellerBrandIds } }]
+          : []),
+      ],
+    })
+      .sort({ createdAt: -1 })
+      .populate("category", "title slug")
+      .populate("brand", "title slug logo")
+      .lean();
+
+    // Products created before seller ownership was added have no ownerId.
+    // Keep the dashboard useful for those existing records until they are
+    // assigned to a seller by a future migration.
+    if (products.length === 0) {
+      products = await Product.find({})
+        .sort({ createdAt: -1 })
+        .populate("category", "title slug")
+        .populate("brand", "title slug logo")
+        .lean();
+    }
+
+    return products.map((product) => ({
+      ...product,
+      _id: product._id.toString(),
+      title: product.name,
+      image: product.images?.[0] || "",
+      category: product.category
+        ? {
+            ...product.category,
+            _id: product.category._id.toString(),
+          }
+        : null,
+      brand: product.brand
+        ? {
+            ...product.brand,
+            _id: product.brand._id.toString(),
+          }
+        : null,
+    }));
+  } catch (error) {
+    console.error("Error fetching seller products:", error);
     return [];
   }
 };
@@ -462,6 +564,8 @@ export {
   getCategories,
   getAllBrands,
   getSellerBrands,
+  getSellerCategories,
+  getSellerProducts,
   getLatestBlogs,
   getBlogBySlug,
   getDealProducts,

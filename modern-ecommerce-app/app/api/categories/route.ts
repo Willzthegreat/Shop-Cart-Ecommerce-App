@@ -44,6 +44,7 @@
 // }
 
 import { NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 import { connectDB } from "@/lib/db";
 
@@ -51,6 +52,44 @@ import Category from "@/models/categoryType";
 
 import slugify from "slugify";
 import { normalizeCategoryName } from "@/lib/categoryName";
+import { SESSION_COOKIE, verifyUserSession } from "@/lib/authSession";
+
+export async function GET(request: NextRequest) {
+  try {
+    const session = await verifyUserSession(
+      request.cookies.get(SESSION_COOKIE)?.value,
+    );
+    if (!session) {
+      return NextResponse.json({ error: "You must be logged in." }, { status: 401 });
+    }
+
+    await connectDB();
+    let categories = await Category.find({
+      $or: [
+        { ownerId: session.userId },
+        { ownerId: { $exists: false } },
+        { ownerId: null },
+      ],
+    })
+      .select("_id title slug image")
+      .sort({ title: 1 })
+      .lean();
+
+    if (categories.length === 0) {
+      categories = await Category.find({})
+        .select("_id title slug image")
+        .sort({ title: 1 })
+        .lean();
+    }
+
+    return NextResponse.json(
+      categories.map((category) => ({ ...category, _id: category._id.toString() })),
+    );
+  } catch (error) {
+    console.error("Seller categories lookup failed:", error);
+    return NextResponse.json({ error: "Could not load categories." }, { status: 500 });
+  }
+}
 
 // CREATE CATEGORY
 
@@ -60,6 +99,11 @@ export async function POST(req: Request) {
 
     const body = await req.json();
     const title = String(body.title || "").trim();
+    const session = await verifyUserSession(
+      req.headers.get("cookie")?.match(
+        new RegExp(`${SESSION_COOKIE}=([^;]+)`),
+      )?.[1],
+    );
 
     if (!title) {
       return NextResponse.json(
@@ -79,6 +123,7 @@ export async function POST(req: Request) {
     }
 
     const category = await Category.create({
+      ownerId: session?.userId,
       title,
 
       slug: slugify(title, {

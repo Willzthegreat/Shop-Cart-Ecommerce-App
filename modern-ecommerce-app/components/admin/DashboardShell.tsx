@@ -12,11 +12,23 @@ import UsersProductDashboard from "./usersProductDashboard";
 
 type Option = { _id: string; title: string };
 type Brand = Option & { slug: string; logo?: string };
+type Product = {
+  _id: string;
+  name: string;
+  title: string;
+  slug: string;
+  price: number;
+  stock: number;
+  category?: Option | null;
+  brand?: Brand | null;
+  image?: string;
+};
 type DashboardView = "overview" | "products" | "orders" | "marketing" | "customers" | "content" | "analysis";
 
 type DashboardShellProps = {
   brands: Brand[];
   categories: Option[];
+  products: Product[];
   totalSales: number;
   percentageChange: number;
   totalOrders: number;
@@ -28,6 +40,7 @@ type DashboardShellProps = {
 const DashboardShell = ({
   brands,
   categories,
+  products,
   totalSales,
   percentageChange,
   totalOrders,
@@ -102,7 +115,11 @@ const DashboardShell = ({
 
           {activeView === "products" && (
             <div className="px-3 ">
-              <UsersProductDashboard brands={brands} categories={categories} />
+            <UsersProductDashboard
+              brands={brands}
+              categories={categories}
+              products={products}
+            />
             </div>
           )}
 

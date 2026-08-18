@@ -97,7 +97,7 @@
 
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 type Option = {
   _id: string;
@@ -107,15 +107,28 @@ type Option = {
 interface ProductFormProps {
   categories: Option[];
   brands: Option[];
+  onProductSaved?: () => void;
 }
 
 export default function ProductForm({
   categories,
   brands,
+  onProductSaved,
 }: ProductFormProps) {
   const [message, setMessage] = useState("");
   const [saving, setSaving] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [availableCategories, setAvailableCategories] =
+    useState<Option[]>(categories);
+  const [availableBrands, setAvailableBrands] = useState<Option[]>(brands);
+
+  useEffect(() => {
+    setAvailableCategories(categories);
+  }, [categories]);
+
+  useEffect(() => {
+    setAvailableBrands(brands);
+  }, [brands]);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -142,6 +155,7 @@ export default function ProductForm({
 
       setMessage("Product saved successfully.");
       form.reset();
+      onProductSaved?.();
     } catch {
       setMessage(
         "Could not save product. Please check your connection and try again."
@@ -152,7 +166,7 @@ export default function ProductForm({
   }
 
   return isOpen ? (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+    <div className="fixed inset-0 z-100 flex items-center justify-center p-4 sm:p-6">
       <button
         type="button"
         aria-label="Close product form"
@@ -160,7 +174,7 @@ export default function ProductForm({
         onClick={() => setIsOpen(false)}
       />
 
-      <section className="relative z-[101] max-h-[92vh] w-full max-w-2xl min-w-0 overflow-y-auto rounded-xl border border-gray-200 bg-white p-5 shadow-2xl">
+      <section className="relative z-101 max-h-[92vh] w-full max-w-2xl min-w-0 overflow-y-auto rounded-xl border border-gray-200 bg-white p-5 shadow-2xl">
 
       {/* Header */}
         <div className="mb-5 flex items-start justify-between gap-4">
@@ -336,7 +350,7 @@ export default function ProductForm({
               Select category
             </option>
 
-            {categories.map((item) => (
+            {availableCategories.map((item) => (
               <option
                 key={item._id}
                 value={item._id}
@@ -361,7 +375,7 @@ export default function ProductForm({
               Select brand
             </option>
 
-            {brands.map((item) => (
+            {availableBrands.map((item) => (
               <option
                 key={item._id}
                 value={item._id}

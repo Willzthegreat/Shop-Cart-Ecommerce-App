@@ -149,36 +149,6 @@ export default function ImageUpLoader({
     setBrands(initialBrands);
   }, [initialBrands]);
 
-  useEffect(() => {
-    let mounted = true;
-
-    async function loadBrands() {
-      try {
-        const response = await fetch("/api/brands", {
-          cache: "no-store",
-          credentials: "include",
-        });
-
-        if (!response.ok) return;
-
-        const sellerBrands =
-          (await response.json()) as Brand[];
-
-        if (mounted) {
-          setBrands(sellerBrands);
-        }
-      } catch {
-        // Keep initial brands if fetching fails.
-      }
-    }
-
-    loadBrands();
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
   async function submit(
     event: FormEvent<HTMLFormElement>
   ) {

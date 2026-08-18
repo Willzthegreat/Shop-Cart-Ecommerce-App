@@ -6,10 +6,22 @@ import Category from "@/models/categoryType";
 import Brand from "@/models/brandType";
 import slugify from "slugify";
 import { normalizeCategoryName } from "@/lib/categoryName";
+import { SESSION_COOKIE, verifyUserSession } from "@/lib/authSession";
+
+function getSessionToken(request: Request) {
+  return request.headers.get("cookie")?.match(
+    new RegExp(`${SESSION_COOKIE}=([^;]+)`),
+  )?.[1];
+}
 
 export async function POST(req: Request) {
   try {
     await connectDB();
+    const session = await verifyUserSession(getSessionToken(req));
+    if (!session) {
+      return NextResponse.json({ error: "You must be logged in." }, { status: 401 });
+    }
+
     const form = await req.formData();
     const body = Object.fromEntries(form.entries());
     const name = String(body.name || "").trim();
@@ -58,6 +70,7 @@ export async function POST(req: Request) {
     );
 
     const product = await Product.create({
+      ownerId: session.userId,
       name,
       slug: slugify(name, { lower: true, strict: true }),
       code: body.code ? String(body.code).trim() : undefined,
@@ -94,6 +107,30 @@ export async function GET(req: Request) {
   try {
     await connectDB();
     const url = new URL(req.url);
+    const productId = url.searchParams.get("id");
+
+    if (productId) {
+      const product = await Product.findById(productId)
+        .populate("category", "title slug")
+        .populate("brand", "title slug logo")
+        .lean();
+
+      return NextResponse.json({
+        data: product
+          ? {
+              ...product,
+              _id: product._id.toString(),
+              category: product.category
+                ? { ...product.category, _id: product.category._id.toString() }
+                : null,
+              brand: product.brand
+                ? { ...product.brand, _id: product.brand._id.toString() }
+                : null,
+            }
+          : null,
+      });
+    }
+
     const tab = url.searchParams.get("tab") || "";
     const categorySlug = url.searchParams.get("category") || "";
     const brandSlug = url.searchParams.get("brand") || "";
@@ -217,5 +254,91 @@ export async function GET(req: Request) {
       { success: false, message: "The product database is temporarily unavailable." },
       { status: 503 },
     );
+  }
+}
+
+export async function PATCH(req: Request) {
+  try {
+    const session = await verifyUserSession(getSessionToken(req));
+    if (!session) {
+      return NextResponse.json({ error: "You must be logged in." }, { status: 401 });
+    }
+
+    const id = new URL(req.url).searchParams.get("id");
+    const body = await req.json();
+    if (!id) {
+      return NextResponse.json({ error: "Product ID is required." }, { status: 400 });
+    }
+
+    const name = String(body.name || "").trim();
+    const price = Number(body.price);
+    const discount = Number(body.discount || 0);
+    const stock = Number(body.stock || 0);
+
+    if (!name || !Number.isFinite(price) || price < 0) {
+      return NextResponse.json({ error: "Name and a valid price are required." }, { status: 400 });
+    }
+    if (!Number.isFinite(discount) || discount < 0 || !Number.isFinite(stock) || stock < 0) {
+      return NextResponse.json({ error: "Discount and stock must be valid positive values." }, { status: 400 });
+    }
+
+    await connectDB();
+    const product = await Product.findByIdAndUpdate(
+      id,
+      {
+        $set: {
+          ownerId: session.userId,
+          name,
+          slug: slugify(name, { lower: true, strict: true }),
+          description: String(body.description || ""),
+          price,
+          discount,
+          stock,
+          status: ["new", "hot", "sale"].includes(body.status) ? body.status : "new",
+        },
+      },
+      { returnDocument: "after", runValidators: true },
+    ).lean();
+
+    if (!product) {
+      return NextResponse.json({ error: "Product not found or you do not own it." }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true, data: { ...product, _id: product._id.toString() } });
+  } catch (error) {
+    console.error("Product update failed:", error);
+    return NextResponse.json({ error: "Could not update the product." }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: Request) {
+  try {
+    const session = await verifyUserSession(getSessionToken(req));
+    if (!session) {
+      return NextResponse.json({ error: "You must be logged in." }, { status: 401 });
+    }
+
+    const id = new URL(req.url).searchParams.get("id");
+    if (!id) {
+      return NextResponse.json({ error: "Product ID is required." }, { status: 400 });
+    }
+
+    await connectDB();
+    const product = await Product.findOneAndDelete({
+      _id: id,
+      ownerId: session.userId,
+    });
+
+    if (!product) {
+      return NextResponse.json(
+        { error: "Product not found or you do not own it." },
+        { status: 404 },
+      );
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Product deletion failed:", error);
+    return NextResponse.json({ error: "Could not delete the product." }, { status: 500 });
   }
 }

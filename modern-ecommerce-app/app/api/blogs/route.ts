@@ -40,7 +40,7 @@ export async function POST(request: Request) {
     const author = await Author.findOneAndUpdate(
       { slug: slugify(authorName, { lower: true, strict: true }) },
       { $setOnInsert: { name: authorName } },
-      { new: true, upsert: true, setDefaultsOnInsert: true },
+      { returnDocument: "after", upsert: true, setDefaultsOnInsert: true },
     );
 
     const baseSlug = slugify(title, { lower: true, strict: true }) || "blog";

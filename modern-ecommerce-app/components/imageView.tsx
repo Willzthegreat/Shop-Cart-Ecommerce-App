@@ -37,13 +37,15 @@ const ImageView = ({ images = [], isStock }: Props) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0.5 }}
           transition={{ duration: 0.5 }}
-          className="w-full max-h-137.5 min-h-112.5 border border-darkColor/10 rounded-md group overflow-hidden"
+          className="relative w-full max-h-137.5 min-h-112.5 border border-darkColor/10 rounded-md group overflow-hidden"
         >
           {isRemoteOrDataImage ? (
             <Image
               src={activeImage}
               alt="productImage"
-              className={`h-96 w-full rounded-md object-contain group-hover:scale-110 hoverEffect ${
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className={`rounded-md object-contain group-hover:scale-110 hoverEffect ${
                 isStock === 0 ? "opacity-50" : ""
               }`}
             />
@@ -68,11 +70,11 @@ const ImageView = ({ images = [], isStock }: Props) => {
           const thumbnailImage = resolveProductImage(image);
 
           return (
-          <button
-            key={index}
-            type="button"
-            onClick={() => setActive(index)}
-            className={`w-20 h-20 shrink-0 border rounded-md overflow-hidden ${
+            <button
+              key={index}
+              type="button"
+              onClick={() => setActive(index)}
+            className={`relative w-20 h-20 shrink-0 border rounded-md overflow-hidden ${
               active === index ? "ring-1 ring-shop-dark-green/40 shadow-sm border-darkColor" : "border-darkColor/10 opacity-80"
             }`}
           >
@@ -80,7 +82,9 @@ const ImageView = ({ images = [], isStock }: Props) => {
               <Image
                 src={thumbnailImage}
                 alt={`Product image ${index + 1}`}
-                className="h-full w-full object-contain"
+                fill
+                sizes="80px"
+                className="object-contain"
               />
             ) : (
               <Image

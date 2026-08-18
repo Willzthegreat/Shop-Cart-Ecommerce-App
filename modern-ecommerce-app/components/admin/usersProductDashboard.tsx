@@ -119,8 +119,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import ImageUpLoader from "./ImageUpLoader";
 import ProductForm from "./ProductForm";
+import { resolveProductImage } from "@/lib/productImage";
 
 type Option = {
   _id: string;
@@ -135,10 +137,11 @@ type Brand = Option & {
 interface Product {
   _id: string;
   title: string;
+  slug: string;
   price: number;
   stock: number;
-  category?: Option;
-  brand?: Brand;
+  category?: Option | null;
+  brand?: Brand | null;
   image?: string;
 }
 
@@ -153,6 +156,7 @@ const UsersProductDashboard = ({
   categories,
   products = [],
 }: UsersProductDashboardProps) => {
+  const router = useRouter();
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [brandFilter, setBrandFilter] = useState("all");
@@ -181,6 +185,23 @@ const UsersProductDashboard = ({
     (total, product) => total + product.stock,
     0
   );
+
+  async function deleteProduct(product: Product) {
+    if (!window.confirm(`Delete ${product.title}? This cannot be undone.`)) return;
+
+    const response = await fetch(`/api/products?id=${encodeURIComponent(product._id)}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+
+    if (response.ok) {
+      window.location.reload();
+      return;
+    }
+
+    const result = await response.json().catch(() => null);
+    window.alert(result?.error || "Could not delete this product.");
+  }
 
   return (
     <div className="w-full min-w-0 space-y-6">
@@ -298,6 +319,7 @@ const UsersProductDashboard = ({
           <ProductForm
             categories={categories}
             brands={brands}
+            onProductSaved={() => router.refresh()}
           />
         </div>
       </div>
@@ -406,7 +428,7 @@ const UsersProductDashboard = ({
 
         <div className="w-full overflow-x-auto">
 
-          <table className="w-full min-w-[800px] text-left">
+          <table className="w-full min-w-200 text-left">
 
             <thead className="border-b border-gray-200 bg-gray-50">
               <tr>
@@ -456,7 +478,7 @@ const UsersProductDashboard = ({
 
                         {product.image ? (
                           <img
-                            src={product.image}
+                            src={resolveProductImage(product.image)}
                             alt={product.title}
                             className="h-10 w-10 rounded-md object-cover"
                           />
@@ -466,7 +488,7 @@ const UsersProductDashboard = ({
                           </div>
                         )}
 
-                        <span className="max-w-[220px] truncate text-sm font-medium text-gray-900">
+                        <span className="max-w-55 truncate text-sm font-medium text-gray-900">
                           {product.title}
                         </span>
 
@@ -520,6 +542,7 @@ const UsersProductDashboard = ({
 
                         <button
                           type="button"
+                          onClick={() => router.push(`/product/${product.slug}`)}
                           className="rounded-md p-2 text-gray-500 transition hover:bg-gray-100 hover:text-gray-900"
                           title="View product"
                         >
@@ -528,6 +551,7 @@ const UsersProductDashboard = ({
 
                         <button
                           type="button"
+                          onClick={() => router.push(`/edit?product=${encodeURIComponent(product._id)}`)}
                           className="rounded-md p-2 text-gray-500 transition hover:bg-gray-100 hover:text-gray-900"
                           title="Edit product"
                         >
@@ -536,6 +560,7 @@ const UsersProductDashboard = ({
 
                         <button
                           type="button"
+                          onClick={() => deleteProduct(product)}
                           className="rounded-md p-2 text-red-500 transition hover:bg-red-50"
                           title="Delete product"
                         >

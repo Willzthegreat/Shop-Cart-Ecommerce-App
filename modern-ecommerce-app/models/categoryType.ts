@@ -2,6 +2,7 @@ import mongoose, { Document, Schema } from "mongoose";
 import slugify from "slugify";
 
 export interface ICategory extends Document {
+  ownerId?: string;
   title: string;
   slug: string;
   description?: string;
@@ -11,6 +12,10 @@ export interface ICategory extends Document {
 
 const CategorySchema = new Schema<ICategory>(
   {
+    ownerId: {
+      type: String,
+      index: true,
+    },
     title: {
       type: String,
       required: true,

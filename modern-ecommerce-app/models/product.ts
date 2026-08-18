@@ -2,6 +2,7 @@ import mongoose, { Document, Schema } from "mongoose";
 import slugify from "slugify";
 
 export interface IProduct extends Document {
+  ownerId?: string;
   name: string;
   slug: string;
   code?: string;
@@ -19,6 +20,10 @@ export interface IProduct extends Document {
 
 const ProductSchema = new Schema<IProduct>(
   {
+    ownerId: {
+      type: String,
+      index: true,
+    },
     name: {
       type: String,
       required: true,

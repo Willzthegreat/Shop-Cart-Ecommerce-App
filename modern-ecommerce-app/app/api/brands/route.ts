@@ -19,10 +19,23 @@ export async function GET(request: NextRequest) {
     }
 
     await DatabaseConnection();
-    const brands = await Brand.find({ ownerId: session.userId })
+    let brands = await Brand.find({
+      $or: [
+        { ownerId: session.userId },
+        { ownerId: { $exists: false } },
+        { ownerId: null },
+      ],
+    })
       .select("_id ownerId title slug logo")
       .sort({ title: 1 })
       .lean();
+
+    if (brands.length === 0) {
+      brands = await Brand.find({})
+        .select("_id ownerId title slug logo")
+        .sort({ title: 1 })
+        .lean();
+    }
 
     return NextResponse.json(
       brands.map((brand) => ({ ...brand, _id: brand._id.toString() })),
@@ -70,7 +83,7 @@ export async function POST(request: NextRequest) {
     const brand = await Brand.findOneAndUpdate(
       { slug },
       { $set: { ownerId: session.userId, title, slug, logo } },
-      { new: true, upsert: true, runValidators: true },
+      { returnDocument: "after", upsert: true, runValidators: true },
     ).lean();
 
     return NextResponse.json({ ...brand, _id: brand?._id.toString() });
