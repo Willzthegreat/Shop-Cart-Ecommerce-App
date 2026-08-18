@@ -250,24 +250,39 @@ const getSellerProducts = async () => {
         .lean();
     }
 
-    return products.map((product) => ({
-      ...product,
-      _id: product._id.toString(),
-      title: product.name,
-      image: product.images?.[0] || "",
-      category: product.category
-        ? {
-            ...product.category,
-            _id: product.category._id.toString(),
-          }
-        : null,
-      brand: product.brand
-        ? {
-            ...product.brand,
-            _id: product.brand._id.toString(),
-          }
-        : null,
-    }));
+    return products.map((product) => {
+      const category = product.category as
+        | { _id?: unknown; title?: string; slug?: string }
+        | string
+        | null
+        | undefined;
+      const brand = product.brand as
+        | { _id?: unknown; title?: string; slug?: string; logo?: string }
+        | string
+        | null
+        | undefined;
+
+      return {
+        ...product,
+        _id: product._id.toString(),
+        title: product.name,
+        image: product.images?.[0] || "",
+        category: category
+          ? {
+              ...(typeof category === "object" ? category : {}),
+              _id: String(
+                typeof category === "object" ? category._id : category,
+              ),
+            }
+          : null,
+        brand: brand
+          ? {
+              ...(typeof brand === "object" ? brand : {}),
+              _id: String(typeof brand === "object" ? brand._id : brand),
+            }
+          : null,
+      };
+    });
   } catch (error) {
     console.error("Error fetching seller products:", error);
     return [];

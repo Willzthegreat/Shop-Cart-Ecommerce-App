@@ -56,7 +56,10 @@
 
 import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGO_URI || process.env.MONGODB_URL;
+const MONGODB_URI =
+  process.env.MONGO_URI ||
+  process.env.MONGODB_URI ||
+  process.env.MONGODB_URL;
 
 declare global {
   // eslint-disable-next-line no-var
@@ -78,7 +81,7 @@ global.mongooseCache = cached;
 const DatabaseConnection = async () => {
   if (!MONGODB_URI) {
     throw new Error(
-      "MongoDB is not configured. Please define the MONGO_URI environment variable."
+      "MongoDB is not configured. Define MONGO_URI, MONGODB_URI, or MONGODB_URL."
     );
   }
 
