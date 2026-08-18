@@ -145,7 +145,7 @@ const DashboardShell = ({
             // <div className="rounded-lg border border-dashed border-gray-300 bg-white p-8 text-center text-gray-600">
             //   Customers management is coming soon.
             // </div>
-            <CustomersPage  />
+            <CustomersPage orders={orders} />
           )}
           
           {activeView === "marketing" && (
