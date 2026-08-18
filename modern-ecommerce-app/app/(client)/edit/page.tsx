@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 type Product = {
@@ -14,7 +14,7 @@ type Product = {
   brand?: { title: string } | null;
 };
 
-export default function EditProductPage() {
+function EditProductContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const productId = searchParams.get("product");
@@ -99,5 +99,13 @@ export default function EditProductPage() {
         </form>
       </section>
     </main>
+  );
+}
+
+export default function EditProductPage() {
+  return (
+    <Suspense fallback={<main className="mx-auto max-w-2xl p-6">Loading editor...</main>}>
+      <EditProductContent />
+    </Suspense>
   );
 }

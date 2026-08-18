@@ -23,10 +23,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const user = await User.findOne({
-      email
+    const escapedEmail = email.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const users = await User.find({
+      email: new RegExp(`^${escapedEmail}$`, "i"),
     });
-    if (!user) {
+    if (users.length === 0) {
       return NextResponse.json(
         {
           message:"User not found"
@@ -38,12 +39,29 @@ export async function POST(req: NextRequest) {
     }
 
 
-    const passwordMatch = await bcrypt.compare(
-      password,
-      user.password
-    );
+    let user = null;
+    for (const candidate of users) {
+      let passwordMatch = false;
 
-    if (!passwordMatch) {
+      try {
+        passwordMatch = await bcrypt.compare(password, candidate.password);
+      } catch {
+        passwordMatch = false;
+      }
+
+      if (!passwordMatch && candidate.password === password) {
+        passwordMatch = true;
+        candidate.password = await bcrypt.hash(password, 10);
+        await candidate.save();
+      }
+
+      if (passwordMatch) {
+        user = candidate;
+        break;
+      }
+    }
+
+    if (!user) {
       return NextResponse.json(
         {
           message:"Invalid password"
