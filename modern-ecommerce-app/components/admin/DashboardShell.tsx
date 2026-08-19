@@ -12,6 +12,7 @@ import UsersProductDashboard from "./usersProductDashboard";
 import OrdersPage from "./OrdersPage";
 import CustomersPage from "./customersPage";
 import AnalysisPage from "./analysisPage";
+import ContentPage from "./contentPage";
 
 type Option = { _id: string; title: string };
 type Brand = Option & { slug: string; logo?: string };
@@ -109,7 +110,9 @@ const DashboardShell = ({
         <div className="mx-auto max-w-7xl">
           <header className="mb-8">
             <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
-              {activeView[0].toUpperCase() + activeView.slice(1)}
+              {activeView === "analysis"
+                ? "Analysis Dashboard"
+                : activeView[0].toUpperCase() + activeView.slice(1)}
             </h1>
             <p className="mt-2 text-sm text-gray-600 sm:text-base">
               Manage your store from one place.
@@ -159,9 +162,10 @@ const DashboardShell = ({
           )}
           
           {activeView === "content" && (
-            <div className="grid gap-6 lg:grid-cols-2">
-              Contents will be made available soon.
-            </div>
+            // <div className="grid gap-6 lg:grid-cols-2">
+            //   Contents will be made available soon.
+            // </div>
+            <ContentPage />
           )}
           {activeView === "analysis" && (
             <AnalysisPage

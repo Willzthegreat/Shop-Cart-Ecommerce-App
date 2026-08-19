@@ -108,7 +108,7 @@ const DashboardSidebar = ({
                     view === "marketing" ||
                     view === "customers" ||
                     view === "content" ||
-                    view === "analysis" 
+                    view === "analysis"
                   ) {
                     onViewChange(view);
                   }
@@ -130,5 +130,4 @@ const DashboardSidebar = ({
 };
 
 export default DashboardSidebar;
-
 
