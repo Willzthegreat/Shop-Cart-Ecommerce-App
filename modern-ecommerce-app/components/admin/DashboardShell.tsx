@@ -11,6 +11,7 @@ import Overview from "@/components/admin/overview/page";
 import UsersProductDashboard from "./usersProductDashboard";
 import OrdersPage from "./OrdersPage";
 import CustomersPage from "./customersPage";
+import AnalysisPage from "./analysisPage";
 
 type Option = { _id: string; title: string };
 type Brand = Option & { slug: string; logo?: string };
@@ -141,12 +142,7 @@ const DashboardShell = ({
 
           {activeView === "orders" && <OrdersPage orders={orders} />}
 
-          {activeView === "customers" && (
-            // <div className="rounded-lg border border-dashed border-gray-300 bg-white p-8 text-center text-gray-600">
-            //   Customers management is coming soon.
-            // </div>
-            <CustomersPage orders={orders} />
-          )}
+          {activeView === "customers" && ( <CustomersPage orders={orders} /> )}
           
           {activeView === "marketing" && (
             <div className="grid gap-6 lg:grid-cols-2">
@@ -168,9 +164,14 @@ const DashboardShell = ({
             </div>
           )}
           {activeView === "analysis" && (
-            <div className="grid gap-6 lg:grid-cols-2">
-              Analysis will be made available soon.
-            </div>
+            <AnalysisPage
+              products={products}
+              orders={orders}
+              totalSales={totalSales}
+              totalSold={totalSold}
+              totalOrders={totalOrders}
+              visitors={visitors}
+            />
           )}
         
         </div>
