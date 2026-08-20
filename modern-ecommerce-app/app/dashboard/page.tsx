@@ -1,4 +1,4 @@
-import DashboardShell from "@/components/admin/DashboardShell";
+import DashboardShell from "@/components/sellers/DashboardShell";
 import {
   getSellerCategories,
   getAllBrands,

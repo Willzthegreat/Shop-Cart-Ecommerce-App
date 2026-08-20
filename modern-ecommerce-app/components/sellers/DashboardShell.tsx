@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import BlogUploader from "@/components/admin/BlogUploader";
-import CategoryForm from "@/components/admin/CategoryForm";
-import DashboardSidebar from "@/components/admin/DashboardSidebar";
-import ImageUpLoader from "@/components/admin/ImageUpLoader";
-import ProductForm from "@/components/admin/ProductForm";
-import Overview from "@/components/admin/overview/page";
+import BlogUploader from "@/components/sellers/BlogUploader";
+import CategoryForm from "@/components/sellers/CategoryForm";
+import DashboardSidebar from "@/components/sellers/DashboardSidebar";
+import ImageUpLoader from "@/components/sellers/ImageUpLoader";
+import ProductForm from "@/components/sellers/ProductForm";
+import Overview from "@/components/sellers/overview/page";
 import UsersProductDashboard from "./usersProductDashboard";
 import OrdersPage from "./OrdersPage";
 import CustomersPage from "./customersPage";
@@ -162,9 +162,6 @@ const DashboardShell = ({
           )}
           
           {activeView === "content" && (
-            // <div className="grid gap-6 lg:grid-cols-2">
-            //   Contents will be made available soon.
-            // </div>
             <ContentPage />
           )}
           {activeView === "analysis" && (

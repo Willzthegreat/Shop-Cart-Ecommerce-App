@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { SESSION_COOKIE, verifyUserSession } from "@/lib/authSession";
 
 export async function proxy(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
   const isPublicRead =
     request.method === "GET" &&
     ["/api/products", "/api/categories", "/api/brands"].some((path) =>
@@ -17,6 +18,22 @@ export async function proxy(request: NextRequest) {
   );
 
   if (session) {
+    const isSellerRoute =
+      pathname === "/dashboard" ||
+      pathname.startsWith("/dashboard/") ||
+      pathname === "/seller" ||
+      pathname.startsWith("/seller/");
+    const isAdminRoute =
+      pathname === "/admin" || pathname.startsWith("/admin/");
+
+    if (isAdminRoute && session.role !== "admin") {
+      return new NextResponse("Forbidden", { status: 403 });
+    }
+
+    if (isSellerRoute && session.role !== "seller" && session.role !== "admin") {
+      return new NextResponse("Forbidden", { status: 403 });
+    }
+
     return NextResponse.next();
   }
 
@@ -34,7 +51,10 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
+    "/seller/:path*",
+    "/admin/:path*",
     "/dashboard/:path*",
+    "/buyer/:path*",
     "/profile/:path*",
     "/api/products/:path*",
     "/api/blogs/:path*",

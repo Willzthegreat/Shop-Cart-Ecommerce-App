@@ -58,8 +58,7 @@ export default function UserAvatar() {
           <p className="text-sm text-gray-500">{user.email}</p>
           <hr className="my-3" />
           <button 
-          onClick={() => router.replace("/dashboard")}
-          // onClick={() => router.push("/dashboard")}
+          onClick={() => router.replace(user.role === "seller" || user.role === "admin" ? "/dashboard" : "/buyer/dashboard")}
           className=" w-full text-left py-2 hover:bg-gray-100 ">
             Dashboard
           </button>

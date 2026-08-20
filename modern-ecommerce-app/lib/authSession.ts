@@ -1,6 +1,8 @@
 const SESSION_COOKIE = "mongo-user-session";
 const SESSION_SECRET = process.env.AUTH_SECRET || "local-development-auth-secret";
 
+export type UserRole = "buyer" | "seller" | "admin";
+
 const encode = (value: string) => {
   const bytes = new TextEncoder().encode(value);
   let binary = "";
@@ -37,9 +39,18 @@ const sign = async (value: string) => {
   return encode(String.fromCharCode(...new Uint8Array(signature)));
 };
 
-export async function createUserSession(userId: string, email: string) {
+export async function createUserSession(
+  userId: string,
+  email: string,
+  role: UserRole = "buyer",
+) {
   const payload = encode(
-    JSON.stringify({ userId, email, exp: Date.now() + 1000 * 60 * 60 * 24 * 7 }),
+    JSON.stringify({
+      userId,
+      email,
+      role,
+      exp: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    }),
   );
   return `${payload}.${await sign(payload)}`;
 }
@@ -63,10 +74,13 @@ export async function verifyUserSession(token: string | undefined) {
     const session = JSON.parse(decode(payload)) as {
       userId: string;
       email: string;
+      role?: UserRole;
       exp: number;
     };
 
-    return session.exp > Date.now() ? session : null;
+    return session.exp > Date.now()
+      ? { ...session, role: session.role || "buyer" }
+      : null;
   } catch {
     return null;
   }

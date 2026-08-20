@@ -9,7 +9,12 @@ export async function POST(req: NextRequest) {
 
   try {
     await DatabaseConnection();
-    const { email: rawEmail, password } = await req.json();
+    const {
+      email: rawEmail,
+      password,
+      accountType: requestedAccountType = "buyer",
+    } = await req.json();
+    const accountType = requestedAccountType === "seller" ? "seller" : "buyer";
     const email = String(rawEmail || "").trim().toLowerCase();
 
     if (!email || !password) {
@@ -72,19 +77,48 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Read the role directly from MongoDB so an older cached Mongoose model
+    // cannot silently turn a seller account into a buyer session.
+    const storedUser = await User.collection.findOne(
+      { _id: user._id },
+      { projection: { role: 1 } },
+    );
+    const accountRole = ["buyer", "seller", "admin"].includes(storedUser?.role)
+      ? storedUser.role
+      : "buyer";
+
+    if (accountType === "seller" && accountRole !== "seller") {
+      return NextResponse.json(
+        { message: "This email is not registered as a seller account." },
+        { status: 403 },
+      );
+    }
+
+    if (accountType === "buyer" && accountRole !== "buyer") {
+      return NextResponse.json(
+        { message: "This email is not registered as a buyer account." },
+        { status: 403 },
+      );
+    }
+
     const response = NextResponse.json(
       {
         message:"Login successful",
         user:{
           id:user._id.toString(),
           name:user.name,
-          email:user.email
+          email:user.email,
+          role:accountRole,
         }
       },
       { status: 200 },
     );
 
-    response.cookies.set(SESSION_COOKIE, await createUserSession(user._id.toString(), user.email), {
+    response.cookies.set(SESSION_COOKIE, await createUserSession(
+      user._id.toString(),
+      user.email,
+      accountRole,
+    ), {
       httpOnly: true,
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",

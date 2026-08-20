@@ -43,6 +43,7 @@ export async function POST(req: NextRequest) {
           id: newUser._id.toString(),
           name: newUser.name,
           email: newUser.email,
+          role: newUser.role || "buyer",
         },
       },
       { status: 201 }

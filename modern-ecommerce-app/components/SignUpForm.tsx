@@ -51,9 +51,8 @@ export default function SignUpForm({ close, className }: Props) {
 
       close();
 
-      // Redirect dashboard
-
-      router.replace("/dashboard");
+      const role = response.data.user?.role || "buyer";
+      router.replace(role === "seller" || role === "admin" ? "/dashboard" : "/buyer/dashboard");
     } catch (error: any) {
       setErrorMessage(
         error.response?.data?.message || "Unable to create account. Please try again.",

@@ -4,7 +4,7 @@ const ContentPage = () => {
   return (
     <>
       <div>
-        The Contents will soon be loaded.
+        The Contents will be made available soon.
       </div>
     </>
   )
