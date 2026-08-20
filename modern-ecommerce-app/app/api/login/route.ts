@@ -83,8 +83,9 @@ export async function POST(req: NextRequest) {
       { _id: user._id },
       { projection: { role: 1 } },
     );
-    const accountRole = ["buyer", "seller", "admin"].includes(storedUser?.role)
-      ? storedUser.role
+    const storedRole = storedUser?.role;
+    const accountRole = ["buyer", "seller", "admin"].includes(storedRole)
+      ? storedRole
       : "buyer";
 
     if (accountType === "seller" && accountRole !== "seller") {
