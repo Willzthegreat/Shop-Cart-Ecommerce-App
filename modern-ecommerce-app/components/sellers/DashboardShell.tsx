@@ -13,6 +13,7 @@ import OrdersPage from "./OrdersPage";
 import CustomersPage from "./customersPage";
 import AnalysisPage from "./analysisPage";
 import ContentPage from "./contentPage";
+import SellerSettingPage from "./SellerSettingPage";
 
 type Option = { _id: string; title: string };
 type Brand = Option & { slug: string; logo?: string };
@@ -27,7 +28,7 @@ type Product = {
   brand?: Brand | null;
   image?: string;
 };
-type DashboardView = "overview" | "products" | "orders" | "marketing" | "customers" | "content" | "analysis" | "Setting";
+type DashboardView = "overview" | "products" | "orders" | "marketing" | "customers" | "content" | "analysis" | "setting";
 
 type DashboardShellProps = {
   brands: Brand[];
@@ -79,7 +80,7 @@ const DashboardShell = ({
           viewFromUrl === "customers" ||
           viewFromUrl === "content" ||
           viewFromUrl === "content" ||
-          viewFromUrl === "Setting" ||
+          viewFromUrl === "setting" ||
           viewFromUrl === "overview"
         ? viewFromUrl
         : "overview";
@@ -167,6 +168,7 @@ const DashboardShell = ({
           {activeView === "content" && (
             <ContentPage />
           )}
+          
           {activeView === "analysis" && (
             <AnalysisPage
               products={products}
@@ -178,6 +180,9 @@ const DashboardShell = ({
             />
           )}
         
+          {activeView === "setting" && (
+            <SellerSettingPage />
+          )}
         </div>
       </section>
     </div>

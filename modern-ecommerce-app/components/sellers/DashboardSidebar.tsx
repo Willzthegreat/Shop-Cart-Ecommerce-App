@@ -21,7 +21,7 @@ const sections = [
   "Setting",
 ] as const;
 
-type DashboardView = "overview" | "products" | "orders" | "marketing" | "customers" | "content" | "analysis" | "Setting";
+type DashboardView = "overview" | "products" | "orders" | "marketing" | "customers" | "content" | "analysis" | "setting";
 
 type DashboardSidebarProps = {
   activeView: DashboardView;
@@ -108,7 +108,8 @@ const DashboardSidebar = ({
                     view === "marketing" ||
                     view === "customers" ||
                     view === "content" ||
-                    view === "analysis"
+                    view === "analysis" ||
+                    view === "setting"
                   ) {
                     onViewChange(view);
                   }
