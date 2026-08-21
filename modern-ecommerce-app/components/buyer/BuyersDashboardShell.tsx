@@ -7,8 +7,9 @@ import BuyersProducts from "./BuyerProducts";
 import BuyersProfile from "./buyersProfile";
 import BuyersOrderDetails from "./buyersOrderDetails";
 import BuyersAddressBook from "./buyersAddressBook";
-import CartPage from "@/app/shop/cart/page";
-import WishlistPage from "@/app/(client)/wishlist/page";
+import PaymentMethods from "../PaymentMethods";
+import Notifications from "./Notifications";
+import AccountSetting from "./AccountSetting";
 
 type BuyersDashboardView =
   | "Overview"
@@ -16,8 +17,6 @@ type BuyersDashboardView =
   | "Profile"
   | "Order Details"
   | "Address Book"
-  | "Wishlist"
-  | "Cart"
   | "Payment Methods"
   | "Notifications"
   | "Account Setting";
@@ -28,8 +27,6 @@ const buyerViews: BuyersDashboardView[] = [
   "Profile",
   "Order Details",
   "Address Book",
-  "Wishlist",
-  "Cart",
   "Payment Methods",
   "Notifications",
   "Account Setting",
@@ -91,7 +88,7 @@ const BuyersDashboardShell = () => {
       </aside>
 
       <main className="rounded-lg border bg-white p-6">
-        {activeView !== "Cart" && activeView !== "Wishlist" && (
+        {activeView  && (
           <>
             <h1 className="text-2xl font-bold text-gray-900">{activeView}</h1>
             <p className="mt-2 text-gray-600">Manage your account from one place.</p>
@@ -119,27 +116,34 @@ const BuyersDashboardShell = () => {
             <BuyersOrderDetails />
           </div>
         )}
-
-         {/* 
-  "Wishlist",
-  "Cart",
-  "Payment Methods",
-  "Notifications",
-  "Account Setting", */}
-
         {activeView === "Address Book" && (
           <div className="w-full">
             <BuyersAddressBook />
           </div>
         )}
-        {activeView === "Wishlist" && (
+        {/* {activeView === "Wishlist" && (
           <div className="w-full">
-            <WishlistPage />
+            <WishlistPage className={"lg:max-w-5xl"}/>
           </div>
         )}
         {activeView === "Cart" && (
           <div className="w-full">
             <CartPage />
+          </div>
+        )} */}
+        {activeView === "Payment Methods" && (
+          <div className="w-full">
+            <PaymentMethods />
+          </div>
+        )}
+        {activeView === "Notifications" && (
+          <div className="w-full">
+            <Notifications />
+          </div>
+        )}
+        {activeView === "Account Setting" && (
+          <div className="w-full">
+            <AccountSetting />
           </div>
         )}
       </main>

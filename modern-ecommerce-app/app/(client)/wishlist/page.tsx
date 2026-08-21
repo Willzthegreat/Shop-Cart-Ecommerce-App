@@ -15,9 +15,10 @@ import { Trash2 } from "lucide-react";
 interface StoredUser {
   name?: string;
   email?: string;
+  className?: string;
 }
 
-export default function WishlistPage() {
+export default function WishlistPage({className}: StoredUser) {
   const [user, setUser] = useState<StoredUser | null>(null);
   const [visibleProducts, setVisibleProducts] = useState(7);
   const { favoriteProduct, removeFromFavorite, resetFavorite } = useStore();
@@ -60,7 +61,7 @@ export default function WishlistPage() {
   }
 
   return (
-    <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10">
+    <main className={`mx-auto w-full max-w-7xl  px-4 py-8 sm:px-6 lg:px-2 sm:py-10 ${className}`}>
       <Container>
         <div className="mb-6 flex items-center justify-between gap-4">
           <h1 className="text-2xl font-bold sm:text-3xl">My Wishlist</h1>
@@ -124,7 +125,7 @@ export default function WishlistPage() {
                     </td>
                     <td className="p-4">
                       <div className="flex min-w-36 items-center gap-2">
-                        <AddToCartButton product={product} className="py-3" />
+                        <AddToCartButton product={product} className="py-2 px-4" />
                         <button
                           type="button"
                           aria-label={`Remove ${product.name} from wishlist`}
