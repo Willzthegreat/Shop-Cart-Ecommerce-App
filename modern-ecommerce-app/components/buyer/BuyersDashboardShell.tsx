@@ -91,7 +91,7 @@ const BuyersDashboardShell = () => {
       </aside>
 
       <main className="rounded-lg border bg-white p-6">
-        {activeView !== "Cart" && (
+        {activeView !== "Cart" && activeView !== "Wishlist" && (
           <>
             <h1 className="text-2xl font-bold text-gray-900">{activeView}</h1>
             <p className="mt-2 text-gray-600">Manage your account from one place.</p>

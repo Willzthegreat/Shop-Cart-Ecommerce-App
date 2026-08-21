@@ -1,16 +1,14 @@
 import BuyersDashboardShell from '@/components/buyer/BuyersDashboardShell'
-import React from 'react'
+import { Suspense } from 'react'
 
 const BuyersDashboard = () => {
 
 
 
   return (
-    <>
-      <div>
-        <BuyersDashboardShell /> 
-      </div>
-    </>
+    <Suspense fallback={<div className="min-h-screen" />}>
+      <BuyersDashboardShell />
+    </Suspense>
   )
 }
 
