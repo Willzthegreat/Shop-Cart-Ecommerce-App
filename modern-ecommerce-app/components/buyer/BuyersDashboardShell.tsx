@@ -3,6 +3,12 @@
 import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import BuyersOverView from "./overView";
+import BuyersProducts from "./BuyerProducts";
+import BuyersProfile from "./buyersProfile";
+import BuyersOrderDetails from "./buyersOrderDetails";
+import BuyersAddressBook from "./buyersAddressBook";
+import CartPage from "@/app/shop/cart/page";
+import WishlistPage from "@/app/(client)/wishlist/page";
 
 type BuyersDashboardView =
   | "Overview"
@@ -39,7 +45,7 @@ const BuyersDashboardShell = () => {
   const viewFromUrl = searchParams.get("view");
   const initialView: BuyersDashboardView = isBuyerDashboardView(viewFromUrl)
     ? viewFromUrl
-    : "overview";
+    : "Overview";
 
   const [activeView, setActiveView] = useState<BuyersDashboardView>(initialView);
 
@@ -85,20 +91,55 @@ const BuyersDashboardShell = () => {
       </aside>
 
       <main className="rounded-lg border bg-white p-6">
-        <h1 className="text-2xl font-bold text-gray-900">{activeView}</h1>
-        <p className="mt-2 text-gray-600">Manage your account from one place.</p>
+        {activeView !== "Cart" && (
+          <>
+            <h1 className="text-2xl font-bold text-gray-900">{activeView}</h1>
+            <p className="mt-2 text-gray-600">Manage your account from one place.</p>
+          </>
+        )}
 
 
         {activeView === "Overview" && (
           <div className="w-full">
-            <BuyersOverView
-                        // totalSales={totalSales}
-                        // percentageChange={percentageChange}
-                        // totalOrders={totalOrders}
-                        // visitors={visitors}
-                        // ordersPercentageChange={ordersPercentageChange}
-                        // visitorsPercentageChange={visitorsPercentageChange}
-            />
+            <BuyersOverView />
+          </div>
+        )}
+        {activeView === "Products" && (
+          <div className="w-full">
+            <BuyersProducts />
+          </div>
+        )}
+        {activeView === "Profile" && (
+          <div className="w-full">
+            <BuyersProfile />
+          </div>
+        )}
+        {activeView === "Order Details" && (
+          <div className="w-full">
+            <BuyersOrderDetails />
+          </div>
+        )}
+
+         {/* 
+  "Wishlist",
+  "Cart",
+  "Payment Methods",
+  "Notifications",
+  "Account Setting", */}
+
+        {activeView === "Address Book" && (
+          <div className="w-full">
+            <BuyersAddressBook />
+          </div>
+        )}
+        {activeView === "Wishlist" && (
+          <div className="w-full">
+            <WishlistPage />
+          </div>
+        )}
+        {activeView === "Cart" && (
+          <div className="w-full">
+            <CartPage />
           </div>
         )}
       </main>

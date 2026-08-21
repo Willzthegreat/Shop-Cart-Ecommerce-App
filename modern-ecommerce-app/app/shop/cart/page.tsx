@@ -15,9 +15,10 @@ import FavoriteButton from "@/components/favoriteButton";
 interface StoredUser {
   name?: string;
   email?: string;
+  title?: string;
 }
 
-export default function CartPage() {
+export default function CartPage({ title = "Shopping Cart" }: StoredUser) {
   const [user, setUser] = useState<StoredUser | null>(null);
   const items = useStore((state) => state.items);
   const addItem = useStore((state) => state.addItem);
@@ -62,7 +63,10 @@ export default function CartPage() {
         <>
           <Container>
             {items.length ? <>
-              <h1 className="text-2xl font-bold sm:text-3xl">Shopping Cart</h1>
+              <h1 className="text-2xl font-bold sm:text-3xl">
+                {title}
+                {/* Shopping Cart */}
+                </h1>
               <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
                 <div className="space-y-4 overflow-hidden">
                   {items.map(({ product, quantity }) => (
