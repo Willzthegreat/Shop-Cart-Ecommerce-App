@@ -21,7 +21,7 @@ const sections = [
   "Setting",
 ] as const;
 
-type DashboardView = "overview" | "products" | "orders" | "marketing" | "customers" | "content" | "analysis";
+type DashboardView = "overview" | "products" | "orders" | "marketing" | "customers" | "content" | "analysis" | "Setting";
 
 type DashboardSidebarProps = {
   activeView: DashboardView;

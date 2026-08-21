@@ -1,10 +1,14 @@
+import BuyersDashboardShell from '@/components/buyer/BuyersDashboardShell'
 import React from 'react'
 
 const BuyersDashboard = () => {
+
+
+
   return (
     <>
       <div>
-        This is the buyers  dashboard page.
+        <BuyersDashboardShell /> 
       </div>
     </>
   )

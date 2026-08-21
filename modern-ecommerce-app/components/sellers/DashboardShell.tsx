@@ -27,7 +27,7 @@ type Product = {
   brand?: Brand | null;
   image?: string;
 };
-type DashboardView = "overview" | "products" | "orders" | "marketing" | "customers" | "content" | "analysis";
+type DashboardView = "overview" | "products" | "orders" | "marketing" | "customers" | "content" | "analysis" | "Setting";
 
 type DashboardShellProps = {
   brands: Brand[];
@@ -78,6 +78,8 @@ const DashboardShell = ({
           viewFromUrl === "marketing" ||
           viewFromUrl === "customers" ||
           viewFromUrl === "content" ||
+          viewFromUrl === "content" ||
+          viewFromUrl === "Setting" ||
           viewFromUrl === "overview"
         ? viewFromUrl
         : "overview";
@@ -85,6 +87,7 @@ const DashboardShell = ({
   const [activeView, setActiveView] = useState<DashboardView>(initialView);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setActiveView(initialView);
   }, [initialView]);
 
