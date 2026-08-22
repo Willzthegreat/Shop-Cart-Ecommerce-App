@@ -8,9 +8,15 @@ export async function POST(req: NextRequest) {
   try {
     await DatabaseConnection();
 
-    const { name, email: rawEmail, password } = await req.json();
+    const {
+      name,
+      email: rawEmail,
+      password,
+      role: requestedRole = "buyer",
+    } = await req.json();
     const normalizedEmail = String(rawEmail || "").trim().toLowerCase();
     const normalizedName = String(name || "").trim();
+    const role = requestedRole === "seller" ? "seller" : "buyer";
 
     if (!normalizedName || !normalizedEmail || !password) {
       return NextResponse.json(
@@ -34,6 +40,7 @@ export async function POST(req: NextRequest) {
       name: normalizedName,
       email: normalizedEmail,
       password: hashedPassword,
+      role,
     });
 
     const response = NextResponse.json(
@@ -51,7 +58,7 @@ export async function POST(req: NextRequest) {
 
     response.cookies.set(
       SESSION_COOKIE,
-      await createUserSession(newUser._id.toString(), newUser.email),
+      await createUserSession(newUser._id.toString(), newUser.email, role),
       {
         httpOnly: true,
         sameSite: "lax",

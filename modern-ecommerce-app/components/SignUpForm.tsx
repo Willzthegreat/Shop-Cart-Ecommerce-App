@@ -19,6 +19,7 @@ export default function SignUpForm({ close, className }: Props) {
   const [password, setPassword] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
+  const [role, setRole] = useState<"buyer" | "seller" | "admin">("buyer");
 
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -29,17 +30,18 @@ export default function SignUpForm({ close, className }: Props) {
     setLoading(true);
     setErrorMessage("");
 
-    console.log("SENDING DATA:", {
-      name,
-      email,
-      password,
-    });
+    // console.log("SENDING DATA:", {
+    //   name,
+    //   email,
+    //   password,
+    // });
 
     try {
       const response = await axios.post("/api/users", {
         name,
         email,
         password,
+        role,
       });
 
       localStorage.setItem("user", JSON.stringify(response.data.user));
@@ -51,8 +53,12 @@ export default function SignUpForm({ close, className }: Props) {
 
       close();
 
-      const role = response.data.user?.role || "buyer";
-      router.replace(role === "seller" || role === "admin" ? "/dashboard" : "/buyer/dashboard");
+      const registeredRole = response.data.user?.role || "buyer";
+      router.replace(
+        registeredRole === "seller" || registeredRole === "admin"
+          ? "/dashboard"
+          : "/buyer/dashboard",
+      );
     } catch (error: any) {
       setErrorMessage(
         error.response?.data?.message || "Unable to create account. Please try again.",
@@ -111,6 +117,21 @@ export default function SignUpForm({ close, className }: Props) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+
+          <div className="mt-4 mb-6">
+            <p className="mb-2 font-semibold">
+              I want to: 
+            </p>
+            <label className="mr-6 cursor-pointer">
+              <input type="radio" name="role" value="buyer" checked={role === "buyer"} onChange={() => setRole("buyer")} />
+              <span className="ml-2">Buy Products</span>
+            </label>
+            
+            <label className="ml-6 cursor-pointer">
+              <input type="radio" name="role" value="seller" checked={role === "seller"} onChange={() => setRole("seller")} />
+              <span className="ml-2">sell Products</span>
+            </label>
+          </div>
 
           <button
             type="button"
